@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>霍华德·马克斯：钟摆理论（Pendulum Theory）网页讲解</title>
+  <style>
+    :root{
+      --bg: #0b1020;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.88);
+      --muted: rgba(255,255,255,.64);
+      --line: rgba(255,255,255,.12);
+      --accent: #76e4ff;
+      --accent2:#b5ff7d;
+      --warn:#ffcf5a;
+      --bad:#ff6b6b;
+      --good:#60ffa6;
+      --shadow: 0 12px 40px rgba(0,0,0,.35);
+      --radius: 18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 600px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        radial-gradient(700px 500px at 55% 95%, rgba(255,207,90,.10), transparent 60%),
+        var(--bg);
+      line-height:1.65;
+    }
+    a{color:var(--accent); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px; margin:0 auto; padding:28px 18px 80px}
+    header{
+      display:flex; gap:18px; align-items:flex-start; justify-content:space-between;
+      padding:18px 18px 16px;
+      border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 14px;
+      backdrop-filter: blur(12px);
+      z-index: 10;
+    }
+    .brand{
+      display:flex; flex-direction:column; gap:6px; min-width: 260px;
+    }
+    .brand h1{margin:0; font-size:18px; letter-spacing:.2px}
+    .brand p{margin:0; color:var(--muted); font-size:13px}
+    nav{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+    nav button{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      padding:8px 10px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 13px;
+    }
+    nav button:hover{background: rgba(255,255,255,.10)}
+    nav button.active{
+      border-color: rgba(118,228,255,.45);
+      background: rgba(118,228,255,.10);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap:18px;
+      margin-top:18px;
+    }
+    @media (max-width: 900px){
+      header{position:relative; top:0}
+      .grid{grid-template-columns: 1fr}
+      nav{justify-content:flex-start}
+      .brand{min-width:unset}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background: var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 16px;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-bottom:1px solid var(--line);
+    }
+    .card .hd .title{
+      display:flex; flex-direction:column; gap:2px;
+    }
+    .card .hd h2{margin:0; font-size:15px}
+    .card .hd .sub{margin:0; color:var(--muted); font-size:12px}
+    .card .bd{padding:16px}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      font-size:12px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .pill b{color:var(--text); font-weight:600}
+
+    .kvs{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 520px){
+      .kvs{grid-template-columns: 1fr}
+    }
+    .kv{
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.12);
+    }
+    .kv .k{color:var(--muted); font-size:12px}
+    .kv .v{font-size:13px; margin-top:6px}
+
+    .section{display:none}
+    .section.active{display:block}
+
+    /* Pendulum area */
+    .pendulumWrap{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    .canvasBox{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(0,0,0,.14);
+      overflow:hidden;
+    }
+    canvas{width:100%; height:360px; display:block}
+    .controls{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 520px){
+      .controls{grid-template-columns: 1fr}
+    }
+    .ctrl{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding:12px;
+    }
+    .ctrl label{
+      display:flex; justify-content:space-between; align-items:center;
+      font-size:12px; color: var(--muted);
+    }
+    .ctrl input[type="range"]{width:100%; margin-top:10px}
+    .ctrl .hint{margin-top:8px; font-size:12px; color: var(--muted)}
+    .ctrl .row{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:9px 10px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 13px;
+    }
+    .btn:hover{background: rgba(255,255,255,.11)}
+    .btn.primary{
+      border-color: rgba(118,228,255,.45);
+      background: rgba(118,228,255,.12);
+    }
+
+    /* Timeline / checklist */
+    .list{
+      display:flex; flex-direction:column; gap:10px;
+    }
+    .item{
+      padding:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.10);
+      border-radius: 14px;
+    }
+    .item .h{display:flex; align-items:center; justify-content:space-between; gap:12px}
+    .item .h b{font-size:13px}
+    .tag{
+      font-size:11px; padding:4px 8px; border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+    .tag.good{border-color: rgba(96,255,166,.35); color: rgba(96,255,166,.9); background: rgba(96,255,166,.08)}
+    .tag.bad{border-color: rgba(255,107,107,.35); color: rgba(255,107,107,.9); background: rgba(255,107,107,.08)}
+    .tag.warn{border-color: rgba(255,207,90,.35); color: rgba(255,207,90,.9); background: rgba(255,207,90,.08)}
+    .item p{margin:8px 0 0; color: var(--muted); font-size:12.5px}
+
+    /* Footer note */
+    .note{
+      margin-top:18px;
+      padding:12px 14px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius: 16px;
+      color: var(--muted);
+      font-size:12px;
+      background: rgba(255,255,255,.03);
+    }
+    .mono{font-family: var(--mono)}
+    .hr{height:1px; background: var(--line); margin:14px 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <h1>霍华德·马克斯的钟摆理论</h1>
+        <p>用一个可交互的“市场情绪钟摆”来讲清：为什么极端会回摆、投资如何利用钟摆位置。</p>
+      </div>
+      <nav id="nav">
+        <button class="active" data-to="intro">核心概念</button>
+        <button data-to="pendulum">交互钟摆</button>
+        <button data-to="signals">识别信号</button>
+        <button data-to="actions">应对策略</button>
+        <button data-to="faq">常见误区</button>
+      </nav>
+    </header>
+
+    <div class="grid">
+      <!-- Main -->
+      <div class="card">
+        <div class="hd">
+          <div class="title">
+            <h2 id="sectionTitle">核心概念</h2>
+            <p class="sub" id="sectionSub">钟摆不是预测工具，而是“判断当下在周期的哪一侧”。</p>
+          </div>
+          <span class="pill"><b id="badgeText">定位 > 预测</b></span>
+        </div>
+        <div class="bd">
+          <!-- INTRO -->
+          <section class="section active" id="intro">
+            <div class="kvs">
+              <div class="kv">
+                <div class="k">一句话理解</div>
+                <div class="v">市场情绪与估值会在两个极端之间摆动：<b>过度乐观</b> ↔ <b>过度悲观</b>。极端越远，回摆力量越强。</div>
+              </div>
+              <div class="kv">
+                <div class="k">核心洞见</div>
+                <div class="v">真正难的是：在“大家都觉得安全/危险”的时候，保持冷静，判断<b>风险是否被低估/高估</b>。</div>
+              </div>
+              <div class="kv">
+                <div class="k">为什么会摆动</div>
+                <div class="v">人性与金融机制：从众、叙事、杠杆、流动性、定价模型的线性外推，都会把市场推向极端。</div>
+              </div>
+              <div class="kv">
+                <div class="k">钟摆的“轴”</div>
+                <div class="v">不是价格本身，而是<b>心理与风险偏好</b>：情绪变化驱动风险溢价变化，进而影响价格与融资条件。</div>
+              </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="list">
+              <div class="item">
+                <div class="h">
+                  <b>钟摆两端：乐观端（风险被低估）</b>
+                  <span class="tag bad">危险更隐蔽</span>
+                </div>
+                <p>“一切都会更好”“好公司不怕贵”——风险溢价压缩、估值抬升、融资更容易、杠杆更高，任何坏消息都可能触发快速回摆。</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>钟摆两端：悲观端（风险被高估）</b>
+                  <span class="tag good">机会更集中</span>
+                </div>
+                <p>“再也回不去了”“现金为王”——风险溢价抬升、估值下压、融资困难、抛售导致便宜货出现，长期投资者更容易获得安全边际。</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>最重要：位置判断，而非精准择时</b>
+                  <span class="tag warn">拒绝精确</span>
+                </div>
+                <p>钟摆理论不要求你猜顶/底，而是回答：现在更可能处于哪一侧？极端程度如何？然后用“仓位/风控”去应对。</p>
+              </div>
+            </div>
+
+            <div class="note">
+              <span class="mono">小提示：</span>如果你把这页当成“预测下一次涨跌”的水晶球，基本就用错了。它更像一张<b>风险地图</b>：告诉你哪里陡、哪里滑、哪里能慢慢捡到便宜。
+            </div>
+          </section>
+
+          <!-- PENDULUM -->
+          <section class="section" id="pendulum">
+            <div class="pendulumWrap">
+              <div class="canvasBox">
+                <canvas id="cv" width="960" height="420" aria-label="市场情绪钟摆"></canvas>
+              </div>
+
+              <div class="controls">
+                <div class="ctrl">
+                  <label>
+                    <span>当前情绪（悲观 ← → 乐观）</span>
+                    <span class="mono" id="posText">0</span>
+                  </label>
+                  <input id="pos" type="range" min="-100" max="100" value="0" />
+                  <div class="hint">你可以拖动滑块“设置位置”，也可以点击下方按钮“自动摆动”。</div>
+                  <div class="row">
+                    <button class="btn primary" id="autoBtn">开始自动摆动</button>
+                    <button class="btn" id="resetBtn">重置</button>
+                  </div>
+                </div>
+
+                <div class="ctrl">
+                  <label>
+                    <span>回摆强度（越极端越容易反转）</span>
+                    <span class="mono" id="springText">1.20</span>
+                  </label>
+                  <input id="spring" type="range" min="60" max="220" value="120" />
+                  <div class="hint">强度更高：越靠近极端，回摆速度更快；更低：摆动更“粘”。</div>
+
+                  <div class="hr"></div>
+
+                  <div class="kvs" style="grid-template-columns:1fr; gap:10px;">
+                    <div class="kv">
+                      <div class="k">建议动作（示意）</div>
+                      <div class="v" id="actionHint">中性区：保持纪律化配置，关注估值与基本面。</div>
+                    </div>
+                    <div class="kv">
+                      <div class="k">风险温度</div>
+                      <div class="v" id="riskHint">风险处于常态：警惕过度自信/过度恐慌。</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="note">
+                这只是教学演示：把“情绪/风险偏好”抽象成一个钟摆。现实里钟摆的速度、幅度会被流动性、信用周期、政策与突发事件影响。
+              </div>
+            </div>
+          </section>
+
+          <!-- SIGNALS -->
+          <section class="section" id="signals">
+            <div class="list">
+              <div class="item">
+                <div class="h">
+                  <b>风险溢价/利差：钱是否“太好借”？</b>
+                  <span class="tag bad">靠近乐观端</span>
+                </div>
+                <p>当信用利差很窄、融资条款极宽松、低质量资产也能轻松融资，通常意味着市场对风险更“钝”。</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>叙事强度：大家是否在“讲一个必然胜利的故事”？</b>
+                  <span class="tag warn">情绪驱动</span>
+                </div>
+                <p>当讨论更多围绕“这次不一样”“永远增长”而非现金流与安全边际，钟摆更可能在乐观端。</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>杠杆与拥挤：仓位是否同向、回撤会不会踩踏？</b>
+                  <span class="tag bad">脆弱性上升</span>
+                </div>
+                <p>同一风格/赛道过度拥挤、杠杆升高，会让“坏消息”触发连锁平仓，回摆变得突然。</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>恐慌迹象：抛售是否“不计价格”？</b>
+                  <span class="tag good">靠近悲观端</span>
+                </div>
+                <p>当优质资产也被无差别抛售、现金流被忽视、只讨论风险不谈价值，往往接近悲观端。</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>“安全资产”的狂热：大家是否愿意为安全付出任何价格？</b>
+                  <span class="tag good">机会出现</span>
+                </div>
+                <p>当市场把安全当成唯一目标，愿意接受极低回报/极高估值，另一端的“被冷落资产”可能更划算。</p>
+              </div>
+            </div>
+
+            <div class="note">
+              你不需要把所有指标量化成一个分数。更有效的是：用多个线索交叉验证，判断当下更像“风险被低估”还是“风险被高估”。
+            </div>
+          </section>
+
+          <!-- ACTIONS -->
+          <section class="section" id="actions">
+            <div class="kvs">
+              <div class="kv">
+                <div class="k">当钟摆在乐观端（风险被低估）</div>
+                <div class="v">
+                  <ul style="margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:13px;">
+                    <li>降低杠杆，减少对高估值/低质量资产的暴露。</li>
+                    <li>提高安全边际要求：更挑剔、更保守地假设增长与利润。</li>
+                    <li>把“承受回撤能力”放在第一位，预设最坏情景。</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="kv">
+                <div class="k">当钟摆在悲观端（风险被高估）</div>
+                <div class="v">
+                  <ul style="margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:13px;">
+                    <li>逐步加仓（分批、分层），优先高质量与现金流确定性。</li>
+                    <li>把注意力从“新闻流”转到“价格 vs. 内在价值”。</li>
+                    <li>预留流动性与时间：让市场给你回摆的收益。</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="kv">
+                <div class="k">中性区：最容易“无聊但正确”</div>
+                <div class="v">
+                  <ul style="margin:8px 0 0; padding-left:18px; color:var(--muted); font-size:13px;">
+                    <li>坚持资产配置与再平衡规则：涨多了就降一点，跌多了就加一点。</li>
+                    <li>提高研究质量：选“好生意 + 合理价格”，别押单一叙事。</li>
+                    <li>把收益目标和风险预算写下来，减少临场情绪决策。</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="kv">
+                <div class="k">一条实用原则</div>
+                <div class="v">
+                  <b>“越多人觉得无风险，我越谨慎；越多人觉得完蛋了，我越认真看价格。”</b>
+                  <div style="margin-top:6px; color:var(--muted); font-size:12.5px;">（不是反着做，而是把“风险是否被正确定价”作为关键问题。）</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="note">
+              钟摆理论最常见的落地方式不是“全仓买/全仓卖”，而是<b>仓位、风格、风险预算</b>的微调：让自己在极端时更不容易犯大错。
+            </div>
+          </section>
+
+          <!-- FAQ -->
+          <section class="section" id="faq">
+            <div class="list">
+              <div class="item">
+                <div class="h">
+                  <b>误区 1：钟摆 = 精准择时</b>
+                  <span class="tag warn">常见误用</span>
+                </div>
+                <p>它更像“概率/风险判断”。你只要能判断“偏哪边、偏多少”，就能做出比盲目追涨杀跌更好的决策。</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>误区 2：价格越跌越便宜，越涨越危险</b>
+                  <span class="tag warn">需要证据</span>
+                </div>
+                <p>价格只是结果。关键是：跌是因为价值变了，还是情绪变了？涨是因为基本面改善，还是风险溢价被压没了？</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>误区 3：只看一个指标就下结论</b>
+                  <span class="tag warn">偏差风险</span>
+                </div>
+                <p>更可靠的方法是“多信号交叉”：利差/条款/成交拥挤/叙事/资金流等共同指向同一侧，判断才更稳。</p>
+              </div>
+              <div class="item">
+                <div class="h">
+                  <b>误区 4：逆向 = 永远做对手盘</b>
+                  <span class="tag bad">容易亏钱</span>
+                </div>
+                <p>逆向不是为了“和大众不同”，而是为了“在风险定价失真时”更接近理性。大众有时是对的，极端才是机会/危险的温床。</p>
+              </div>
+            </div>
+
+            <div class="note">
+              想把这页变成你自己的工具：把“你关注的市场/资产”替换进信号清单里，定期（例如每月）写一句话：<b>钟摆大概在哪一侧？为什么？</b>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Side panel -->
+      <aside class="card">
+        <div class="hd">
+          <div class="title">
+            <h2>快速记忆卡</h2>
+            <p class="sub">把复杂内容压缩成可复述的要点</p>
+          </div>
+          <span class="pill"><b>3 个问题</b></span>
+        </div>
+        <div class="bd">
+          <div class="list">
+            <div class="item">
+              <div class="h"><b>1）现在更像哪一端？</b><span class="tag">情绪/风险偏好</span></div>
+              <p>乐观端：风险被低估；悲观端：风险被高估。</p>
+            </div>
+            <div class="item">
+              <div class="h"><b>2）极端程度有多大？</b><span class="tag">回摆力度</span></div>
+              <p>越极端越脆弱（乐观端）或越便宜（悲观端），回摆潜力更大。</p>
+            </div>
+            <div class="item">
+              <div class="h"><b>3）我该怎么做？</b><span class="tag">仓位/风控</span></div>
+              <p>不是“一把梭”，而是调风险预算：极乐更保守，极悲更积极但分批。</p>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="kv">
+            <div class="k">一句话复述（可复制）</div>
+            <div class="v mono" style="user-select:all;">
+              市场会在过度乐观与过度悲观之间摆动，极端越远回摆越强；投资关键是判断当下在钟摆哪一侧，并用仓位和风险控制应对，而不是预测下一次涨跌。
+            </div>
+          </div>
+
+          <div class="note">
+            如果你想把页面改成“公司内部培训版本”，我也可以帮你加：案例区、互动测验、导出PDF按钮、以及你自己的品牌样式。
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // --- Simple SPA navigation ---
+    const nav = document.getElementById('nav');
+    const sections = Array.from(document.querySelectorAll('.section'));
+    const titleEl = document.getElementById('sectionTitle');
+    const subEl = document.getElementById('sectionSub');
+    const badgeEl = document.getElementById('badgeText');
+
+    const meta = {
+      intro: { title: '核心概念', sub: '钟摆不是预测工具，而是“判断当下在周期的哪一侧”。', badge: '定位 > 预测' },
+      pendulum: { title: '交互钟摆', sub: '拖动情绪位置，感受“越极端越回摆”的直觉。', badge: '可视化情绪' },
+      signals: { title: '识别信号', sub: '用多信号交叉验证：当风险被低估/高估时，市场会留下痕迹。', badge: '多指标' },
+      actions: { title: '应对策略', sub: '用仓位与风控落地：极端时更偏纪律与安全边际。', badge: '仓位/风控' },
+      faq: { title: '常见误区', sub: '避免把钟摆当成择时水晶球，也别把逆向当成目的。', badge: '别用错' },
+    };
+
+    nav.addEventListener('click', (e) => {
+      const btn = e.target.closest('button[data-to]');
+      if(!btn) return;
+      const to = btn.dataset.to;
+
+      nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b === btn));
+      sections.forEach(s => s.classList.toggle('active', s.id === to));
+
+      titleEl.textContent = meta[to].title;
+      subEl.textContent = meta[to].sub;
+      badgeEl.textContent = meta[to].badge;
+
+      // smooth scroll to top of content area on mobile
+      if (window.innerWidth < 900) window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // --- Pendulum simulation / drawing ---
+    const cv = document.getElementById('cv');
+    const ctx = cv.getContext('2d');
+
+    const pos = document.getElementById('pos');
+    const posText = document.getElementById('posText');
+
+    const spring = document.getElementById('spring');
+    const springText = document.getElementById('springText');
+
+    const autoBtn = document.getElementById('autoBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const actionHint = document.getElementById('actionHint');
+    const riskHint = document.getElementById('riskHint');
+
+    let auto = false;
+
+    // State: x in [-1,1] (sentiment), v velocity
+    let x = 0;
+    let v = 0;
+
+    // map range [-100,100] to [-1,1]
+    function sliderToX(val){ return Math.max(-1, Math.min(1, val / 100)); }
+    function xToSlider(x){ return Math.round(x * 100); }
+
+    function updateHints(){
+      const s = xToSlider(x);
+      pos.value = String(s);
+      posText.textContent = String(s);
+
+      const abs = Math.abs(x);
+      const side = x < -0.12 ? '悲观端' : x > 0.12 ? '乐观端' : '中性区';
+
+      // Risk temperature (simple heuristic)
+      let temp;
+      if(abs < 0.20) temp = '风险处于常态：警惕过度自信/过度恐慌。';
+      else if(abs < 0.55) temp = '风险开始偏离：留意利差、条款与拥挤度变化。';
+      else temp = x > 0 ? '风险偏热：乐观端更脆弱，优先考虑降低风险敞口。'
+                        : '风险偏冷：悲观端更便宜，分批寻找安全边际更合适。';
+
+      riskHint.textContent = temp;
+
+      let act;
+      if(abs < 0.20) act = '中性区：保持纪律化配置，关注估值与基本面。';
+      else if(x > 0.55) act = '偏乐观且接近极端：降低杠杆、提高安全边际、谨慎追高。';
+      else if(x > 0.20) act = '偏乐观：适度收紧风险预算，避免“拥挤交易”。';
+      else if(x < -0.55) act = '偏悲观且接近极端：分批加仓优质资产，重视现金流与估值。';
+      else act = '偏悲观：逐步增配，预留流动性与更长持有期。';
+
+      actionHint.textContent = act;
+    }
+
+    function resizeCanvas(){
+      // keep internal pixels for sharpness
+      const rect = cv.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      cv.width = Math.floor(rect.width * dpr);
+      cv.height = Math.floor(360 * dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      draw();
+    });
+
+    function draw(){
+      const w = cv.getBoundingClientRect().width;
+      const h = 360;
+
+      // background
+      ctx.clearRect(0,0,w,h);
+
+      // glow-ish background panels (no color constants needed; using rgba)
+      ctx.fillStyle = 'rgba(255,255,255,0.03)';
+      ctx.fillRect(0,0,w,h);
+
+      const cx = w * 0.5;
+      const top = 60;
+      const len = Math.min(220, h*0.55);
+
+      // axis / scale
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(w*0.12, h-70);
+      ctx.lineTo(w*0.88, h-70);
+      ctx.stroke();
+
+      // labels
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.font = '12px ui-sans-serif, system-ui, -apple-system, Segoe UI';
+      ctx.fillText('悲观（风险被高估）', w*0.12, h-48);
+      ctx.fillText('乐观（风险被低估）', w*0.88-120, h-48);
+
+      // center mark
+      ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+      ctx.beginPath();
+      ctx.moveTo(cx, h-78);
+      ctx.lineTo(cx, h-62);
+      ctx.stroke();
+      ctx.fillText('中性', cx-12, h-48);
+
+      // pendulum angle: map x [-1,1] to [-55,55] degrees
+      const maxDeg = 55;
+      const angle = (x * maxDeg) * Math.PI/180;
+
+      // anchor point
+      const ax = cx;
+      const ay = top;
+
+      // bob position
+      const bx = ax + Math.sin(angle) * len;
+      const by = ay + Math.cos(angle) * len;
+
+      // string
+      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.lineTo(bx, by);
+      ctx.stroke();
+
+      // anchor dot
+      ctx.fillStyle = 'rgba(255,255,255,0.70)';
+      ctx.beginPath();
+      ctx.arc(ax, ay, 4, 0, Math.PI*2);
+      ctx.fill();
+
+      // bob
+      const radius = 22;
+      ctx.fillStyle = 'rgba(118,228,255,0.22)';
+      ctx.beginPath();
+      ctx.arc(bx, by, radius+10, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.88)';
+      ctx.beginPath();
+      ctx.arc(bx, by, radius, 0, Math.PI*2);
+      ctx.fill();
+
+      // sentiment text near bob
+      const s = xToSlider(x);
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.beginPath();
+      ctx.roundRect(bx - 54, by - 54, 108, 28, 8);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace';
+      ctx.fillText(`pos: ${String(s).padStart(4,' ')}`, bx - 44, by - 35);
+
+      // bottom "risk heat" bar
+      const barY = h - 30;
+      const barX = w*0.12;
+      const barW = w*0.76;
+      const barH = 10;
+
+      ctx.fillStyle = 'rgba(255,255,255,0.10)';
+      ctx.beginPath();
+      ctx.roundRect(barX, barY, barW, barH, 999);
+      ctx.fill();
+
+      // marker position
+      const t = (x + 1) / 2;
+      const mx = barX + t * barW;
+
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.beginPath();
+      ctx.arc(mx, barY + barH/2, 7, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.font = '12px ui-sans-serif, system-ui, -apple-system, Segoe UI';
+      ctx.fillText('钟摆位置（示意）', barX, barY - 6);
+    }
+
+    // polyfill-ish: roundRect on older browsers
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+      CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+        r = Math.min(r, w/2, h/2);
+        this.beginPath();
+        this.moveTo(x+r, y);
+        this.arcTo(x+w, y, x+w, y+h, r);
+        this.arcTo(x+w, y+h, x, y+h, r);
+        this.arcTo(x, y+h, x, y, r);
+        this.arcTo(x, y, x+w, y, r);
+        this.closePath();
+        return this;
+      };
+    }
+
+    // physics step: nonlinear spring toward 0 (center), stronger near extremes
+    function step(dt){
+      // k in [0.6, 2.2] roughly
+      const k = Number(spring.value) / 100;
+      const damping = 0.92; // base damping
+      const nonlinear = 1 + 1.6 * Math.pow(Math.abs(x), 1.8); // stronger when extreme
+
+      // acceleration toward center
+      const a = -k * nonlinear * x;
+
+      v += a * dt;
+      v *= Math.pow(damping, dt * 60);
+      x += v * dt;
+
+      // keep within [-1,1] softly
+      if (x > 1) { x = 1; v *= -0.55; }
+      if (x < -1){ x = -1; v *= -0.55; }
+
+      updateHints();
+      draw();
+    }
+
+    let last = null;
+    function loop(ts){
+      if(!auto) return;
+      if(last == null) last = ts;
+      const dt = Math.min(0.033, (ts - last) / 1000);
+      last = ts;
+
+      step(dt);
+      requestAnimationFrame(loop);
+    }
+
+    // events
+    pos.addEventListener('input', () => {
+      const val = Number(pos.value);
+      x = sliderToX(val);
+      v = 0; // manual set resets velocity
+      updateHints();
+      draw();
+    });
+
+    spring.addEventListener('input', () => {
+      springText.textContent = (Number(spring.value)/100).toFixed(2);
+    });
+
+    autoBtn.addEventListener('click', () => {
+      auto = !auto;
+      autoBtn.textContent = auto ? '停止自动摆动' : '开始自动摆动';
+      autoBtn.classList.toggle('primary', !auto); // visual flip
+      last = null;
+      if(auto) requestAnimationFrame(loop);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      auto = false;
+      autoBtn.textContent = '开始自动摆动';
+      autoBtn.classList.add('primary');
+      x = 0; v = 0;
+      pos.value = '0';
+      spring.value = '120';
+      springText.textContent = '1.20';
+      updateHints();
+      draw();
+    });
+
+    // init
+    resizeCanvas();
+    springText.textContent = (Number(spring.value)/100).toFixed(2);
+    updateHints();
+    draw();
+  </script>
+</body>
+</html>
