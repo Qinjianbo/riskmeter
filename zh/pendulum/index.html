@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>市场钟摆 · RiskMeter</title>
+  <meta name="description" content="用“市场钟摆”理解情绪极端与风险不对称：不预测涨跌，只帮助你在不同情绪区间调整行为。" />
+
+  <!-- hreflang -->
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/pendulum/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/pendulum/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/zh/pendulum/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);
+      --mut:rgba(255,255,255,.62);
+      --accent:#76e4ff;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--fg);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        radial-gradient(700px 500px at 55% 95%, rgba(255,207,90,.10), transparent 60%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:1080px;margin:0 auto;padding:42px 20px 80px}
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;
+      padding:38px 34px;
+      box-shadow: var(--shadow);
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--mut);
+      margin-bottom:10px;
+    }
+    h1{margin:0 0 10px;font-size:34px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:860px;font-size:17px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--fg);
+      font-size:15px;
+      display:inline-block;
+    }
+    .btn.primary{
+      background:rgba(118,228,255,.16);
+      border-color:rgba(118,228,255,.45);
+    }
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+    .section{margin-top:34px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:22px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{margin:0 0 6px;font-size:17px}
+    .card p{margin:0;color:var(--mut);font-size:14px}
+
+    .toolCard{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      margin-top:18px;
+    }
+    .toolHead{
+      padding:14px 16px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-bottom:1px solid var(--line);
+    }
+    .toolHead h2{margin:0;font-size:18px}
+    .toolHead .meta{margin:4px 0 0;color:var(--mut);font-size:13px;max-width:720px}
+    .toolBody{padding:16px}
+
+    .canvasBox{
+      border:1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(0,0,0,.14);
+      overflow:hidden;
+    }
+    canvas{width:100%; height:360px; display:block}
+
+    .controls{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top:14px;
+    }
+    @media (max-width: 520px){
+      .controls{grid-template-columns:1fr}
+    }
+    .ctrl{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding:12px;
+    }
+    .ctrl label{
+      display:flex; justify-content:space-between; align-items:center;
+      font-size:12px; color: var(--mut);
+    }
+    .ctrl input[type="range"]{width:100%; margin-top:10px}
+    .ctrl .hint{margin-top:8px; font-size:12px; color: var(--mut)}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px}
+    .miniBtn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--fg);
+      padding:9px 10px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 13px;
+    }
+    .miniBtn:hover{background: rgba(255,255,255,.11)}
+    .miniBtn.primary{
+      border-color: rgba(118,228,255,.45);
+      background: rgba(118,228,255,.12);
+    }
+
+    .kvs{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px}
+    .kv{
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.12);
+    }
+    .kv .k{color:var(--mut); font-size:12px}
+    .kv .v{font-size:13px; margin-top:6px; color: var(--fg)}
+    .note{
+      margin-top:16px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius: 16px;
+      color: var(--mut);
+      font-size:12.5px;
+      background: rgba(255,255,255,.03);
+      padding:12px 14px;
+    }
+    .divider{height:1px;background:var(--line);margin:38px 0 18px}
+    footer{margin-top:36px;font-size:12px;color:var(--mut)}
+    .mono{font-family: var(--mono)}
+    .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .langBar .tag{font-size:12px;color:var(--mut)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <section class="hero">
+      <span class="pill">市场情绪 · 风险工具</span>
+      <h1>市场钟摆</h1>
+      <p class="sub">
+        市场不会直线上涨或下跌，而是在 <strong>过度乐观</strong> 与 <strong>过度悲观</strong> 之间来回摆动。
+        这个工具不做“涨跌预测”，它帮助你理解：在不同情绪区间里，风险往往是
+        <strong>被低估</strong> 还是 <strong>被高估</strong>，从而更理性地调整自己的行为。
+      </p>
+
+      <div class="langBar">
+        <span class="tag">语言：</span>
+        <span class="pill"><b class="mono">中文</b></span>
+        <a class="pill" href="/en/pendulum/">EN</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="#tool">开始使用 →</a>
+        <a class="btn" href="/zh/">返回首页</a>
+        <a class="btn" href="/zh/about/">关于 / 免责声明</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="grid">
+        <div class="card">
+          <h3>风险往往来自心理</h3>
+          <p>风险不只等于波动，更与信心、杠杆、预期和叙事有关。</p>
+        </div>
+        <div class="card">
+          <h3>极端意味着脆弱或机会</h3>
+          <p>“人人都觉得安全”时，风险常被低估；恐慌蔓延时，机会更容易出现。</p>
+        </div>
+        <div class="card">
+          <h3>位置比择时更重要</h3>
+          <p>钟摆不是找顶/抄底，而是帮助你判断自己处在周期的哪一侧。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tool">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>交互钟摆</h2>
+            <p class="meta">
+              拖动滑块调整情绪位置，或开启自动摆动。用它来思考“风险不对称”，而不是行情方向。
+            </p>
+          </div>
+          <span class="pill"><b class="mono">风险 ≠ 预测</b></span>
+        </div>
+
+        <div class="toolBody">
+          <div class="canvasBox">
+            <canvas id="cv" width="960" height="420" aria-label="市场钟摆"></canvas>
+          </div>
+
+          <div class="controls">
+            <div class="ctrl">
+              <label>
+                <span>情绪（悲观 ← → 乐观）</span>
+                <span class="mono" id="posText">0</span>
+              </label>
+              <input id="pos" type="range" min="-100" max="100" value="0" />
+              <div class="hint">提示：不需要精确，粗略定位就足够有用。</div>
+              <div class="row">
+                <button class="miniBtn primary" id="autoBtn">自动摆动</button>
+                <button class="miniBtn" id="resetBtn">重置</button>
+              </div>
+            </div>
+
+            <div class="ctrl">
+              <label>
+                <span>回归力度（均值回归）</span>
+                <span class="mono" id="springText">1.20</span>
+              </label>
+              <input id="spring" type="range" min="60" max="220" value="120" />
+              <div class="hint">越高＝越容易从极端回摆；越低＝极端可能持续更久。</div>
+
+              <div class="kvs">
+                <div class="kv">
+                  <div class="k">建议行为（教育用途）</div>
+                  <div class="v" id="actionHint">中性区：遵循既定规则，重点关注估值与基本面。</div>
+                </div>
+                <div class="kv">
+                  <div class="k">风险温度</div>
+                  <div class="v" id="riskHint">正常风险：警惕过度自信或过度反应。</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note">
+            本页面仅用于学习与研究，不构成任何投资建议或对具体标的的推荐。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 style="font-size:22px;margin-bottom:12px;">如何使用</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>1）判断情绪</h3>
+          <p>观察叙事、杠杆、估值、资金“容易赚”的感觉，以及大众信心。</p>
+        </div>
+        <div class="card">
+          <h3>2）放置钟摆</h3>
+          <p>不需要精确。只要判断“偏哪边、偏得多极端”。</p>
+        </div>
+        <div class="card">
+          <h3>3）调整行为</h3>
+          <p>过度乐观→更谨慎；过度悲观→更耐心、分批、守纪律。</p>
+        </div>
+      </div>
+
+      <div class="note">
+        后续（计划）：保存钟摆历史、结合“回撤承受度”输出个人化风险提醒。
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter 为教育用途，不提供投资建议，不推荐任何具体证券或标的。
+    </footer>
+
+  </div>
+
+  <script>
+    const cv = document.getElementById('cv');
+    const ctx = cv.getContext('2d');
+
+    const pos = document.getElementById('pos');
+    const posText = document.getElementById('posText');
+
+    const spring = document.getElementById('spring');
+    const springText = document.getElementById('springText');
+
+    const autoBtn = document.getElementById('autoBtn');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const actionHint = document.getElementById('actionHint');
+    const riskHint = document.getElementById('riskHint');
+
+    let auto = false;
+    let x = 0; // [-1,1]
+    let v = 0;
+
+    function sliderToX(val){ return Math.max(-1, Math.min(1, val / 100)); }
+    function xToSlider(x){ return Math.round(x * 100); }
+
+    function isZh(){
+      return document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('zh');
+    }
+
+    function updateHints(){
+      const s = xToSlider(x);
+      pos.value = String(s);
+      posText.textContent = String(s);
+
+      const abs = Math.abs(x);
+
+      if(!isZh()){
+        let temp;
+        if(abs < 0.20) temp = 'Normal risk: beware overconfidence or overreaction.';
+        else if(abs < 0.55) temp = 'Risk drifting: watch spreads, leverage, and crowded positioning.';
+        else temp = x > 0 ? 'Risk hot: optimism can be fragile. Consider reducing risk exposure.'
+                          : 'Risk cold: pessimism may offer value. Consider gradual, disciplined accumulation.';
+        riskHint.textContent = temp;
+
+        let act;
+        if(abs < 0.20) act = 'Neutral zone: follow your rules and focus on valuation & fundamentals.';
+        else if(x > 0.55) act = 'Near optimistic extreme: reduce leverage, demand margin of safety, avoid chasing.';
+        else if(x > 0.20) act = 'Leaning optimistic: tighten risk budget and beware crowded trades.';
+        else if(x < -0.55) act = 'Near pessimistic extreme: scale in patiently, favor quality and cash flows.';
+        else act = 'Leaning pessimistic: add gradually, keep liquidity and a longer horizon.';
+        actionHint.textContent = act;
+        return;
+      }
+
+      // Chinese hints
+      let temp;
+      if(abs < 0.20) temp = '正常风险：警惕过度自信或过度反应。';
+      else if(abs < 0.55) temp = '风险上行：关注杠杆、信用利差、拥挤交易与叙事泡沫。';
+      else temp = x > 0 ? '风险偏热：乐观往往脆弱，考虑降低风险暴露/提高安全边际。'
+                        : '风险偏冷：悲观可能孕育价值，考虑分批、守纪律、保持流动性。';
+      riskHint.textContent = temp;
+
+      let act;
+      if(abs < 0.20) act = '中性区：遵循既定规则，重点关注估值与基本面。';
+      else if(x > 0.55) act = '接近乐观极端：降低杠杆、提高安全边际，避免追高与“讲故事”。';
+      else if(x > 0.20) act = '偏乐观：收紧风险预算，警惕拥挤交易与估值扩张。';
+      else if(x < -0.55) act = '接近悲观极端：耐心分批、偏好高质量与现金流，避免情绪化割肉。';
+      else act = '偏悲观：逐步增加仓位，同时保留余弹与更长视角。';
+      actionHint.textContent = act;
+    }
+
+    function resizeCanvas(){
+      const rect = cv.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      cv.width = Math.floor(rect.width * dpr);
+      cv.height = Math.floor(360 * dpr);
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+    if (!CanvasRenderingContext2D.prototype.roundRect) {
+      CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+        r = Math.min(r, w/2, h/2);
+        this.beginPath();
+        this.moveTo(x+r, y);
+        this.arcTo(x+w, y, x+w, y+h, r);
+        this.arcTo(x+w, y+h, x, y+h, r);
+        this.arcTo(x, y+h, x, y, r);
+        this.arcTo(x, y, x+w, y, r);
+        this.closePath();
+        return this;
+      };
+    }
+
+    function draw(){
+      const w = cv.getBoundingClientRect().width;
+      const h = 360;
+
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle = 'rgba(255,255,255,0.03)';
+      ctx.fillRect(0,0,w,h);
+
+      const cx = w * 0.5;
+      const top = 60;
+      const len = Math.min(220, h*0.55);
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.16)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(w*0.12, h-70);
+      ctx.lineTo(w*0.88, h-70);
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.font = '12px ui-sans-serif, system-ui, -apple-system, Segoe UI';
+
+      if(isZh()){
+        ctx.fillText('悲观（风险常被高估）', w*0.12, h-48);
+        ctx.fillText('乐观（风险常被低估）', w*0.88-168, h-48);
+      }else{
+        ctx.fillText('Pessimism (risk overpriced)', w*0.12, h-48);
+        ctx.fillText('Optimism (risk underpriced)', w*0.88-182, h-48);
+      }
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.22)';
+      ctx.beginPath();
+      ctx.moveTo(cx, h-78);
+      ctx.lineTo(cx, h-62);
+      ctx.stroke();
+      ctx.fillText(isZh() ? '中性' : 'Neutral', cx-18, h-48);
+
+      const maxDeg = 55;
+      const angle = (x * maxDeg) * Math.PI/180;
+
+      const ax = cx;
+      const ay = top;
+
+      const bx = ax + Math.sin(angle) * len;
+      const by = ay + Math.cos(angle) * len;
+
+      ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(ax, ay);
+      ctx.lineTo(bx, by);
+      ctx.stroke();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.70)';
+      ctx.beginPath();
+      ctx.arc(ax, ay, 4, 0, Math.PI*2);
+      ctx.fill();
+
+      const radius = 22;
+      ctx.fillStyle = 'rgba(118,228,255,0.22)';
+      ctx.beginPath();
+      ctx.arc(bx, by, radius+10, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.88)';
+      ctx.beginPath();
+      ctx.arc(bx, by, radius, 0, Math.PI*2);
+      ctx.fill();
+
+      const s = xToSlider(x);
+      ctx.fillStyle = 'rgba(0,0,0,0.55)';
+      ctx.beginPath();
+      ctx.roundRect(bx - 62, by - 54, 124, 28, 8);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.92)';
+      ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace';
+      ctx.fillText(`pos: ${String(s).padStart(4,' ')}`, bx - 50, by - 35);
+
+      const barY = h - 30;
+      const barX = w*0.12;
+      const barW = w*0.76;
+      const barH = 10;
+
+      ctx.fillStyle = 'rgba(255,255,255,0.10)';
+      ctx.beginPath();
+      ctx.roundRect(barX, barY, barW, barH, 999);
+      ctx.fill();
+
+      const t = (x + 1) / 2;
+      const mx = barX + t * barW;
+
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      ctx.beginPath();
+      ctx.arc(mx, barY + barH/2, 7, 0, Math.PI*2);
+      ctx.fill();
+
+      ctx.fillStyle = 'rgba(255,255,255,0.65)';
+      ctx.font = '12px ui-sans-serif, system-ui, -apple-system, Segoe UI';
+      ctx.fillText(isZh() ? '钟摆位置（示意）' : 'Pendulum position (illustrative)', barX, barY - 6);
+    }
+
+    function step(dt){
+      const k = Number(spring.value) / 100;
+      const damping = 0.92;
+      const nonlinear = 1 + 1.6 * Math.pow(Math.abs(x), 1.8);
+
+      const a = -k * nonlinear * x;
+
+      v += a * dt;
+      v *= Math.pow(damping, dt * 60);
+      x += v * dt;
+
+      if (x > 1) { x = 1; v *= -0.55; }
+      if (x < -1){ x = -1; v *= -0.55; }
+
+      updateHints();
+      draw();
+    }
+
+    let last = null;
+    function loop(ts){
+      if(!auto) return;
+      if(last == null) last = ts;
+      const dt = Math.min(0.033, (ts - last) / 1000);
+      last = ts;
+      step(dt);
+      requestAnimationFrame(loop);
+    }
+
+    pos.addEventListener('input', () => {
+      x = sliderToX(Number(pos.value));
+      v = 0;
+      updateHints();
+      draw();
+    });
+
+    spring.addEventListener('input', () => {
+      springText.textContent = (Number(spring.value)/100).toFixed(2);
+    });
+
+    autoBtn.addEventListener('click', () => {
+      auto = !auto;
+      autoBtn.textContent = auto ? (isZh() ? '停止摆动' : 'Stop auto swing')
+                                 : (isZh() ? '自动摆动' : 'Start auto swing');
+      autoBtn.classList.toggle('primary', !auto);
+      last = null;
+      if(auto) requestAnimationFrame(loop);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      auto = false;
+      autoBtn.textContent = isZh() ? '自动摆动' : 'Start auto swing';
+      autoBtn.classList.add('primary');
+      x = 0; v = 0;
+      pos.value = '0';
+      spring.value = '120';
+      springText.textContent = '1.20';
+      updateHints();
+      draw();
+    });
+
+    function init(){
+      resizeCanvas();
+      springText.textContent = (Number(spring.value)/100).toFixed(2);
+      updateHints();
+      draw();
+    }
+    init();
+  </script>
+</body>
+</html>
+
