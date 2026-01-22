@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About · RiskMeter</title>
+
+  <!-- 不参与 SEO，防止重复内容 -->
+  <meta name="robots" content="noindex, nofollow" />
+
+  <style>
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      background:#0b1020;
+      color:rgba(255,255,255,.85);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      text-align:center;
+    }
+    .box{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      border-radius:16px;
+      padding:28px 26px;
+      max-width:420px;
+    }
+    h1{margin:0 0 8px;font-size:22px}
+    p{margin:0;color:rgba(255,255,255,.6);font-size:14px}
+    .links{margin-top:16px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    a{
+      padding:10px 14px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.08);
+      color:rgba(255,255,255,.9);
+      text-decoration:none;
+      font-size:14px;
+    }
+    a:hover{background:rgba(255,255,255,.14)}
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <h1>About RiskMeter</h1>
+    <p>Redirecting to your language…</p>
+
+    <div class="links">
+      <a href="/en/about/" id="goEn">English</a>
+      <a href="/zh/about/" id="goZh">中文</a>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      // 1. 优先尊重用户已选语言
+      const saved = localStorage.getItem('rm_lang');
+      if(saved === 'en') { location.replace('/en/about/'); return; }
+      if(saved === 'zh') { location.replace('/zh/about/'); return; }
+
+      // 2. 自动语言判断
+      const lang = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+      const target = lang.startsWith('zh') ? '/zh/about/' : '/en/about/';
+
+      // 3. 轻量延迟，防止某些浏览器拦截
+      setTimeout(() => {
+        location.replace(target);
+      }, 200);
+    })();
+
+    // 手动点击也会记住选择
+    document.getElementById('goEn').onclick = () => localStorage.setItem('rm_lang','en');
+    document.getElementById('goZh').onclick = () => localStorage.setItem('rm_lang','zh');
+  </script>
+</body>
+</html>
+
