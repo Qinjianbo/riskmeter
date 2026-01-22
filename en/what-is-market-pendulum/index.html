@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>What Is the Market Pendulum? · RiskMeter</title>
+  <meta name="description" content="Learn how the Market Pendulum explains sentiment extremes, risk asymmetry, and why staying rational matters more than prediction." />
+
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/what-is-market-pendulum/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/market-pendulum-theory/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/what-is-market-pendulum/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.10);
+      --line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);
+      --mut:rgba(255,255,255,.62);
+      --accent:#76e4ff;
+      --accent2:#b5ff7d;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --radius:18px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--fg);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        radial-gradient(700px 500px at 55% 95%, rgba(255,207,90,.10), transparent 60%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:980px;margin:0 auto;padding:42px 20px 80px}
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;
+      padding:34px 32px;
+      box-shadow: var(--shadow);
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--mut);
+      margin-bottom:10px;
+    }
+    h1{margin:0 0 8px;font-size:34px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:860px;font-size:17px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--fg);
+      font-size:15px;
+      display:inline-block;
+    }
+    .btn.primary{
+      background:rgba(118,228,255,.16);
+      border-color:rgba(118,228,255,.45);
+    }
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+    .section{margin-top:32px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:20px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{margin:0 0 8px;font-size:16px}
+    .card p{margin:0;color:var(--mut);font-size:14px}
+
+    .callout{
+      border:1px solid rgba(118,228,255,.3);
+      background:rgba(118,228,255,.08);
+      border-radius:16px;
+      padding:14px 16px;
+      margin-top:16px;
+      color:var(--fg);
+    }
+    .callout strong{color:var(--accent2)}
+
+    .divider{height:1px;background:var(--line);margin:34px 0 18px}
+    footer{margin-top:36px;font-size:12px;color:var(--mut)}
+    .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .langBar .tag{font-size:12px;color:var(--mut)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">Core Concept · Market Behavior</span>
+      <h1>What Is the Market Pendulum?</h1>
+      <p class="sub">
+        The Market Pendulum is a simple mental model: markets swing between
+        <strong>excessive optimism</strong> and <strong>excessive pessimism</strong>.
+        Risk is usually highest when confidence feels effortless — and lowest when
+        fear feels overwhelming.
+      </p>
+
+      <div class="langBar">
+        <span class="tag">Language:</span>
+        <span class="pill">EN</span>
+        <a class="pill" href="/zh/market-pendulum-theory/" id="toZh">中文</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="/en/pendulum/">Open the Market Pendulum Tool →</a>
+        <a class="btn" href="/en/drawdown-risk/">Next: Drawdown Risk</a>
+      </div>
+    </section>
+
+    <section class="section grid">
+      <div class="card">
+        <h3>1. Sentiment moves in cycles</h3>
+        <p>Investor psychology swings from euphoria to despair. Prices often follow these swings, but risk is about how fragile expectations become.</p>
+      </div>
+      <div class="card">
+        <h3>2. Risk rises quietly</h3>
+        <p>When headlines sound safe and everyone agrees, the room for upside shrinks while downside grows.</p>
+      </div>
+      <div class="card">
+        <h3>3. Opportunity hides in discomfort</h3>
+        <p>When fear dominates, expectations are low. The pendulum is closest to the pessimism extreme — risk may actually be falling.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card">
+        <h3>Why this matters for risk</h3>
+        <p>
+          The pendulum reminds us that <strong>risk is not the same as volatility</strong>.
+          Risk is about the mismatch between expectations and reality.
+          When expectations are stretched, small disappointments can trigger big drawdowns.
+        </p>
+        <div class="callout">
+          <strong>Key idea:</strong> The more one-sided the narrative, the more asymmetric the risk.
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid">
+      <div class="card">
+        <h3>Signals of excess optimism</h3>
+        <p>“This time is different,” leverage increases, and any dip is considered a gift.</p>
+      </div>
+      <div class="card">
+        <h3>Signals of excess pessimism</h3>
+        <p>“Nothing will ever recover,” selling feels urgent, and good news is ignored.</p>
+      </div>
+      <div class="card">
+        <h3>What to do about it</h3>
+        <p>Slow down, size smaller, and focus on survival. Do not confuse crowd confidence with safety.</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter is for education only and does not provide investment advice.
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
+  </script>
+</body>
+</html>

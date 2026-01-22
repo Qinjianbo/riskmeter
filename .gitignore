@@ -1,0 +1,22 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.idea/
+.vscode/
+
+# Logs
+*.log
+
+# Node artifacts
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+/dist/
+/build/
+
+# Cache
+.cache/

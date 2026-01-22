@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>回撤承受度测试 · RiskMeter</title>
+  <meta name="description" content="通过简单测试估算你能承受的最大回撤，并直观看到真实金额与恢复难度。" />
+
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/drawdown-test/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/drawdown-test/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/zh/drawdown-test/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.10);
+      --line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);
+      --mut:rgba(255,255,255,.62);
+      --accent:#76e4ff;
+      --accent2:#b5ff7d;
+      --warn:#ffd27d;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--fg);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        radial-gradient(700px 500px at 55% 95%, rgba(255,207,90,.10), transparent 60%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:1040px;margin:0 auto;padding:42px 20px 80px}
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;
+      padding:34px 32px;
+      box-shadow: var(--shadow);
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--mut);
+      margin-bottom:10px;
+    }
+    h1{margin:0 0 8px;font-size:34px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:860px;font-size:17px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--fg);
+      font-size:15px;
+      display:inline-block;
+    }
+    .btn.primary{
+      background:rgba(118,228,255,.16);
+      border-color:rgba(118,228,255,.45);
+    }
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+    .section{margin-top:30px}
+    .toolCard{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .toolHead{
+      padding:16px 18px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-bottom:1px solid var(--line);
+    }
+    .toolHead h2{margin:0;font-size:18px}
+    .toolHead .meta{margin:4px 0 0;color:var(--mut);font-size:13px;max-width:700px}
+    .toolBody{padding:18px}
+
+    .controls{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:14px;
+    }
+    @media (max-width: 720px){
+      .controls{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+
+    .ctrl{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding:14px;
+    }
+    .ctrl label{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:12px;
+      color: var(--mut);
+    }
+    .ctrl input[type="range"]{width:100%; margin-top:12px}
+    .ctrl input[type="number"]{
+      width:100%;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.2);
+      color:var(--fg);
+      font-size:14px;
+    }
+    .hint{margin-top:8px; font-size:12px; color: var(--mut)}
+
+    .summary{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+    @media (max-width: 820px){
+      .summary{grid-template-columns:1fr}
+    }
+
+    .kv{
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.12);
+    }
+    .kv .k{color:var(--mut); font-size:12px}
+    .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
+
+    .insight{
+      margin-top:16px;
+      border:1px solid rgba(181,255,125,.35);
+      background:rgba(181,255,125,.08);
+      border-radius: 16px;
+      padding:14px 16px;
+      font-size:14px;
+    }
+    .insight strong{color:var(--accent2)}
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+      margin-top:16px;
+    }
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:20px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{margin:0 0 8px;font-size:16px}
+    .card p{margin:0;color:var(--mut);font-size:14px}
+
+    .divider{height:1px;background:var(--line);margin:34px 0 18px}
+    footer{margin-top:36px;font-size:12px;color:var(--mut)}
+    .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .langBar .tag{font-size:12px;color:var(--mut)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">关键工具 · 回撤承受度</span>
+      <h1>回撤承受度测试</h1>
+      <p class="sub">
+        这个小测试帮助你估算：当亏损发生时，你还能否保持原计划。
+        关注的不是预测，而是“能否撑过去”。
+      </p>
+
+      <div class="langBar">
+        <span class="tag">语言：</span>
+        <span class="pill">中文</span>
+        <a class="pill" href="/en/drawdown-test/" id="toEn">EN</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="/zh/drawdown-explained/">阅读：回撤风险</a>
+        <a class="btn" href="/zh/pendulum/">市场钟摆工具</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>估算你的承受度</h2>
+            <p class="meta">拖动滑杆选择你觉得“会睡不着”的最大回撤。输入资产规模可查看真实金额影响。</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="controls">
+            <div class="ctrl">
+              <label for="ddRange">可承受最大回撤 <span id="ddValue">20%</span></label>
+              <input type="range" min="5" max="60" step="1" value="20" id="ddRange" />
+              <div class="hint">多数投资者低估了超过 25–30% 时的心理压力。</div>
+            </div>
+            <div class="ctrl">
+              <label for="portfolio">资产规模（可选）</label>
+              <input type="number" id="portfolio" value="100000" min="0" step="1000" />
+              <div class="hint">可填写当前资产或计划投入的金额。</div>
+            </div>
+          </div>
+
+          <div class="summary">
+            <div class="kv">
+              <div class="k">对应亏损金额</div>
+              <div class="v" id="lossValue">-¥20,000</div>
+            </div>
+            <div class="kv">
+              <div class="k">回本所需涨幅</div>
+              <div class="v" id="recoveryValue">+25.0%</div>
+            </div>
+            <div class="kv">
+              <div class="k">承受度区间</div>
+              <div class="v" id="bandValue">中等</div>
+            </div>
+          </div>
+
+          <div class="insight" id="insightBox">
+            <strong>中等承受度：</strong>通常能扛住常见回撤，但大幅下跌仍需强纪律。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid">
+      <div class="card">
+        <h3>低承受度（≤15%）</h3>
+        <p>更关注稳定性，建议控制波动、预留现金缓冲。</p>
+      </div>
+      <div class="card">
+        <h3>中等承受度（15–30%）</h3>
+        <p>股市常见区间，需提前规划以避免情绪出局。</p>
+      </div>
+      <div class="card">
+        <h3>高承受度（30%+）</h3>
+        <p>能承受较大波动，但前提是时间跨度与流动性充足。</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter 为教育用途，不提供投资建议，不推荐任何具体证券或标的。
+    </footer>
+  </div>
+
+  <script>
+    const ddRange = document.getElementById('ddRange');
+    const ddValue = document.getElementById('ddValue');
+    const portfolioInput = document.getElementById('portfolio');
+    const lossValue = document.getElementById('lossValue');
+    const recoveryValue = document.getElementById('recoveryValue');
+    const bandValue = document.getElementById('bandValue');
+    const insightBox = document.getElementById('insightBox');
+
+    const bands = [
+      {
+        max: 10,
+        label: '很低',
+        text: '承受度很低：超过这个幅度往往会快速出局，建议偏稳健配置。'
+      },
+      {
+        max: 15,
+        label: '低',
+        text: '承受度偏低：稳定性最重要，先建立缓冲再提高风险敞口。'
+      },
+      {
+        max: 25,
+        label: '中等',
+        text: '承受度中等：可扛住常见回撤，但更深的下跌需要纪律。'
+      },
+      {
+        max: 35,
+        label: '高',
+        text: '承受度较高：能够承受大幅波动，但恢复时间可能很长。'
+      },
+      {
+        max: 60,
+        label: '很高',
+        text: '承受度很高：适合长期视角与强信念，但仍要重视回撤后的恢复。'
+      }
+    ];
+
+    const formatCurrency = (value) => {
+      const formatter = new Intl.NumberFormat('zh-CN', {
+        style: 'currency',
+        currency: 'CNY',
+        maximumFractionDigits: 0
+      });
+      return formatter.format(value);
+    };
+
+    const update = () => {
+      const drawdown = Number(ddRange.value);
+      const portfolio = Number(portfolioInput.value) || 0;
+      ddValue.textContent = `${drawdown}%`;
+
+      const loss = portfolio * (drawdown / 100);
+      lossValue.textContent = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+
+      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
+      recoveryValue.textContent = `${recovery.toFixed(1)}%`;
+
+      const band = bands.find((item) => drawdown <= item.max) || bands[bands.length - 1];
+      bandValue.textContent = band.label;
+      insightBox.innerHTML = `<strong>${band.label}承受度：</strong>${band.text}`;
+    };
+
+    ddRange.addEventListener('input', update);
+    portfolioInput.addEventListener('input', update);
+    update();
+
+    document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
+  </script>
+</body>
+</html>

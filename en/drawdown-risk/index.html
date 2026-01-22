@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Drawdown Risk Explained · RiskMeter</title>
+  <meta name="description" content="Understand drawdown risk, why it matters more than upside, and how to think about recovery time and psychological pressure." />
+
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/drawdown-risk/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/drawdown-explained/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/drawdown-risk/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.10);
+      --line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);
+      --mut:rgba(255,255,255,.62);
+      --accent:#76e4ff;
+      --accent2:#b5ff7d;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--fg);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        radial-gradient(700px 500px at 55% 95%, rgba(255,207,90,.10), transparent 60%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:980px;margin:0 auto;padding:42px 20px 80px}
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;
+      padding:34px 32px;
+      box-shadow: var(--shadow);
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--mut);
+      margin-bottom:10px;
+    }
+    h1{margin:0 0 8px;font-size:34px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:860px;font-size:17px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--fg);
+      font-size:15px;
+      display:inline-block;
+    }
+    .btn.primary{
+      background:rgba(118,228,255,.16);
+      border-color:rgba(118,228,255,.45);
+    }
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+    .section{margin-top:32px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:20px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{margin:0 0 8px;font-size:16px}
+    .card p{margin:0;color:var(--mut);font-size:14px}
+
+    .callout{
+      border:1px solid rgba(118,228,255,.3);
+      background:rgba(118,228,255,.08);
+      border-radius:16px;
+      padding:14px 16px;
+      margin-top:16px;
+      color:var(--fg);
+    }
+    .callout strong{color:var(--accent2)}
+
+    .divider{height:1px;background:var(--line);margin:34px 0 18px}
+    footer{margin-top:36px;font-size:12px;color:var(--mut)}
+    .mono{font-family: var(--mono)}
+    .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .langBar .tag{font-size:12px;color:var(--mut)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">Core Concept · Risk Asymmetry</span>
+      <h1>Drawdown Risk Explained</h1>
+      <p class="sub">
+        Drawdown is the percentage drop from a peak to a trough. It hurts not only
+        financially, but psychologically — and the deeper the drawdown, the harder the recovery.
+      </p>
+
+      <div class="langBar">
+        <span class="tag">Language:</span>
+        <span class="pill">EN</span>
+        <a class="pill" href="/zh/drawdown-explained/" id="toZh">中文</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="/en/drawdown-test/">Take the Drawdown Tolerance Test →</a>
+        <a class="btn" href="/en/what-is-market-pendulum/">Back to Market Pendulum</a>
+      </div>
+    </section>
+
+    <section class="section grid">
+      <div class="card">
+        <h3>1. Drawdown compounds fast</h3>
+        <p>Losses are nonlinear: a 50% drop needs a 100% gain to break even.</p>
+      </div>
+      <div class="card">
+        <h3>2. Recovery time matters</h3>
+        <p>Large drawdowns lock capital and attention, forcing bad decisions under stress.</p>
+      </div>
+      <div class="card">
+        <h3>3. Psychology is the real cost</h3>
+        <p>Deep losses create regret and panic selling, often near the worst point.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card">
+        <h3>How to think about drawdown</h3>
+        <p>
+          The key is to size and diversify so that your worst-case drawdown is
+          <strong>something you can survive emotionally</strong>. If the loss forces you
+          to abandon your plan, the risk was too high — regardless of the long-term return.
+        </p>
+        <div class="callout">
+          <strong>Rule of thumb:</strong> Avoid drawdowns that require heroic recovery.
+          The goal is stability first, growth second.
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid">
+      <div class="card">
+        <h3>Small drawdown (≤10%)</h3>
+        <p>Usually recoverable quickly, but frequent drops can still erode confidence.</p>
+      </div>
+      <div class="card">
+        <h3>Medium drawdown (10–30%)</h3>
+        <p>Common in equity markets. Requires patience and a plan to avoid emotional exits.</p>
+      </div>
+      <div class="card">
+        <h3>Large drawdown (30%+)</h3>
+        <p>Recovery may take years. The majority of investors quit before it ends.</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter is for education only and does not provide investment advice.
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
+  </script>
+</body>
+</html>
