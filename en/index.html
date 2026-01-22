@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RiskMeter — Measure Risk. Stay Rational.</title>
+  <meta name="description" content="RiskMeter helps investors understand risk, control drawdowns, and make rational decisions using practical tools — not predictions." />
+
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;--panel:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);--mut:rgba(255,255,255,.62);--accent:#76e4ff;--shadow:0 12px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);
+      background:radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+                 radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+                 var(--bg);line-height:1.7}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1080px;margin:0 auto;padding:44px 20px 80px}
+    .hero{border:1px solid var(--line);background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;padding:38px 34px;box-shadow:var(--shadow)}
+    h1{margin:0 0 10px;font-size:38px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:760px;font-size:18px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+    .btn{padding:12px 18px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--fg);font-size:15px}
+    .btn.primary{background:rgba(118,228,255,.16);border-color:rgba(118,228,255,.45)}
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+    .lang{margin-top:12px;color:var(--mut);font-size:12px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}h1{font-size:32px}}
+    .card{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px;font-size:17px}
+    .card p{margin:0;color:var(--mut);font-size:14px}
+    .divider{height:1px;background:var(--line);margin:44px 0 18px}
+    footer{color:var(--mut);font-size:12px;margin-top:34px}
+    .pill{display:inline-block;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:12px;color:var(--mut)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">Tools for rational investors</span>
+      <h1>Measure Risk.<br/>Stay Rational.</h1>
+      <p class="sub">
+        RiskMeter is a practical toolkit for investors who care more about
+        <strong>avoiding big mistakes</strong> than predicting the next move.
+        No stock tips. No forecasts. Just tools to understand risk.
+      </p>
+
+      <div class="lang">
+        Language: <span class="pill">EN</span> <a class="pill" href="/zh/" id="toZh">中文</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="/en/pendulum/" id="startBtn">Start with Market Pendulum →</a>
+        <a class="btn" href="/en/about/">About / Disclaimer</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h3>Risk before return</h3>
+        <p>Focus on drawdowns, uncertainty, and fragility — not just upside stories.</p>
+      </div>
+      <div class="card">
+        <h3>Tools over opinions</h3>
+        <p>Instead of telling you what to buy, we help you see when risk is rising.</p>
+      </div>
+      <div class="card">
+        <h3>Behavior beats prediction</h3>
+        <p>Discipline, sizing, and process matter more than timing.</p>
+      </div>
+    </section>
+
+    <section class="grid" style="margin-top:18px">
+      <div class="card">
+        <h3>Market Pendulum</h3>
+        <p>Understand sentiment extremes and risk asymmetry. <a href="/en/pendulum/">Open →</a></p>
+      </div>
+      <div class="card">
+        <h3>Drawdown Tolerance Test</h3>
+        <p>Discover how much loss you can truly tolerate. (Coming soon)</p>
+      </div>
+      <div class="card">
+        <h3>Rebalancing Planner</h3>
+        <p>Plan rebalancing based on risk, not headlines. (Coming soon)</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter is an educational platform and does not provide investment advice or recommend any specific securities.
+    </footer>
+  </div>
+
+  <script>
+    // Remember language choice
+    document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
+  </script>
+</body>
+</html>
+

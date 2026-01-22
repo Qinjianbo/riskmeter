@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RiskMeter — 衡量风险，保持理性</title>
+  <meta name="description" content="RiskMeter 是一个面向投资者的风险工具箱：理解情绪、控制回撤、减少情绪化决策。不荐股，不预测。" />
+
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;--panel:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);--mut:rgba(255,255,255,.62);--accent:#76e4ff;--shadow:0 12px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);
+      background:radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+                 radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+                 var(--bg);line-height:1.7}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1080px;margin:0 auto;padding:44px 20px 80px}
+    .hero{border:1px solid var(--line);background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;padding:38px 34px;box-shadow:var(--shadow)}
+    h1{margin:0 0 10px;font-size:38px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:780px;font-size:18px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
+    .btn{padding:12px 18px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--fg);font-size:15px}
+    .btn.primary{background:rgba(118,228,255,.16);border-color:rgba(118,228,255,.45)}
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+    .lang{margin-top:12px;color:var(--mut);font-size:12px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr}h1{font-size:32px}}
+    .card{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px;font-size:17px}
+    .card p{margin:0;color:var(--mut);font-size:14px}
+    .divider{height:1px;background:var(--line);margin:44px 0 18px}
+    footer{color:var(--mut);font-size:12px;margin-top:34px}
+    .pill{display:inline-block;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:12px;color:var(--mut)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">面向理性投资者的工具箱</span>
+      <h1>衡量风险，<br/>保持理性。</h1>
+      <p class="sub">
+        RiskMeter 是一个“内容 + 工具”的风险认知平台：帮助你理解市场情绪与风险不对称，
+        更重视<strong>避免大错</strong>而不是预测涨跌。
+        <br/>不荐股，不预测，只做工具与方法。
+      </p>
+
+      <div class="lang">
+        语言：<span class="pill">中文</span> <a class="pill" href="/en/" id="toEn">EN</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="/zh/pendulum/" id="startBtn">从「市场钟摆」开始 →</a>
+        <a class="btn" href="/zh/about/">关于 / 免责声明</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card">
+        <h3>先谈风险，再谈收益</h3>
+        <p>关注回撤、脆弱性与不确定性，而不是只盯上涨故事。</p>
+      </div>
+      <div class="card">
+        <h3>用工具替代观点</h3>
+        <p>我们不告诉你买什么，而是帮助你识别风险上升的时刻。</p>
+      </div>
+      <div class="card">
+        <h3>行为胜过预测</h3>
+        <p>纪律、仓位与流程，往往比择时更重要。</p>
+      </div>
+    </section>
+
+    <section class="grid" style="margin-top:18px">
+      <div class="card">
+        <h3>市场钟摆</h3>
+        <p>理解情绪极端与风险不对称。<a href="/zh/pendulum/">打开 →</a></p>
+      </div>
+      <div class="card">
+        <h3>回撤承受度测试</h3>
+        <p>测一测你真实能承受多大亏损。（即将上线）</p>
+      </div>
+      <div class="card">
+        <h3>再平衡规划器</h3>
+        <p>基于风险做再平衡，而不是基于新闻。（即将上线）</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter 为教育用途，不提供投资建议，不推荐任何具体证券或标的。
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
+  </script>
+</body>
+</html>
+
