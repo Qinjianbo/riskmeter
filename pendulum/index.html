@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Market Pendulum · RiskMeter</title>
+  <meta name="description" content="Market Pendulum helps you understand market sentiment and risk extremes using Howard Marks' pendulum concept — without predicting market direction." />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);
+      --mut:rgba(255,255,255,.62);
+      --accent:#76e4ff;
+      --warn:#ffcf5a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--fg);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:var(--accent);text-decoration:none}
+    .wrap{max-width:1080px;margin:0 auto;padding:42px 20px 80px}
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;
+      padding:38px 34px;
+    }
+    h1{margin:0 0 10px;font-size:34px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:760px;font-size:17px}
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--mut);
+      margin-bottom:10px;
+    }
+    .cta{
+      display:flex;gap:14px;flex-wrap:wrap;margin-top:22px
+    }
+    .btn{
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--fg);
+      font-size:15px;
+    }
+    .btn.primary{
+      background:rgba(118,228,255,.16);
+      border-color:rgba(118,228,255,.45);
+    }
+    .section{margin-top:46px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:22px;
+    }
+    .card h3{margin:0 0 6px;font-size:17px}
+    .card p{margin:0;color:var(--mut);font-size:14px}
+    .divider{height:1px;background:var(--line);margin:48px 0 28px}
+    .note{
+      border:1px dashed var(--line);
+      border-radius:16px;
+      padding:16px;
+      color:var(--mut);
+      font-size:13px;
+      background:rgba(255,255,255,.04);
+    }
+    footer{
+      margin-top:48px;
+      font-size:12px;
+      color:var(--mut);
+    }
+    iframe{
+      width:100%;
+      height:420px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#000;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- HERO -->
+    <section class="hero">
+      <span class="pill">Market Sentiment · Risk Tool</span>
+      <h1>Market Pendulum</h1>
+      <p class="sub">
+        Markets don’t move in straight lines.
+        They swing between <strong>excessive optimism</strong> and
+        <strong>excessive pessimism</strong>.
+        <br/>
+        The Market Pendulum helps you understand
+        <strong>where risk is being underestimated or overestimated</strong> —
+        without predicting prices.
+      </p>
+
+      <div class="cta">
+        <a class="btn primary" href="#tool">Use the Pendulum →</a>
+        <a class="btn" href="/">Back to RiskMeter</a>
+      </div>
+    </section>
+
+    <!-- WHY -->
+    <section class="section">
+      <div class="grid">
+        <div class="card">
+          <h3>Risk is psychological</h3>
+          <p>
+            Risk is not just volatility.
+            It changes with investor behavior, confidence,
+            leverage, and expectations.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Extremes create fragility</h3>
+          <p>
+            When everyone feels safe,
+            risk is usually underpriced.
+            When fear dominates,
+            opportunity quietly grows.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Position matters more than timing</h3>
+          <p>
+            The pendulum is not about calling tops or bottoms —
+            it’s about knowing which side you’re on.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOL -->
+    <section class="section" id="tool">
+      <h2 style="font-size:22px;margin-bottom:12px;">Interactive Pendulum</h2>
+      <p class="sub" style="margin-bottom:14px;">
+        Adjust the pendulum to reflect current market sentiment
+        and observe how extreme positions imply higher fragility
+        or deeper opportunity.
+      </p>
+
+      <!-- 你原来的钟摆页面，可以直接嵌 iframe，
+           或者把钟摆 JS 代码直接粘到这里 -->
+      <iframe src="./tool.html" title="Market Pendulum Tool"></iframe>
+
+      <div class="note" style="margin-top:16px;">
+        This visualization is for educational purposes only.
+        It does not predict market direction or returns.
+      </div>
+    </section>
+
+    <!-- HOW TO USE -->
+    <section class="section">
+      <h2 style="font-size:22px;margin-bottom:12px;">How to use it</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>1. Assess sentiment</h3>
+          <p>
+            Think about narratives, leverage, valuations,
+            and how confident investors feel.
+          </p>
+        </div>
+        <div class="card">
+          <h3>2. Place the pendulum</h3>
+          <p>
+            You don’t need precision.
+            Rough positioning is enough
+            to reveal risk asymmetry.
+          </p>
+        </div>
+        <div class="card">
+          <h3>3. Adjust behavior</h3>
+          <p>
+            Extreme optimism suggests caution.
+            Extreme pessimism suggests patience and preparation.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FUTURE -->
+    <section class="section">
+      <div class="card">
+        <h3>What’s next</h3>
+        <p>
+          In future versions, RiskMeter will allow you to:
+          <br/>• Save your pendulum history
+          <br/>• Combine it with your personal drawdown tolerance
+          <br/>• Receive risk alerts when markets become fragile
+        </p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <footer>
+      RiskMeter is an educational platform and does not provide investment advice
+      or recommend any specific securities.
+    </footer>
+
+  </div>
+</body>
+</html>
+
