@@ -108,6 +108,22 @@ These helpers orchestrate task generation, execution, and publishing via Codex C
 
 Note: `--full-auto` uses Codex bypass mode; use with caution.
 
+### Auto-Execution Modes
+
+You can run task execution in two ways:
+
+1) **Two-step (manual control)**
+   ```bash
+   scripts/auto-iterate.sh --codex
+   scripts/auto-exec.sh
+   ```
+
+2) **One-shot (orchestrated)**
+   ```bash
+   scripts/auto-run.sh
+   ```
+   Add `--dry-run` or `--full-auto` if needed.
+
 ---
 
 ## Contact / Feedback
