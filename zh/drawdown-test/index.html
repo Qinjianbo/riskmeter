@@ -152,6 +152,15 @@
     }
     .kv .k{color:var(--mut); font-size:12px}
     .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
+    .note{
+      margin-top:12px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:14px;
+      color:var(--mut);
+      font-size:12.5px;
+      background: rgba(255,255,255,.03);
+      padding:10px 12px;
+    }
     .tooltip{
       display:inline-flex;
       align-items:center;
@@ -451,6 +460,61 @@
       </div>
     </section>
 
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>还能承受多少下跌（从现在）</h2>
+            <p class="meta">估算在不超过最大回撤的前提下，这只仓位还可能下跌多少。</p>
+          </div>
+          <a class="btn" href="/zh/drawdown-capacity/">打开完整计算器 →</a>
+        </div>
+        <div class="toolBody">
+          <div class="controls">
+            <div class="ctrl">
+              <label for="capTotal">总资产当前市值</label>
+              <input type="number" id="capTotal" value="100000" min="0" step="1000" />
+              <div class="hint">你当前账户的总市值。</div>
+            </div>
+            <div class="ctrl">
+              <label for="capPosition">该仓位当前市值</label>
+              <input type="number" id="capPosition" value="30000" min="0" step="1000" />
+              <div class="hint">该标的当前市值。</div>
+            </div>
+            <div class="ctrl">
+              <label for="capMaxDd">可接受的最大账户回撤（%）</label>
+              <input type="number" id="capMaxDd" value="20" min="0" max="90" step="0.5" />
+              <div class="hint">你的总体回撤上限（从峰值到谷值）。</div>
+            </div>
+            <div class="ctrl">
+              <label for="capCurrentDd">当前账户回撤（%）</label>
+              <input type="number" id="capCurrentDd" value="0" min="0" max="90" step="0.5" />
+              <div class="hint">你当前距离峰值还差多少。</div>
+            </div>
+          </div>
+
+          <div class="summary">
+            <div class="kv">
+              <div class="k">剩余可承受账户回撤</div>
+              <div class="v" id="capRemaining">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">该仓位占比</div>
+              <div class="v" id="capWeight">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">该仓位还能下跌</div>
+              <div class="v" id="capPosDrop">—</div>
+            </div>
+          </div>
+
+          <div class="note">
+            假设其他资产不变。此计算仅用于仓位与风险理解，不构成任何建议。
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section grid">
       <div class="card">
         <h3>很低承受度（≤10%）</h3>
@@ -495,6 +559,13 @@
     const copySummaryBtn = document.getElementById('copySummary');
     const scenariosList = document.getElementById('scenariosList');
     const clearScenariosBtn = document.getElementById('clearScenarios');
+    const capTotal = document.getElementById('capTotal');
+    const capPosition = document.getElementById('capPosition');
+    const capMaxDd = document.getElementById('capMaxDd');
+    const capCurrentDd = document.getElementById('capCurrentDd');
+    const capRemaining = document.getElementById('capRemaining');
+    const capWeight = document.getElementById('capWeight');
+    const capPosDrop = document.getElementById('capPosDrop');
 
     const bands = [
       {
@@ -571,6 +642,34 @@
         maximumFractionDigits: 0
       });
       return formatter.format(value);
+    };
+
+    const formatPercent = (value) => `${value.toFixed(1)}%`;
+
+    const updateCapacity = () => {
+      const total = Number(capTotal.value) || 0;
+      const position = Number(capPosition.value) || 0;
+      const maxDd = Math.max(0, Number(capMaxDd.value) || 0);
+      const currentDd = Math.max(0, Number(capCurrentDd.value) || 0);
+      const remaining = Math.max(0, maxDd - currentDd);
+
+      capRemaining.textContent = total > 0 ? `${formatPercent(remaining)} · ${formatCurrency(total * remaining / 100)}` : '—';
+
+      if(total <= 0 || position <= 0){
+        capWeight.textContent = '—';
+        capPosDrop.textContent = '—';
+        return;
+      }
+
+      const weight = position / total;
+      capWeight.textContent = formatPercent(weight * 100);
+
+      const posDrop = remaining / weight;
+      if(!isFinite(posDrop)){
+        capPosDrop.textContent = '—';
+        return;
+      }
+      capPosDrop.textContent = posDrop >= 100 ? '≥100%' : formatPercent(posDrop);
     };
 
     const getBand = (drawdown) =>
@@ -729,6 +828,9 @@
       else toast('已保存');
     });
     noteInput.addEventListener('input', syncNoteCount);
+    [capTotal, capPosition, capMaxDd, capCurrentDd].forEach((el) => {
+      el.addEventListener('input', updateCapacity);
+    });
     copySummaryBtn.addEventListener('click', async () => {
       const drawdown = Number(ddRange.value);
       const portfolio = Number(portfolioInput.value) || 0;
@@ -777,6 +879,7 @@
     update();
     renderScenarios();
     syncNoteCount();
+    updateCapacity();
 
     document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
   </script>

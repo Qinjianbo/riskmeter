@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Drawdown Capacity Calculator · RiskMeter</title>
+  <meta name="description" content="Estimate how much further a position could drop before your account hits its max drawdown." />
+
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/drawdown-capacity/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/drawdown-capacity/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/drawdown-capacity/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.10);
+      --line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);
+      --mut:rgba(255,255,255,.62);
+      --accent:#76e4ff;
+      --accent2:#b5ff7d;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --radius:18px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--fg);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        radial-gradient(700px 500px at 55% 95%, rgba(255,207,90,.10), transparent 60%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:980px;margin:0 auto;padding:42px 20px 80px}
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;
+      padding:34px 32px;
+      box-shadow: var(--shadow);
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--mut);
+      margin-bottom:10px;
+    }
+    h1{margin:0 0 8px;font-size:34px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:860px;font-size:17px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--fg);
+      font-size:15px;
+      display:inline-block;
+    }
+    .btn.primary{
+      background:rgba(118,228,255,.16);
+      border-color:rgba(118,228,255,.45);
+    }
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+    .section{margin-top:30px}
+    .toolCard{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .toolHead{
+      padding:16px 18px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-bottom:1px solid var(--line);
+    }
+    .toolHead h2{margin:0;font-size:18px}
+    .toolHead .meta{margin:4px 0 0;color:var(--mut);font-size:13px;max-width:700px}
+    .toolBody{padding:18px}
+
+    .controls{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:14px;
+    }
+    @media (max-width: 720px){
+      .controls{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+
+    .ctrl{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding:14px;
+    }
+    .ctrl label{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:12px;
+      color: var(--mut);
+    }
+    .ctrl input[type="number"]{
+      width:100%;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.2);
+      color:var(--fg);
+      font-size:14px;
+    }
+    .hint{margin-top:8px; font-size:12px; color: var(--mut)}
+
+    .summary{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+    @media (max-width: 820px){
+      .summary{grid-template-columns:1fr}
+    }
+
+    .kv{
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.12);
+    }
+    .kv .k{color:var(--mut); font-size:12px}
+    .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
+
+    .note{
+      margin-top:12px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:14px;
+      color:var(--mut);
+      font-size:12.5px;
+      background: rgba(255,255,255,.03);
+      padding:10px 12px;
+    }
+    .divider{height:1px;background:var(--line);margin:34px 0 18px}
+    footer{margin-top:36px;font-size:12px;color:var(--mut)}
+    .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .langBar .tag{font-size:12px;color:var(--mut)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">Risk Sizing · Drawdown Control</span>
+      <h1>Drawdown Capacity Calculator</h1>
+      <p class="sub">
+        Estimate how much further a position could drop before your account hits its maximum drawdown.
+        This uses simple sizing math — not prediction.
+      </p>
+
+      <div class="langBar">
+        <span class="tag">Language:</span>
+        <span class="pill">EN</span>
+        <a class="pill" href="/zh/drawdown-capacity/" id="toZh">中文</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="/en/drawdown-test/">Back to Drawdown Test →</a>
+        <a class="btn" href="/en/drawdown-risk/">Read: Drawdown Risk</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>From here, how much can it drop?</h2>
+            <p class="meta">The calculation assumes other holdings stay flat.</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="controls">
+            <div class="ctrl">
+              <label for="capTotal">Total portfolio value</label>
+              <input type="number" id="capTotal" value="100000" min="0" step="1000" />
+              <div class="hint">Your current total account value.</div>
+            </div>
+            <div class="ctrl">
+              <label for="capPosition">Position value (current)</label>
+              <input type="number" id="capPosition" value="30000" min="0" step="1000" />
+              <div class="hint">Current market value of the position.</div>
+            </div>
+            <div class="ctrl">
+              <label for="capMaxDd">Max account drawdown you can accept (%)</label>
+              <input type="number" id="capMaxDd" value="20" min="0" max="90" step="0.5" />
+              <div class="hint">Your overall limit from peak to trough.</div>
+            </div>
+            <div class="ctrl">
+              <label for="capCurrentDd">Current account drawdown (%)</label>
+              <input type="number" id="capCurrentDd" value="0" min="0" max="90" step="0.5" />
+              <div class="hint">How far you are already below your peak.</div>
+            </div>
+          </div>
+
+          <div class="summary">
+            <div class="kv">
+              <div class="k">Remaining account drawdown</div>
+              <div class="v" id="capRemaining">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Position weight</div>
+              <div class="v" id="capWeight">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Max additional position drop</div>
+              <div class="v" id="capPosDrop">—</div>
+            </div>
+          </div>
+
+          <div class="note">
+            This is a sizing perspective only. It does not forecast prices or recommend trades.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter is for education only and does not provide investment advice.
+    </footer>
+  </div>
+
+  <script>
+    const capTotal = document.getElementById('capTotal');
+    const capPosition = document.getElementById('capPosition');
+    const capMaxDd = document.getElementById('capMaxDd');
+    const capCurrentDd = document.getElementById('capCurrentDd');
+    const capRemaining = document.getElementById('capRemaining');
+    const capWeight = document.getElementById('capWeight');
+    const capPosDrop = document.getElementById('capPosDrop');
+
+    const formatCurrency = (value) => {
+      const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        maximumFractionDigits: 0
+      });
+      return formatter.format(value);
+    };
+
+    const formatPercent = (value) => `${value.toFixed(1)}%`;
+
+    const updateCapacity = () => {
+      const total = Number(capTotal.value) || 0;
+      const position = Number(capPosition.value) || 0;
+      const maxDd = Math.max(0, Number(capMaxDd.value) || 0);
+      const currentDd = Math.max(0, Number(capCurrentDd.value) || 0);
+      const remaining = Math.max(0, maxDd - currentDd);
+
+      capRemaining.textContent = total > 0 ? `${formatPercent(remaining)} · ${formatCurrency(total * remaining / 100)}` : '—';
+
+      if(total <= 0 || position <= 0){
+        capWeight.textContent = '—';
+        capPosDrop.textContent = '—';
+        return;
+      }
+
+      const weight = position / total;
+      capWeight.textContent = formatPercent(weight * 100);
+
+      const posDrop = remaining / weight;
+      if(!isFinite(posDrop)){
+        capPosDrop.textContent = '—';
+        return;
+      }
+      capPosDrop.textContent = posDrop >= 100 ? '≥100%' : formatPercent(posDrop);
+    };
+
+    [capTotal, capPosition, capMaxDd, capCurrentDd].forEach((el) => {
+      el.addEventListener('input', updateCapacity);
+    });
+    updateCapacity();
+
+    document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
+  </script>
+</body>
+</html>
