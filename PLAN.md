@@ -66,9 +66,9 @@ Goals:
 
 ## Phase 2 — Retention & Personalization (4–8 weeks)
 
-- Save tool results locally (localStorage)
-- Allow users to compare multiple scenarios
-- Generate shareable summaries (links or images)
+- [x] Save tool results locally (localStorage)
+- [x] Allow users to compare multiple scenarios
+- [x] Generate shareable summaries (links or images)
 - Optional email capture (no forced accounts)
 
 ---

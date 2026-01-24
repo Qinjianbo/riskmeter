@@ -175,6 +175,7 @@
       left:0;
       top:22px;
       width:240px;
+      max-width:72vw;
       background:rgba(15,20,35,.96);
       border:1px solid rgba(255,255,255,.12);
       color:var(--fg);
@@ -182,6 +183,8 @@
       border-radius:10px;
       font-size:12px;
       line-height:1.5;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
       opacity:0;
       transform: translateY(6px);
       pointer-events:none;
@@ -191,7 +194,19 @@
     .tooltipWrap{position:relative; display:inline-block}
     .tooltipWrap:hover .tooltipBox{opacity:1; transform: translateY(0)}
     .tooltipWrap:focus-within .tooltipBox{opacity:1; transform: translateY(0)}
+    .tooltipWrap.open .tooltipBox{opacity:1; transform: translateY(0)}
     .tooltipBox strong{color:var(--accent2)}
+    @media (max-width:520px){
+      .tooltipBox{
+        left:50%;
+        transform: translateX(-50%) translateY(6px);
+      }
+      .tooltipWrap:hover .tooltipBox,
+      .tooltipWrap:focus-within .tooltipBox,
+      .tooltipWrap.open .tooltipBox{
+        transform: translateX(-50%) translateY(0);
+      }
+    }
 
     .insight{
       margin-top:16px;
@@ -355,7 +370,16 @@
         <div class="toolHead">
           <div>
             <h2>Estimate your tolerance</h2>
-            <p class="meta">Move the slider to the maximum drawdown that would make you lose sleep. Adjust the portfolio size to see the real-dollar impact.</p>
+            <p class="meta">Move the slider to the maximum drawdown
+              <span class="tooltipWrap">
+                <button class="tooltip" type="button" aria-label="What is drawdown?">?</button>
+                <span class="tooltipBox">
+                  <strong>Drawdown</strong> is the drop from a peak to a trough in account value.<br/>
+                  It includes <strong>unrealized</strong> losses (even if you haven’t sold).<br/>
+                  <strong>Example</strong>: peak 100,000 → now 75,000 = 25% drawdown.
+                </span>
+              </span>
+              that would make you lose sleep. Adjust the portfolio size to see the real-dollar impact.</p>
           </div>
         </div>
         <div class="toolBody">
@@ -382,8 +406,10 @@
                 <span class="tooltipWrap">
                   <button class="tooltip" type="button" aria-label="How recovery is calculated">?</button>
                   <span class="tooltipBox">
+                    <strong>Derivation</strong>: (1 - drawdown) × (1 + recovery) = 1<br/>
                     <strong>Formula</strong>: recovery = 1 / (1 - drawdown) - 1<br/>
-                    <strong>Example</strong>: 25% drawdown → 1/(1-0.25)-1 = 33.3%
+                    <strong>Example</strong>: 25% drawdown → 1/(1-0.25)-1 = 33.3%<br/>
+                    <strong>Interpretation</strong>: 100,000 falls 25% to 75,000; to return to 100,000 needs +25,000; 25,000/75,000 = 33.3%
                   </span>
                 </span>
               </div>
@@ -514,6 +540,29 @@
         t = setTimeout(() => el.classList.remove('show'), 1400);
       };
     })();
+
+    const tooltipButtons = Array.from(document.querySelectorAll('.tooltip'));
+    tooltipButtons.forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const wrap = btn.closest('.tooltipWrap');
+        if(!wrap) return;
+        const open = wrap.classList.toggle('open');
+        tooltipButtons.forEach((other) => {
+          if(other !== btn){
+            const otherWrap = other.closest('.tooltipWrap');
+            if(otherWrap) otherWrap.classList.remove('open');
+          }
+        });
+        if(!open) wrap.classList.remove('open');
+      });
+    });
+    document.addEventListener('click', () => {
+      tooltipButtons.forEach((btn) => {
+        const wrap = btn.closest('.tooltipWrap');
+        if(wrap) wrap.classList.remove('open');
+      });
+    });
 
     const formatCurrency = (value) => {
       const formatter = new Intl.NumberFormat('en-US', {

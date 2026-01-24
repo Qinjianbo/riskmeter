@@ -175,6 +175,7 @@
       left:0;
       top:22px;
       width:240px;
+      max-width:72vw;
       background:rgba(15,20,35,.96);
       border:1px solid rgba(255,255,255,.12);
       color:var(--fg);
@@ -182,6 +183,8 @@
       border-radius:10px;
       font-size:12px;
       line-height:1.5;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
       opacity:0;
       transform: translateY(6px);
       pointer-events:none;
@@ -191,7 +194,19 @@
     .tooltipWrap{position:relative; display:inline-block}
     .tooltipWrap:hover .tooltipBox{opacity:1; transform: translateY(0)}
     .tooltipWrap:focus-within .tooltipBox{opacity:1; transform: translateY(0)}
+    .tooltipWrap.open .tooltipBox{opacity:1; transform: translateY(0)}
     .tooltipBox strong{color:var(--accent2)}
+    @media (max-width:520px){
+      .tooltipBox{
+        left:50%;
+        transform: translateX(-50%) translateY(6px);
+      }
+      .tooltipWrap:hover .tooltipBox,
+      .tooltipWrap:focus-within .tooltipBox,
+      .tooltipWrap.open .tooltipBox{
+        transform: translateX(-50%) translateY(0);
+      }
+    }
 
     .insight{
       margin-top:16px;
@@ -355,7 +370,16 @@
         <div class="toolHead">
           <div>
             <h2>估算你的承受度</h2>
-            <p class="meta">拖动滑杆选择你觉得“会睡不着”的最大回撤。输入资产规模可查看真实金额影响。</p>
+            <p class="meta">拖动滑杆选择你觉得“会睡不着”的最大回撤
+              <span class="tooltipWrap">
+                <button class="tooltip" type="button" aria-label="什么是回撤？">?</button>
+                <span class="tooltipBox">
+                  <strong>回撤</strong>是账户净值从高点到低点的下跌。<br/>
+                  即使未卖出，<strong>未实现亏损</strong>也计入回撤。<br/>
+                  <strong>例</strong>：高点 100,000 → 现 75,000 = 回撤 25%。
+                </span>
+              </span>
+              。输入资产规模可查看真实金额影响。</p>
           </div>
         </div>
         <div class="toolBody">
@@ -382,8 +406,10 @@
                 <span class="tooltipWrap">
                   <button class="tooltip" type="button" aria-label="回本涨幅如何计算">?</button>
                   <span class="tooltipBox">
+                    <strong>推导</strong>：(1-回撤)×(1+回本涨幅)=1<br/>
                     <strong>公式</strong>：回本涨幅 = 1 / (1 - 回撤) - 1<br/>
-                    <strong>例</strong>：回撤 25% → 1/(1-0.25)-1 = 33.3%
+                    <strong>例</strong>：回撤 25% → 1/(1-0.25)-1 = 33.3%<br/>
+                    <strong>解读</strong>：100,000 亏 25% 剩 75,000，要回到 100,000 需涨 25,000；25,000/75,000=33.3%
                   </span>
                 </span>
               </div>
@@ -514,6 +540,29 @@
         t = setTimeout(() => el.classList.remove('show'), 1400);
       };
     })();
+
+    const tooltipButtons = Array.from(document.querySelectorAll('.tooltip'));
+    tooltipButtons.forEach((btn) => {
+      btn.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const wrap = btn.closest('.tooltipWrap');
+        if(!wrap) return;
+        const open = wrap.classList.toggle('open');
+        tooltipButtons.forEach((other) => {
+          if(other !== btn){
+            const otherWrap = other.closest('.tooltipWrap');
+            if(otherWrap) otherWrap.classList.remove('open');
+          }
+        });
+        if(!open) wrap.classList.remove('open');
+      });
+    });
+    document.addEventListener('click', () => {
+      tooltipButtons.forEach((btn) => {
+        const wrap = btn.closest('.tooltipWrap');
+        if(wrap) wrap.classList.remove('open');
+      });
+    });
 
     const formatCurrency = (value) => {
       const formatter = new Intl.NumberFormat('zh-CN', {
