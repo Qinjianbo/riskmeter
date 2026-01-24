@@ -162,6 +162,104 @@
       font-size:14px;
     }
     .insight strong{color:var(--accent2)}
+    .actions{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .miniBtn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--fg);
+      padding:9px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 13px;
+    }
+    .miniBtn:hover{background: rgba(255,255,255,.12)}
+    .miniBtn.primary{
+      border-color: rgba(118,228,255,.45);
+      background: rgba(118,228,255,.12);
+    }
+    .noteInput{
+      flex:1 1 220px;
+      min-width:200px;
+      padding:9px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.2);
+      color:var(--fg);
+      font-size:13px;
+    }
+    .noteCount{
+      font-size:12px;
+      color:var(--mut);
+      min-width:46px;
+      text-align:right;
+    }
+    .summaryBox{
+      margin-top:12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:12px 14px;
+      background: rgba(0,0,0,.12);
+    }
+    .summaryBox .k{color:var(--mut); font-size:12px}
+    .summaryBox .v{font-size:13px; margin-top:6px; color: var(--fg)}
+    .scenarioList{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .scenarioCard{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.12);
+      border-radius: 14px;
+      padding:12px 14px;
+    }
+    .scenarioTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .scenarioActions{
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+    .scenarioTitle{font-size:14px}
+    .scenarioMeta{color:var(--mut); font-size:12px; margin-top:6px}
+    .ghostBtn{
+      border:1px solid var(--line);
+      background: transparent;
+      color: var(--mut);
+      padding:6px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .ghostBtn:hover{background: rgba(255,255,255,.08); color: var(--fg)}
+    .toast{
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15,20,35,.92);
+      border:1px solid rgba(255,255,255,.12);
+      color: var(--fg);
+      padding:10px 14px;
+      border-radius: 12px;
+      font-size:13px;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 50;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(0)}
 
     .grid{
       display:grid;
@@ -250,24 +348,55 @@
           </div>
 
           <div class="insight" id="insightBox">
-            <strong>中等承受度：</strong>通常能扛住常见回撤，但大幅下跌仍需强纪律。
+            <strong>中等承受度：</strong>可承受常见回撤，但仍需要纪律与计划。
+          </div>
+
+        <div class="actions">
+          <input class="noteInput" id="noteInput" type="text" maxlength="40" placeholder="备注（可选，最多40字）" />
+          <span class="noteCount" id="noteCount">0/40</span>
+          <button class="miniBtn primary" id="saveScenario">保存场景</button>
+          <button class="miniBtn" id="copySummary">复制摘要</button>
+        </div>
+
+          <div class="summaryBox">
+            <div class="k">可分享摘要</div>
+            <div class="v" id="summaryText">—</div>
           </div>
         </div>
       </div>
     </section>
 
+    <section class="section">
+      <div class="card">
+        <h3>已保存的对比场景</h3>
+        <p style="color:var(--mut);font-size:13px;margin-top:6px">最多保存 3 组回撤承受度。</p>
+        <div class="actions">
+          <button class="miniBtn" id="clearScenarios">清空全部</button>
+        </div>
+        <div class="scenarioList" id="scenariosList"></div>
+      </div>
+    </section>
+
     <section class="section grid">
       <div class="card">
-        <h3>低承受度（≤15%）</h3>
-        <p>更关注稳定性，建议控制波动、预留现金缓冲。</p>
+        <h3>很低承受度（≤10%）</h3>
+        <p>优先保本与稳健分散，保持较高现金缓冲。</p>
       </div>
       <div class="card">
-        <h3>中等承受度（15–30%）</h3>
-        <p>股市常见区间，需提前规划以避免情绪出局。</p>
+        <h3>低承受度（11–15%）</h3>
+        <p>控制风险、避免杠杆，提前设定规则与退出条件。</p>
       </div>
       <div class="card">
-        <h3>高承受度（30%+）</h3>
-        <p>能承受较大波动，但前提是时间跨度与流动性充足。</p>
+        <h3>中等承受度（16–25%）</h3>
+        <p>可承受常见回撤，但仍需要纪律与计划。</p>
+      </div>
+      <div class="card">
+        <h3>高承受度（26–35%）</h3>
+        <p>可承受更深回撤，但需足够期限与流动性。</p>
+      </div>
+      <div class="card">
+        <h3>很高承受度（36%+）</h3>
+        <p>仅适合长期视角与强信念，恢复周期可能很长。</p>
       </div>
     </section>
 
@@ -285,34 +414,58 @@
     const recoveryValue = document.getElementById('recoveryValue');
     const bandValue = document.getElementById('bandValue');
     const insightBox = document.getElementById('insightBox');
+    const summaryText = document.getElementById('summaryText');
+    const noteInput = document.getElementById('noteInput');
+    const noteCount = document.getElementById('noteCount');
+    const saveScenarioBtn = document.getElementById('saveScenario');
+    const copySummaryBtn = document.getElementById('copySummary');
+    const scenariosList = document.getElementById('scenariosList');
+    const clearScenariosBtn = document.getElementById('clearScenarios');
 
     const bands = [
       {
         max: 10,
         label: '很低',
-        text: '承受度很低：超过这个幅度往往会快速出局，建议偏稳健配置。'
+        text: '优先保本与稳健分散，保持较高现金缓冲。'
       },
       {
         max: 15,
         label: '低',
-        text: '承受度偏低：稳定性最重要，先建立缓冲再提高风险敞口。'
+        text: '控制风险、避免杠杆，提前设定规则与退出条件。'
       },
       {
         max: 25,
         label: '中等',
-        text: '承受度中等：可扛住常见回撤，但更深的下跌需要纪律。'
+        text: '可承受常见回撤，但仍需要纪律与计划。'
       },
       {
         max: 35,
         label: '高',
-        text: '承受度较高：能够承受大幅波动，但恢复时间可能很长。'
+        text: '可承受更深回撤，但需足够期限与流动性。'
       },
       {
         max: 60,
         label: '很高',
-        text: '承受度很高：适合长期视角与强信念，但仍要重视回撤后的恢复。'
+        text: '仅适合长期视角与强信念，恢复周期可能很长。'
       }
     ];
+
+    const STORAGE_KEY = 'rm_drawdown_state';
+    const SCENARIOS_KEY = 'rm_drawdown_scenarios';
+    const NOTE_LIMIT = 40;
+
+    const toast = (() => {
+      const el = document.createElement('div');
+      el.className = 'toast';
+      document.body.appendChild(el);
+      let t = null;
+      return (msg) => {
+        el.textContent = msg;
+        el.classList.add('show');
+        if(t) clearTimeout(t);
+        t = setTimeout(() => el.classList.remove('show'), 1400);
+      };
+    })();
 
     const formatCurrency = (value) => {
       const formatter = new Intl.NumberFormat('zh-CN', {
@@ -321,6 +474,122 @@
         maximumFractionDigits: 0
       });
       return formatter.format(value);
+    };
+
+    const getBand = (drawdown) =>
+      bands.find((item) => drawdown <= item.max) || bands[bands.length - 1];
+
+    const buildSummary = (drawdown, portfolio) => {
+      const loss = portfolio * (drawdown / 100);
+      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
+      const band = getBand(drawdown);
+      const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+      const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
+      return `回撤承受度：${band.label}（${drawdown}%）。亏损：${lossText}。回本所需涨幅：+${recovery.toFixed(1)}%。资产规模：${portfolioText}。`;
+    };
+
+    const buildScenarioSummary = (item) => {
+      const drawdown = Number(item.drawdown);
+      const portfolio = Number(item.portfolio) || 0;
+      const loss = portfolio * (drawdown / 100);
+      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
+      const band = getBand(drawdown);
+      const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+      const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
+      const note = item.note ? ` 备注：${item.note}。` : '';
+      return `回撤承受度：${band.label}（${drawdown}%）。亏损：${lossText}。回本所需涨幅：+${recovery.toFixed(1)}%。资产规模：${portfolioText}。${note}`;
+    };
+
+    const normalizeNote = (raw) => {
+      const cleaned = raw.replace(/\s+/g, ' ').trim();
+      const truncated = cleaned.length > NOTE_LIMIT;
+      const note = truncated ? cleaned.slice(0, NOTE_LIMIT) : cleaned;
+      const empty = !note && raw.trim().length > 0;
+      return { note, truncated, empty };
+    };
+
+    const syncNoteCount = () => {
+      const len = noteInput.value.length;
+      noteCount.textContent = `${len}/${NOTE_LIMIT}`;
+    };
+
+    const saveState = (drawdown, portfolio) => {
+      const payload = { drawdown, portfolio };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    };
+
+    const loadState = () => {
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const state = JSON.parse(raw);
+        if(typeof state.drawdown === 'number') ddRange.value = String(state.drawdown);
+        if(typeof state.portfolio === 'number') portfolioInput.value = String(state.portfolio);
+      }catch(_){ }
+    };
+
+    const loadScenarios = () => {
+      try{
+        const raw = localStorage.getItem(SCENARIOS_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        return Array.isArray(list) ? list : [];
+      }catch(_){
+        return [];
+      }
+    };
+
+    const saveScenarios = (list) => {
+      localStorage.setItem(SCENARIOS_KEY, JSON.stringify(list));
+    };
+
+    const renderScenarios = () => {
+      const list = loadScenarios();
+      if(!list.length){
+        scenariosList.innerHTML = '<div class="scenarioMeta">暂无已保存场景。</div>';
+        return;
+      }
+      scenariosList.innerHTML = list.map((item) => {
+        const drawdown = Number(item.drawdown);
+        const portfolio = Number(item.portfolio) || 0;
+        const loss = portfolio * (drawdown / 100);
+        const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
+        const band = getBand(drawdown);
+        const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+        const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
+        const note = item.note ? `<div class="scenarioMeta">备注：${item.note}</div>` : '';
+        const time = item.ts ? new Date(item.ts).toLocaleString('zh-CN', { dateStyle: 'medium' }) : '';
+        const timeRow = time ? `<div class="scenarioMeta">保存于：${time}</div>` : '';
+        return `
+          <div class="scenarioCard">
+            <div class="scenarioTop">
+              <div class="scenarioTitle">${band.label}承受度 · ${drawdown}%</div>
+              <div class="scenarioActions">
+                <button class="ghostBtn" data-apply="${item.id}">应用</button>
+                <button class="ghostBtn" data-copy="${item.id}">复制</button>
+                <button class="ghostBtn" data-remove="${item.id}">删除</button>
+              </div>
+            </div>
+            <div class="scenarioMeta">亏损：${lossText} · 回本所需涨幅：+${recovery.toFixed(1)}% · 资产规模：${portfolioText}</div>
+            ${timeRow}
+            ${note}
+          </div>
+        `;
+      }).join('');
+    };
+
+    const copyText = async (text) => {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); }catch(_){ }
+      document.body.removeChild(ta);
+      return true;
     };
 
     const update = () => {
@@ -334,14 +603,83 @@
       const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
       recoveryValue.textContent = `${recovery.toFixed(1)}%`;
 
-      const band = bands.find((item) => drawdown <= item.max) || bands[bands.length - 1];
+      const band = getBand(drawdown);
       bandValue.textContent = band.label;
       insightBox.innerHTML = `<strong>${band.label}承受度：</strong>${band.text}`;
+      summaryText.textContent = buildSummary(drawdown, portfolio);
+      saveState(drawdown, portfolio);
     };
 
     ddRange.addEventListener('input', update);
     portfolioInput.addEventListener('input', update);
+    saveScenarioBtn.addEventListener('click', () => {
+      const drawdown = Number(ddRange.value);
+      const portfolio = Number(portfolioInput.value) || 0;
+      const rawNote = noteInput.value || '';
+      const { note, truncated, empty } = normalizeNote(rawNote);
+      const list = loadScenarios();
+      const next = [
+        ...list,
+        { id: String(Date.now()), drawdown, portfolio, note, ts: Date.now() }
+      ];
+      const trimmed = next.slice(-3);
+      saveScenarios(trimmed);
+      renderScenarios();
+      noteInput.value = '';
+      syncNoteCount();
+      if(truncated) toast('已保存（备注已截断）');
+      else if(empty) toast('已保存（备注为空）');
+      else toast('已保存');
+    });
+    noteInput.addEventListener('input', syncNoteCount);
+    copySummaryBtn.addEventListener('click', async () => {
+      const drawdown = Number(ddRange.value);
+      const portfolio = Number(portfolioInput.value) || 0;
+      const text = buildSummary(drawdown, portfolio);
+      await copyText(text);
+      toast('已复制');
+    });
+    clearScenariosBtn.addEventListener('click', () => {
+      saveScenarios([]);
+      renderScenarios();
+      toast('已清空');
+    });
+    scenariosList.addEventListener('click', (event) => {
+      const target = event.target;
+      if(!(target instanceof HTMLElement)) return;
+      const applyId = target.getAttribute('data-apply');
+      if(applyId){
+        const item = loadScenarios().find((entry) => entry.id === applyId);
+        if(item){
+          ddRange.value = String(item.drawdown);
+          portfolioInput.value = String(item.portfolio || 0);
+          update();
+          toast('已应用');
+          noteInput.focus();
+          noteInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      const copyId = target.getAttribute('data-copy');
+      if(copyId){
+        const item = loadScenarios().find((entry) => entry.id === copyId);
+        if(item){
+          copyText(buildScenarioSummary(item)).then(() => toast('已复制'));
+        }
+        return;
+      }
+      const id = target.getAttribute('data-remove');
+      if(!id) return;
+      const list = loadScenarios().filter((item) => item.id !== id);
+      saveScenarios(list);
+      renderScenarios();
+      toast('已删除');
+    });
+
+    loadState();
     update();
+    renderScenarios();
+    syncNoteCount();
 
     document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
   </script>

@@ -162,6 +162,104 @@
       font-size:14px;
     }
     .insight strong{color:var(--accent2)}
+    .actions{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .miniBtn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--fg);
+      padding:9px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 13px;
+    }
+    .miniBtn:hover{background: rgba(255,255,255,.12)}
+    .miniBtn.primary{
+      border-color: rgba(118,228,255,.45);
+      background: rgba(118,228,255,.12);
+    }
+    .noteInput{
+      flex:1 1 220px;
+      min-width:200px;
+      padding:9px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.2);
+      color:var(--fg);
+      font-size:13px;
+    }
+    .noteCount{
+      font-size:12px;
+      color:var(--mut);
+      min-width:46px;
+      text-align:right;
+    }
+    .summaryBox{
+      margin-top:12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:12px 14px;
+      background: rgba(0,0,0,.12);
+    }
+    .summaryBox .k{color:var(--mut); font-size:12px}
+    .summaryBox .v{font-size:13px; margin-top:6px; color: var(--fg)}
+    .scenarioList{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+      margin-top:12px;
+    }
+    .scenarioCard{
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.12);
+      border-radius: 14px;
+      padding:12px 14px;
+    }
+    .scenarioTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .scenarioActions{
+      display:flex;
+      gap:6px;
+      align-items:center;
+    }
+    .scenarioTitle{font-size:14px}
+    .scenarioMeta{color:var(--mut); font-size:12px; margin-top:6px}
+    .ghostBtn{
+      border:1px solid var(--line);
+      background: transparent;
+      color: var(--mut);
+      padding:6px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:12px;
+    }
+    .ghostBtn:hover{background: rgba(255,255,255,.08); color: var(--fg)}
+    .toast{
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(15,20,35,.92);
+      border:1px solid rgba(255,255,255,.12);
+      color: var(--fg);
+      padding:10px 14px;
+      border-radius: 12px;
+      font-size:13px;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index: 50;
+    }
+    .toast.show{opacity:1; transform: translateX(-50%) translateY(0)}
 
     .grid{
       display:grid;
@@ -250,24 +348,55 @@
           </div>
 
           <div class="insight" id="insightBox">
-            <strong>Moderate tolerance:</strong> You can likely stay invested through normal equity drawdowns, but large losses may still trigger panic.
+            <strong>Moderate tolerance:</strong> Normal equity drawdowns are tolerable, but discipline still matters.
+          </div>
+
+        <div class="actions">
+          <input class="noteInput" id="noteInput" type="text" maxlength="40" placeholder="Note (optional, 40 chars max)" />
+          <span class="noteCount" id="noteCount">0/40</span>
+          <button class="miniBtn primary" id="saveScenario">Save scenario</button>
+          <button class="miniBtn" id="copySummary">Copy summary</button>
+        </div>
+
+          <div class="summaryBox">
+            <div class="k">Shareable summary</div>
+            <div class="v" id="summaryText">—</div>
           </div>
         </div>
       </div>
     </section>
 
+    <section class="section">
+      <div class="card">
+        <h3>Saved scenarios</h3>
+        <p style="color:var(--mut);font-size:13px;margin-top:6px">Save up to 3 drawdown profiles to compare.</p>
+        <div class="actions">
+          <button class="miniBtn" id="clearScenarios">Clear all</button>
+        </div>
+        <div class="scenarioList" id="scenariosList"></div>
+      </div>
+    </section>
+
     <section class="section grid">
       <div class="card">
-        <h3>Low tolerance (≤15%)</h3>
-        <p>Favor stability, consider diversified or lower-volatility strategies, and keep cash buffers.</p>
+        <h3>Very low tolerance (≤10%)</h3>
+        <p>Prioritize stability, strong diversification, and larger cash buffers.</p>
       </div>
       <div class="card">
-        <h3>Moderate tolerance (15–30%)</h3>
-        <p>Expect normal market drawdowns. Plan ahead so you can stay invested without regret.</p>
+        <h3>Low tolerance (11–15%)</h3>
+        <p>Keep risk modest, avoid leverage, and set rules before volatility hits.</p>
       </div>
       <div class="card">
-        <h3>High tolerance (30%+)</h3>
-        <p>You can withstand large swings, but only if your time horizon and liquidity allow it.</p>
+        <h3>Moderate tolerance (16–25%)</h3>
+        <p>Normal equity drawdowns are tolerable, but discipline still matters.</p>
+      </div>
+      <div class="card">
+        <h3>High tolerance (26–35%)</h3>
+        <p>Can handle deeper drawdowns if horizon and liquidity are strong.</p>
+      </div>
+      <div class="card">
+        <h3>Very high tolerance (36%+)</h3>
+        <p>Only suitable with long horizons and strong conviction; recovery can be long.</p>
       </div>
     </section>
 
@@ -285,34 +414,58 @@
     const recoveryValue = document.getElementById('recoveryValue');
     const bandValue = document.getElementById('bandValue');
     const insightBox = document.getElementById('insightBox');
+    const summaryText = document.getElementById('summaryText');
+    const noteInput = document.getElementById('noteInput');
+    const noteCount = document.getElementById('noteCount');
+    const saveScenarioBtn = document.getElementById('saveScenario');
+    const copySummaryBtn = document.getElementById('copySummary');
+    const scenariosList = document.getElementById('scenariosList');
+    const clearScenariosBtn = document.getElementById('clearScenarios');
 
     const bands = [
       {
         max: 10,
         label: 'Very low',
-        text: 'Very low tolerance: losses beyond this level often trigger quick exits. Consider lower-volatility allocations.'
+        text: 'Prioritize stability, strong diversification, and larger cash buffers.'
       },
       {
         max: 15,
         label: 'Low',
-        text: 'Low tolerance: stability matters most. Build buffers before taking higher-risk exposure.'
+        text: 'Keep risk modest, avoid leverage, and set rules before volatility hits.'
       },
       {
         max: 25,
         label: 'Moderate',
-        text: 'Moderate tolerance: you can usually hold through common market drawdowns, but larger drops require discipline.'
+        text: 'Normal equity drawdowns are tolerable, but discipline still matters.'
       },
       {
         max: 35,
         label: 'High',
-        text: 'High tolerance: you can absorb big swings, but recovery time can still be long.'
+        text: 'Can handle deeper drawdowns if horizon and liquidity are strong.'
       },
       {
         max: 60,
         label: 'Very high',
-        text: 'Very high tolerance: only suitable if you have long horizons and strong conviction.'
+        text: 'Only suitable with long horizons and strong conviction; recovery can be long.'
       }
     ];
+
+    const STORAGE_KEY = 'rm_drawdown_state';
+    const SCENARIOS_KEY = 'rm_drawdown_scenarios';
+    const NOTE_LIMIT = 40;
+
+    const toast = (() => {
+      const el = document.createElement('div');
+      el.className = 'toast';
+      document.body.appendChild(el);
+      let t = null;
+      return (msg) => {
+        el.textContent = msg;
+        el.classList.add('show');
+        if(t) clearTimeout(t);
+        t = setTimeout(() => el.classList.remove('show'), 1400);
+      };
+    })();
 
     const formatCurrency = (value) => {
       const formatter = new Intl.NumberFormat('en-US', {
@@ -321,6 +474,122 @@
         maximumFractionDigits: 0
       });
       return formatter.format(value);
+    };
+
+    const getBand = (drawdown) =>
+      bands.find((item) => drawdown <= item.max) || bands[bands.length - 1];
+
+    const buildSummary = (drawdown, portfolio) => {
+      const loss = portfolio * (drawdown / 100);
+      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
+      const band = getBand(drawdown);
+      const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+      const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
+      return `Drawdown tolerance: ${band.label} (${drawdown}%). Loss: ${lossText}. Recovery: +${recovery.toFixed(1)}%. Portfolio: ${portfolioText}.`;
+    };
+
+    const buildScenarioSummary = (item) => {
+      const drawdown = Number(item.drawdown);
+      const portfolio = Number(item.portfolio) || 0;
+      const loss = portfolio * (drawdown / 100);
+      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
+      const band = getBand(drawdown);
+      const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+      const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
+      const note = item.note ? ` Note: ${item.note}.` : '';
+      return `Drawdown tolerance: ${band.label} (${drawdown}%). Loss: ${lossText}. Recovery: +${recovery.toFixed(1)}%. Portfolio: ${portfolioText}.${note}`;
+    };
+
+    const normalizeNote = (raw) => {
+      const cleaned = raw.replace(/\s+/g, ' ').trim();
+      const truncated = cleaned.length > NOTE_LIMIT;
+      const note = truncated ? cleaned.slice(0, NOTE_LIMIT) : cleaned;
+      const empty = !note && raw.trim().length > 0;
+      return { note, truncated, empty };
+    };
+
+    const syncNoteCount = () => {
+      const len = noteInput.value.length;
+      noteCount.textContent = `${len}/${NOTE_LIMIT}`;
+    };
+
+    const saveState = (drawdown, portfolio) => {
+      const payload = { drawdown, portfolio };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    };
+
+    const loadState = () => {
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const state = JSON.parse(raw);
+        if(typeof state.drawdown === 'number') ddRange.value = String(state.drawdown);
+        if(typeof state.portfolio === 'number') portfolioInput.value = String(state.portfolio);
+      }catch(_){ }
+    };
+
+    const loadScenarios = () => {
+      try{
+        const raw = localStorage.getItem(SCENARIOS_KEY);
+        const list = raw ? JSON.parse(raw) : [];
+        return Array.isArray(list) ? list : [];
+      }catch(_){
+        return [];
+      }
+    };
+
+    const saveScenarios = (list) => {
+      localStorage.setItem(SCENARIOS_KEY, JSON.stringify(list));
+    };
+
+    const renderScenarios = () => {
+      const list = loadScenarios();
+      if(!list.length){
+        scenariosList.innerHTML = '<div class="scenarioMeta">No saved scenarios yet.</div>';
+        return;
+      }
+      scenariosList.innerHTML = list.map((item) => {
+        const drawdown = Number(item.drawdown);
+        const portfolio = Number(item.portfolio) || 0;
+        const loss = portfolio * (drawdown / 100);
+        const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
+        const band = getBand(drawdown);
+        const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+        const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
+        const note = item.note ? `<div class="scenarioMeta">Note: ${item.note}</div>` : '';
+        const time = item.ts ? new Date(item.ts).toLocaleString('en-US', { dateStyle: 'medium' }) : '';
+        const timeRow = time ? `<div class="scenarioMeta">Saved: ${time}</div>` : '';
+        return `
+          <div class="scenarioCard">
+            <div class="scenarioTop">
+              <div class="scenarioTitle">${band.label} tolerance · ${drawdown}%</div>
+              <div class="scenarioActions">
+                <button class="ghostBtn" data-apply="${item.id}">Apply</button>
+                <button class="ghostBtn" data-copy="${item.id}">Copy</button>
+                <button class="ghostBtn" data-remove="${item.id}">Remove</button>
+              </div>
+            </div>
+            <div class="scenarioMeta">Loss: ${lossText} · Recovery: +${recovery.toFixed(1)}% · Portfolio: ${portfolioText}</div>
+            ${timeRow}
+            ${note}
+          </div>
+        `;
+      }).join('');
+    };
+
+    const copyText = async (text) => {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); }catch(_){ }
+      document.body.removeChild(ta);
+      return true;
     };
 
     const update = () => {
@@ -334,14 +603,83 @@
       const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
       recoveryValue.textContent = `${recovery.toFixed(1)}%`;
 
-      const band = bands.find((item) => drawdown <= item.max) || bands[bands.length - 1];
+      const band = getBand(drawdown);
       bandValue.textContent = band.label;
       insightBox.innerHTML = `<strong>${band.label} tolerance:</strong> ${band.text}`;
+      summaryText.textContent = buildSummary(drawdown, portfolio);
+      saveState(drawdown, portfolio);
     };
 
     ddRange.addEventListener('input', update);
     portfolioInput.addEventListener('input', update);
+    saveScenarioBtn.addEventListener('click', () => {
+      const drawdown = Number(ddRange.value);
+      const portfolio = Number(portfolioInput.value) || 0;
+      const rawNote = noteInput.value || '';
+      const { note, truncated, empty } = normalizeNote(rawNote);
+      const list = loadScenarios();
+      const next = [
+        ...list,
+        { id: String(Date.now()), drawdown, portfolio, note, ts: Date.now() }
+      ];
+      const trimmed = next.slice(-3);
+      saveScenarios(trimmed);
+      renderScenarios();
+      noteInput.value = '';
+      syncNoteCount();
+      if(truncated) toast('Saved (note trimmed)');
+      else if(empty) toast('Saved (note ignored)');
+      else toast('Saved');
+    });
+    noteInput.addEventListener('input', syncNoteCount);
+    copySummaryBtn.addEventListener('click', async () => {
+      const drawdown = Number(ddRange.value);
+      const portfolio = Number(portfolioInput.value) || 0;
+      const text = buildSummary(drawdown, portfolio);
+      await copyText(text);
+      toast('Copied');
+    });
+    clearScenariosBtn.addEventListener('click', () => {
+      saveScenarios([]);
+      renderScenarios();
+      toast('Cleared');
+    });
+    scenariosList.addEventListener('click', (event) => {
+      const target = event.target;
+      if(!(target instanceof HTMLElement)) return;
+      const applyId = target.getAttribute('data-apply');
+      if(applyId){
+        const item = loadScenarios().find((entry) => entry.id === applyId);
+        if(item){
+          ddRange.value = String(item.drawdown);
+          portfolioInput.value = String(item.portfolio || 0);
+          update();
+          toast('Applied');
+          noteInput.focus();
+          noteInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
+      const copyId = target.getAttribute('data-copy');
+      if(copyId){
+        const item = loadScenarios().find((entry) => entry.id === copyId);
+        if(item){
+          copyText(buildScenarioSummary(item)).then(() => toast('Copied'));
+        }
+        return;
+      }
+      const id = target.getAttribute('data-remove');
+      if(!id) return;
+      const list = loadScenarios().filter((item) => item.id !== id);
+      saveScenarios(list);
+      renderScenarios();
+      toast('Removed');
+    });
+
+    loadState();
     update();
+    renderScenarios();
+    syncNoteCount();
 
     document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
   </script>

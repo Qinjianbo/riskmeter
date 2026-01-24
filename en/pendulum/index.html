@@ -309,7 +309,7 @@
       </div>
 
       <div class="note">
-        Coming soon: save pendulum history, combine with drawdown profile, and generate risk alerts.
+        Coming soon: save pendulum history, combine with drawdown tolerance bands, and generate risk alerts.
       </div>
     </section>
 
@@ -339,6 +339,7 @@
     let auto = false;
     let x = 0; // [-1,1]
     let v = 0;
+    const PENDULUM_KEY = 'rm_pendulum_state';
 
     function sliderToX(val){ return Math.max(-1, Math.min(1, val / 100)); }
     function xToSlider(x){ return Math.round(x * 100); }
@@ -520,10 +521,12 @@
       v = 0;
       updateHints();
       draw();
+      localStorage.setItem(PENDULUM_KEY, JSON.stringify({ pos: Number(pos.value), spring: Number(spring.value) }));
     });
 
     spring.addEventListener('input', () => {
       springText.textContent = (Number(spring.value)/100).toFixed(2);
+      localStorage.setItem(PENDULUM_KEY, JSON.stringify({ pos: Number(pos.value), spring: Number(spring.value) }));
     });
 
     autoBtn.addEventListener('click', () => {
@@ -544,10 +547,19 @@
       springText.textContent = '1.20';
       updateHints();
       draw();
+      localStorage.setItem(PENDULUM_KEY, JSON.stringify({ pos: 0, spring: 120 }));
     });
 
     function init(){
       resizeCanvas();
+      try{
+        const saved = localStorage.getItem(PENDULUM_KEY);
+        if(saved){
+          const state = JSON.parse(saved);
+          if(typeof state.pos === 'number'){ pos.value = String(state.pos); x = sliderToX(state.pos); }
+          if(typeof state.spring === 'number'){ spring.value = String(state.spring); }
+        }
+      }catch(_){ }
       springText.textContent = (Number(spring.value)/100).toFixed(2);
       updateHints();
       draw();
@@ -556,4 +568,3 @@
   </script>
 </body>
 </html>
-

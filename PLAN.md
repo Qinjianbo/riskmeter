@@ -31,18 +31,18 @@ Not a prediction engine.
 
 ---
 
-## Phase 1 — Core Traffic & Value (Next 2–4 weeks)
+## Phase 1 — Core Traffic & Value (Completed ✅)
 
 ### 1. Core SEO Concept Pages
 Educational landing pages targeting evergreen queries.
 
 Planned pages:
 
-- `/en/what-is-market-pendulum/`
-- `/zh/market-pendulum-theory/`
+- [x] `/en/what-is-market-pendulum/`
+- [x] `/zh/market-pendulum-theory/`
 
-- `/en/drawdown-risk/`
-- `/zh/drawdown-explained/`
+- [x] `/en/drawdown-risk/`
+- [x] `/zh/drawdown-explained/`
 
 Each page will:
 - Explain **one** concept clearly
@@ -54,8 +54,8 @@ Each page will:
 ### 2. Drawdown Tolerance Test (Key Tool)
 Planned paths:
 
-- `/en/drawdown-test/`
-- `/zh/drawdown-test/`
+- [x] `/en/drawdown-test/`
+- [x] `/zh/drawdown-test/`
 
 Goals:
 - Help users understand their psychological loss tolerance
@@ -70,6 +70,13 @@ Goals:
 - Allow users to compare multiple scenarios
 - Generate shareable summaries (links or images)
 - Optional email capture (no forced accounts)
+
+---
+
+## Backlog — Content & Tools (TBD)
+
+- Risk Glossary (EN / ZH)
+- Rebalancing Planner (risk‑based, non‑predictive)
 
 ---
 
@@ -136,4 +143,3 @@ not growth for growth’s sake.
 ---
 
 © RiskMeter
-
