@@ -5,6 +5,7 @@
 - Added drawdown scenario saving, comparison, and per-scenario summary copy.
 - Added shareable summary text, notes, and tooltips explaining drawdown/recovery math.
 - Added bilingual Risk Glossary page stubs with aligned core term definitions and tool CTAs.
+- Added bilingual Rebalancing Planner tool with drift bands, trade guidance, and local state.
 
 Notes / Decisions:
 - Chose localStorage only (no accounts) to keep early retention lightweight.

@@ -12,6 +12,7 @@
   - `python3 -m http.server 8080`
   - Visit `http://localhost:8080/en/` or `/zh/`.
 - You can also open `index.html` directly in a browser for quick checks.
+- Automation scripts read defaults from `config.yaml` (ignored in git); copy `scripts/config.example.yaml`.
 - Automation helpers (Codex CLI):
   - `scripts/codex-run.sh exec "Summarize repo status"`
   - `scripts/auto-iterate.sh --codex` (generate `TASKS.md`)

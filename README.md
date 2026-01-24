@@ -96,6 +96,7 @@ See [`PLAN.md`](./PLAN.md) for upcoming milestones.
 
 These helpers orchestrate task generation, execution, and publishing via Codex CLI.
 
+- Configure defaults in `config.yaml` (ignored in git). Use `scripts/config.example.yaml` as a template.
 - `scripts/codex-run.sh` — Wrapper for running Codex non‑TUI with the bundled Node.
   - Example: `scripts/codex-run.sh exec "Summarize repo status"`
 - `scripts/auto-iterate.sh --codex` — Generate `TASKS.md` using Codex.
@@ -108,21 +109,44 @@ These helpers orchestrate task generation, execution, and publishing via Codex C
 
 Note: `--full-auto` uses Codex bypass mode; use with caution.
 
-### Auto-Execution Modes
+### Scheduled Execution (macOS)
 
-You can run task execution in two ways:
+Two common scheduling options:
 
-1) **Two-step (manual control)**
+1) **launchd (recommended)**
    ```bash
-   scripts/auto-iterate.sh --codex
-   scripts/auto-exec.sh
+   cat <<'EOF' > ~/Library/LaunchAgents/com.riskmeter.autorun.plist
+   <?xml version="1.0" encoding="UTF-8"?>
+   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   <plist version="1.0">
+   <dict>
+     <key>Label</key><string>com.riskmeter.autorun</string>
+     <key>ProgramArguments</key>
+     <array>
+       <string>/bin/zsh</string>
+       <string>-lc</string>
+       <string>/Users/qinjianbo/Documents/self_work/RiskMeter/scripts/auto-run.sh --full-auto</string>
+     </array>
+     <key>StartInterval</key><integer>3600</integer>
+     <key>RunAtLoad</key><true/>
+     <key>WorkingDirectory</key><string>/Users/qinjianbo/Documents/self_work/RiskMeter</string>
+     <key>StandardOutPath</key><string>/Users/qinjianbo/Documents/self_work/RiskMeter/auto-run.log</string>
+     <key>StandardErrorPath</key><string>/Users/qinjianbo/Documents/self_work/RiskMeter/auto-run.err</string>
+   </dict>
+   </plist>
+   EOF
+
+   launchctl load -w ~/Library/LaunchAgents/com.riskmeter.autorun.plist
    ```
 
-2) **One-shot (orchestrated)**
+2) **cron (simple)**
    ```bash
-   scripts/auto-run.sh
+   crontab -e
+   # every hour
+   0 * * * * /bin/zsh -lc "/Users/qinjianbo/Documents/self_work/RiskMeter/scripts/auto-run.sh --full-auto" >> /Users/qinjianbo/Documents/self_work/RiskMeter/auto-run.log 2>> /Users/qinjianbo/Documents/self_work/RiskMeter/auto-run.err
    ```
-   Add `--dry-run` or `--full-auto` if needed.
+
+Tip: replace `--full-auto` with `--dry-run` if you want preview-only runs.
 
 ---
 

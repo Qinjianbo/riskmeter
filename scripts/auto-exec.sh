@@ -11,13 +11,12 @@ set -euo pipefail
 #   scripts/auto-exec.sh --force-lock     # ignore existing lock file
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-TASKS_FILE="$ROOT_DIR/TASKS.md"
-LOG_FILE="$ROOT_DIR/ITERATION_LOG.md"
-LOCK_FILE="$ROOT_DIR/.auto-exec.lock"
+source "$ROOT_DIR/scripts/config.sh"
+load_config
 
 ALLOW_DIRTY="false"
 DRY_RUN="false"
-SANDBOX_MODE="workspace-write"
+SANDBOX_MODE="$DEFAULT_SANDBOX"
 FULL_AUTO="false"
 FORCE_LOCK="false"
 

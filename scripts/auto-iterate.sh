@@ -6,9 +6,9 @@ set -euo pipefail
 #   scripts/auto-iterate.sh --codex
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/config.sh"
+load_config
 DATE_STR="$(date +%Y-%m-%d)"
-TASKS_FILE="$ROOT_DIR/TASKS.md"
-LOG_FILE="$ROOT_DIR/ITERATION_LOG.md"
 
 cd "$ROOT_DIR"
 
@@ -17,7 +17,7 @@ if [[ "${1:-}" != "--codex" ]]; then
   exit 1
 fi
 
-PLAN_CONTENT=$(cat "$ROOT_DIR/PLAN.md")
+PLAN_CONTENT=$(cat "$PLAN_FILE")
 TASKS_CONTENT=""
 if [[ -f "$TASKS_FILE" ]]; then
   TASKS_CONTENT=$(cat "$TASKS_FILE")
@@ -57,12 +57,12 @@ fi
 cat "$TMP_OUT" > "$TASKS_FILE"
 rm -f "$TMP_OUT"
 
-if [[ ! -f "$LOG_FILE" ]]; then
-  cat > "$LOG_FILE" <<EOF
+  if [[ ! -f "$LOG_FILE" ]]; then
+    cat > "$LOG_FILE" <<EOF
 # Iteration Log
 
 EOF
-fi
+  fi
 
 cat >> "$LOG_FILE" <<EOF
 ## $DATE_STR

@@ -1,5 +1,6 @@
 # OS files
 .DS_Store
+config.yaml
 Thumbs.db
 
 # Editor settings

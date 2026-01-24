@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rebalancing Planner · RiskMeter</title>
+  <meta name="description" content="Plan when to rebalance using drift bands and suggested trade sizes." />
+
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/rebalancing-planner/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/rebalancing-planner/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/rebalancing-planner/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.10);
+      --line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);
+      --mut:rgba(255,255,255,.62);
+      --accent:#76e4ff;
+      --accent2:#b5ff7d;
+      --warn:#ffd27d;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --radius:18px;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--fg);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        radial-gradient(700px 500px at 55% 95%, rgba(255,207,90,.10), transparent 60%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:1040px;margin:0 auto;padding:40px 20px 80px}
+    .topNav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      color:var(--mut);
+      font-size:13px;
+      margin-bottom:14px;
+    }
+    .topNav a{color:var(--mut)}
+    .topNav a:hover{color:var(--fg)}
+
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;
+      padding:34px 32px;
+      box-shadow: var(--shadow);
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--mut);
+      margin-bottom:10px;
+    }
+    h1{margin:0 0 8px;font-size:34px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:860px;font-size:17px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--fg);
+      font-size:15px;
+      display:inline-block;
+    }
+    .btn.primary{
+      background:rgba(118,228,255,.16);
+      border-color:rgba(118,228,255,.45);
+    }
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+    .section{margin-top:30px}
+    .toolCard{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .toolHead{
+      padding:16px 18px;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-bottom:1px solid var(--line);
+    }
+    .toolHead h2{margin:0;font-size:18px}
+    .toolHead .meta{margin:4px 0 0;color:var(--mut);font-size:13px;max-width:720px}
+    .toolBody{padding:18px}
+
+    .controls{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:14px;
+    }
+    @media (max-width: 720px){
+      .controls{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+
+    .ctrl{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.04);
+      border-radius: 16px;
+      padding:14px;
+    }
+    .ctrl label{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:12px;
+      color: var(--mut);
+    }
+    .ctrl input[type="number"],
+    .ctrl select{
+      width:100%;
+      margin-top:10px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(0,0,0,.2);
+      color:var(--fg);
+      font-size:14px;
+      appearance:none;
+    }
+    .ctrl input.invalid,
+    .ctrl select.invalid{
+      border-color: rgba(255,140,140,.6);
+      box-shadow: 0 0 0 1px rgba(255,140,140,.25);
+    }
+    .hint{margin-top:8px; font-size:12px; color: var(--mut)}
+    .toggleRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .toggleRow input{
+      width:18px;
+      height:18px;
+      accent-color: var(--accent);
+    }
+
+    .alert{
+      margin-top:12px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,210,125,.4);
+      background: rgba(255,210,125,.08);
+      color: var(--fg);
+      font-size:12.5px;
+      display:none;
+    }
+    .alert.show{display:block}
+
+    .summary{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+    @media (max-width: 820px){
+      .summary{grid-template-columns:1fr}
+    }
+
+    .kv{
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(0,0,0,.12);
+    }
+    .kv .k{color:var(--mut); font-size:12px}
+    .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
+
+    .statusTag{
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      font-size:12px;
+      background:rgba(255,255,255,.06);
+    }
+    .statusTag.ok{
+      border-color: rgba(181,255,125,.5);
+      color: var(--accent2);
+      background: rgba(181,255,125,.12);
+    }
+    .statusTag.warn{
+      border-color: rgba(255,210,125,.5);
+      color: var(--warn);
+      background: rgba(255,210,125,.12);
+    }
+    .statusTag.bad{
+      border-color: rgba(255,140,140,.5);
+      color: #ffb0b0;
+      background: rgba(255,140,140,.12);
+    }
+
+    .actions{
+      margin-top:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+    .miniBtn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--fg);
+      padding:9px 12px;
+      border-radius: 12px;
+      cursor:pointer;
+      font-size: 13px;
+    }
+    .miniBtn:hover{background: rgba(255,255,255,.12)}
+    .miniBtn.primary{
+      border-color: rgba(118,228,255,.45);
+      background: rgba(118,228,255,.12);
+    }
+    .copyHint{font-size:12px;color:var(--mut)}
+
+    .divider{height:1px;background:var(--line);margin:34px 0 18px}
+    footer{margin-top:36px;font-size:12px;color:var(--mut)}
+    .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .langBar .tag{font-size:12px;color:var(--mut)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <nav class="topNav">
+      <a href="/en/">Home</a>
+      <span>·</span>
+      <a href="/en/drawdown-test/">Drawdown Test</a>
+      <span>·</span>
+      <a href="/en/pendulum/">Market Pendulum</a>
+    </nav>
+
+    <section class="hero">
+      <span class="pill">Portfolio Maintenance · Rebalancing</span>
+      <h1>Rebalancing Planner</h1>
+      <p class="sub">
+        Set your drift bands and cadence to decide when to rebalance and how much to trade.
+        Focus on one sleeve (equities, bonds, crypto) to keep it simple.
+      </p>
+
+      <div class="langBar">
+        <span class="tag">Language:</span>
+        <span class="pill">EN</span>
+        <a class="pill" href="/zh/rebalancing-planner/" id="toZh">中文</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="/en/">Back to RiskMeter Home</a>
+        <a class="btn" href="/en/risk-glossary/">Open Risk Glossary</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>Planner inputs</h2>
+            <p class="meta">Compare the current vs target share for one sleeve and set your no-action band.</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="controls">
+            <div class="ctrl">
+              <label for="portfolioValue">Portfolio value <span>$</span></label>
+              <input type="number" id="portfolioValue" min="0" step="1000" />
+              <div class="hint">Total investable value for this plan.</div>
+            </div>
+            <div class="ctrl">
+              <label for="targetAlloc">Target allocation <span>%</span></label>
+              <input type="number" id="targetAlloc" min="0" max="100" step="0.1" />
+              <div class="hint">Desired share for the sleeve you track.</div>
+            </div>
+            <div class="ctrl">
+              <label for="currentAlloc">Current allocation <span>%</span></label>
+              <input type="number" id="currentAlloc" min="0" max="100" step="0.1" />
+              <div class="hint">Where it sits today.</div>
+            </div>
+            <div class="ctrl">
+              <label for="band">Band (tolerance) <span>%</span></label>
+              <input type="number" id="band" min="0" max="100" step="0.1" />
+              <div class="hint">No-action zone around target.</div>
+            </div>
+            <div class="ctrl">
+              <label for="trigger">Drift trigger <span>%</span></label>
+              <input type="number" id="trigger" min="0" max="100" step="0.1" />
+              <div class="hint">Rebalance when drift exceeds this.</div>
+            </div>
+            <div class="ctrl">
+              <label for="cadence">Review cadence</label>
+              <select id="cadence">
+                <option value="monthly">Monthly</option>
+                <option value="quarterly">Quarterly</option>
+                <option value="semiannual">Semiannual</option>
+                <option value="annual">Annual</option>
+              </select>
+              <div class="hint">How often you check drift.</div>
+            </div>
+            <div class="ctrl">
+              <label class="toggleRow" for="useContrib">
+                <span>Use contributions to rebalance</span>
+                <input type="checkbox" id="useContrib" />
+              </label>
+              <div class="hint">Prefer new cash over selling when possible.</div>
+            </div>
+          </div>
+
+          <div class="alert" id="formAlert">Please fix the highlighted inputs.</div>
+
+          <div class="summary">
+            <div class="kv">
+              <div class="k">Status</div>
+              <div class="v" id="statusValue">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Largest drift</div>
+              <div class="v" id="driftValue">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Suggested trades</div>
+              <div class="v" id="tradeValue">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Risk note</div>
+              <div class="v" id="riskValue">—</div>
+            </div>
+            <div class="kv">
+              <div class="k">Next review</div>
+              <div class="v" id="reviewValue">—</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="miniBtn primary" id="copyPlan">Copy summary</button>
+            <button class="miniBtn" id="clearPlan">Clear</button>
+            <span class="copyHint" id="copyHint">Local only · Nothing leaves your browser.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter is for education only and does not provide investment advice.
+    </footer>
+  </div>
+
+  <script>
+    const inputs = {
+      portfolioValue: document.getElementById('portfolioValue'),
+      targetAlloc: document.getElementById('targetAlloc'),
+      currentAlloc: document.getElementById('currentAlloc'),
+      band: document.getElementById('band'),
+      trigger: document.getElementById('trigger'),
+      cadence: document.getElementById('cadence'),
+      useContrib: document.getElementById('useContrib')
+    };
+
+    const statusValue = document.getElementById('statusValue');
+    const driftValue = document.getElementById('driftValue');
+    const tradeValue = document.getElementById('tradeValue');
+    const riskValue = document.getElementById('riskValue');
+    const reviewValue = document.getElementById('reviewValue');
+    const formAlert = document.getElementById('formAlert');
+    const copyPlan = document.getElementById('copyPlan');
+    const clearPlan = document.getElementById('clearPlan');
+    const copyHint = document.getElementById('copyHint');
+
+    const STORAGE_KEY = 'rm_rebalance_state';
+    const locale = 'en-US';
+    const currency = 'USD';
+
+    const defaults = {
+      portfolioValue: 250000,
+      targetAlloc: 60,
+      currentAlloc: 64,
+      band: 3,
+      trigger: 5,
+      cadence: 'quarterly',
+      useContrib: true
+    };
+
+    const cadenceMonths = {
+      monthly: 1,
+      quarterly: 3,
+      semiannual: 6,
+      annual: 12
+    };
+
+    const cadenceLabels = {
+      monthly: 'Monthly',
+      quarterly: 'Quarterly',
+      semiannual: 'Semiannual',
+      annual: 'Annual'
+    };
+
+    const formatCurrency = (value) => new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency,
+      maximumFractionDigits: 0
+    }).format(value);
+
+    const formatPercent = (value) => {
+      const fixed = value.toFixed(1);
+      return fixed.endsWith('.0') ? `${fixed.slice(0, -2)}%` : `${fixed}%`;
+    };
+
+    const parseNumber = (value) => {
+      const parsed = Number(value);
+      return Number.isFinite(parsed) ? parsed : 0;
+    };
+
+    const markValidity = (input, ok) => {
+      input.classList.toggle('invalid', !ok);
+    };
+
+    const validate = (data) => {
+      const issues = [];
+      const validPortfolio = data.portfolioValue > 0;
+      const validTarget = data.targetAlloc >= 0 && data.targetAlloc <= 100;
+      const validCurrent = data.currentAlloc >= 0 && data.currentAlloc <= 100;
+      const validBand = data.band >= 0 && data.band <= 100;
+      const validTrigger = data.trigger >= 0 && data.trigger <= 100 && data.trigger >= data.band;
+
+      if(!validPortfolio) issues.push('Portfolio value must be above 0.');
+      if(!validTarget) issues.push('Target allocation must be 0–100%.');
+      if(!validCurrent) issues.push('Current allocation must be 0–100%.');
+      if(!validBand) issues.push('Band must be 0–100%.');
+      if(!validTrigger) issues.push('Drift trigger must be ≥ band and ≤ 100%.');
+
+      markValidity(inputs.portfolioValue, validPortfolio);
+      markValidity(inputs.targetAlloc, validTarget);
+      markValidity(inputs.currentAlloc, validCurrent);
+      markValidity(inputs.band, validBand);
+      markValidity(inputs.trigger, validTrigger);
+
+      return { ok: issues.length === 0, message: issues[0] || '' };
+    };
+
+    const setStatus = (label, tone) => {
+      statusValue.innerHTML = `<span class="statusTag ${tone}">${label}</span>`;
+    };
+
+    const getNextReview = (cadenceKey) => {
+      const months = cadenceMonths[cadenceKey] || 3;
+      const next = new Date();
+      next.setMonth(next.getMonth() + months);
+      return next.toLocaleDateString(locale, { year: 'numeric', month: 'short', day: 'numeric' });
+    };
+
+    const buildSummaryText = (data, drift, statusLabel, tradeText, reviewText) => {
+      const driftLabel = drift === 0
+        ? 'On target'
+        : `${drift > 0 ? 'Overweight' : 'Underweight'} by ${formatPercent(Math.abs(drift))}`;
+      return `Rebalancing plan: target ${formatPercent(data.targetAlloc)}, current ${formatPercent(data.currentAlloc)} (${driftLabel}). Status: ${statusLabel}. Trade: ${tradeText} Next review: ${reviewText}.`;
+    };
+
+    const saveState = (data) => {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    };
+
+    const loadState = () => {
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const state = JSON.parse(raw);
+        if(state && typeof state === 'object'){
+          if(typeof state.portfolioValue === 'number') inputs.portfolioValue.value = String(state.portfolioValue);
+          if(typeof state.targetAlloc === 'number') inputs.targetAlloc.value = String(state.targetAlloc);
+          if(typeof state.currentAlloc === 'number') inputs.currentAlloc.value = String(state.currentAlloc);
+          if(typeof state.band === 'number') inputs.band.value = String(state.band);
+          if(typeof state.trigger === 'number') inputs.trigger.value = String(state.trigger);
+          if(typeof state.cadence === 'string') inputs.cadence.value = state.cadence;
+          if(typeof state.useContrib === 'boolean') inputs.useContrib.checked = state.useContrib;
+        }
+      }catch(_){ }
+    };
+
+    const resetDefaults = () => {
+      inputs.portfolioValue.value = String(defaults.portfolioValue);
+      inputs.targetAlloc.value = String(defaults.targetAlloc);
+      inputs.currentAlloc.value = String(defaults.currentAlloc);
+      inputs.band.value = String(defaults.band);
+      inputs.trigger.value = String(defaults.trigger);
+      inputs.cadence.value = defaults.cadence;
+      inputs.useContrib.checked = defaults.useContrib;
+    };
+
+    const update = () => {
+      const data = {
+        portfolioValue: parseNumber(inputs.portfolioValue.value),
+        targetAlloc: parseNumber(inputs.targetAlloc.value),
+        currentAlloc: parseNumber(inputs.currentAlloc.value),
+        band: parseNumber(inputs.band.value),
+        trigger: parseNumber(inputs.trigger.value),
+        cadence: inputs.cadence.value,
+        useContrib: inputs.useContrib.checked
+      };
+
+      const { ok, message } = validate(data);
+      formAlert.textContent = message || 'Please fix the highlighted inputs.';
+      formAlert.classList.toggle('show', !ok);
+
+      if(!ok){
+        setStatus('Fix inputs', 'bad');
+        driftValue.textContent = '—';
+        tradeValue.textContent = '—';
+        riskValue.textContent = '—';
+        reviewValue.textContent = '—';
+        copyPlan.dataset.summary = '';
+        return;
+      }
+
+      const drift = data.currentAlloc - data.targetAlloc;
+      const driftAbs = Math.abs(drift);
+      const tradeAmount = data.portfolioValue * driftAbs / 100;
+      const reviewText = `${getNextReview(data.cadence)} · ${cadenceLabels[data.cadence] || ''}`.trim();
+
+      let statusLabel = 'Within band';
+      let statusTone = 'ok';
+      if(driftAbs > data.band && driftAbs < data.trigger){
+        statusLabel = 'Drift widening';
+        statusTone = 'warn';
+      }else if(driftAbs >= data.trigger){
+        statusLabel = 'Rebalance now';
+        statusTone = 'bad';
+      }
+
+      setStatus(statusLabel, statusTone);
+
+      if(driftAbs === 0){
+        driftValue.textContent = 'On target (0.0 p.p.)';
+      }else if(drift > 0){
+        driftValue.textContent = `Overweight by ${formatPercent(drift)} (≈ ${formatCurrency(tradeAmount)})`;
+      }else{
+        driftValue.textContent = `Underweight by ${formatPercent(driftAbs)} (≈ ${formatCurrency(tradeAmount)})`;
+      }
+
+      let tradeText = 'No trade needed.';
+      if(driftAbs >= data.band && driftAbs > 0){
+        if(drift > 0){
+          tradeText = data.useContrib && driftAbs < data.trigger
+            ? `Pause new contributions here; trim about ${formatCurrency(tradeAmount)} if drift persists.`
+            : `Sell about ${formatCurrency(tradeAmount)} of this sleeve to return to target.`;
+        }else{
+          tradeText = data.useContrib
+            ? `Direct about ${formatCurrency(tradeAmount)} of new contributions here to close the gap.`
+            : `Buy about ${formatCurrency(tradeAmount)} of this sleeve to return to target.`;
+        }
+      }
+
+      tradeValue.textContent = tradeText;
+      riskValue.textContent = data.useContrib
+        ? 'Using contributions can reduce turnover, but review if drift breaches the trigger.'
+        : 'Rebalancing can create taxes and costs; confirm liquidity and account type.';
+      reviewValue.textContent = reviewText;
+
+      saveState(data);
+
+      copyPlan.dataset.summary = buildSummaryText(data, drift, statusLabel, tradeText, reviewText);
+    };
+
+    const copyText = async (text) => {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); }catch(_){ }
+      document.body.removeChild(ta);
+      return true;
+    };
+
+    Object.values(inputs).forEach((el) => {
+      el.addEventListener('input', update);
+      el.addEventListener('change', update);
+    });
+
+    copyPlan.addEventListener('click', async () => {
+      const summary = copyPlan.dataset.summary || '';
+      if(!summary) return;
+      await copyText(summary);
+      copyHint.textContent = 'Copied summary.';
+      setTimeout(() => {
+        copyHint.textContent = 'Local only · Nothing leaves your browser.';
+      }, 1400);
+    });
+
+    clearPlan.addEventListener('click', () => {
+      resetDefaults();
+      localStorage.removeItem(STORAGE_KEY);
+      update();
+      copyHint.textContent = 'Cleared.';
+      setTimeout(() => {
+        copyHint.textContent = 'Local only · Nothing leaves your browser.';
+      }, 1400);
+    });
+
+    loadState();
+    if(!inputs.portfolioValue.value) resetDefaults();
+    update();
+
+    document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
+  </script>
+</body>
+</html>

@@ -7,6 +7,8 @@ set -euo pipefail
 #   scripts/auto-commit.sh -m "your message"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/config.sh"
+load_config
 cd "$ROOT_DIR"
 
 COMMIT_MSG=""
@@ -18,8 +20,8 @@ while getopts ":m:" opt; do
 done
 
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-if [[ "$BRANCH" != "main" ]]; then
-  echo "Not on main (current: $BRANCH). Aborting." >&2
+if [[ "$BRANCH" != "$GIT_BRANCH" ]]; then
+  echo "Not on $GIT_BRANCH (current: $BRANCH). Aborting." >&2
   exit 1
 fi
 
@@ -38,7 +40,7 @@ fi
 
 PROMPT=$(cat <<EOF
 You are in the RiskMeter repo on branch main.
-Stage all changes, create a commit, and push to origin/main.
+Stage all changes, create a commit, and push to ${GIT_REMOTE}/${GIT_BRANCH}.
 
 Rules:
 - Do not modify files beyond what is necessary to stage/commit.

@@ -10,6 +10,8 @@ set -euo pipefail
 #   scripts/auto-run.sh --skip-commit
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+source "$ROOT_DIR/scripts/config.sh"
+load_config
 cd "$ROOT_DIR"
 
 ALLOW_DIRTY="false"
