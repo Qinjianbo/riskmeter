@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Risk Glossary · RiskMeter</title>
+  <meta name="description" content="A concise glossary of core risk terms used across RiskMeter, aligned to long-term investing and behavioral risk." />
+
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/risk-glossary/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/risk-glossary/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/risk-glossary/" />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --panel:rgba(255,255,255,.06);
+      --panel2:rgba(255,255,255,.10);
+      --line:rgba(255,255,255,.12);
+      --fg:rgba(255,255,255,.9);
+      --mut:rgba(255,255,255,.62);
+      --accent:#76e4ff;
+      --accent2:#b5ff7d;
+      --shadow:0 12px 40px rgba(0,0,0,.35);
+      --radius:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--fg);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
+        radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
+        radial-gradient(700px 500px at 55% 95%, rgba(255,207,90,.10), transparent 60%),
+        var(--bg);
+      line-height:1.7;
+    }
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+
+    .wrap{max-width:980px;margin:0 auto;padding:42px 20px 80px}
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border-radius:20px;
+      padding:34px 32px;
+      box-shadow: var(--shadow);
+    }
+    .pill{
+      display:inline-block;
+      padding:6px 12px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      font-size:12px;
+      color:var(--mut);
+      margin-bottom:10px;
+    }
+    h1{margin:0 0 8px;font-size:34px;letter-spacing:.3px}
+    .sub{color:var(--mut);max-width:860px;font-size:17px}
+    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:18px}
+    .btn{
+      padding:12px 18px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.08);
+      color:var(--fg);
+      font-size:15px;
+      display:inline-block;
+    }
+    .btn.primary{
+      background:rgba(118,228,255,.16);
+      border-color:rgba(118,228,255,.45);
+    }
+    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
+
+    .section{margin-top:32px}
+    .section h2{font-size:20px;margin:0 0 12px}
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:16px;
+    }
+    @media (max-width:900px){
+      .grid{grid-template-columns:1fr}
+      h1{font-size:30px}
+    }
+    .card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:20px;
+      box-shadow: var(--shadow);
+    }
+    .card h3{margin:0 0 8px;font-size:16px}
+    .card p{margin:0;color:var(--mut);font-size:14px}
+    .card ul{margin:8px 0 0 18px;color:var(--mut);font-size:14px;padding:0}
+    .card li{margin:4px 0}
+    .termGrid .card h3{font-size:15px}
+    .termGrid .card p{font-size:13px}
+
+    .callout{
+      border:1px solid rgba(118,228,255,.3);
+      background:rgba(118,228,255,.08);
+      border-radius:16px;
+      padding:14px 16px;
+      margin-top:16px;
+      color:var(--fg);
+    }
+    .callout strong{color:var(--accent2)}
+
+    .divider{height:1px;background:var(--line);margin:34px 0 18px}
+    footer{margin-top:36px;font-size:12px;color:var(--mut)}
+    .mono{font-family: var(--mono)}
+    .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .langBar .tag{font-size:12px;color:var(--mut)}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <span class="pill">Reference · Risk Terminology</span>
+      <h1>Risk Glossary</h1>
+      <p class="sub">
+        A concise, plain-English map of the risk terms used across RiskMeter. This glossary
+        prioritizes long-term decision making, drawdowns, and behavior under stress.
+      </p>
+
+      <div class="langBar">
+        <span class="tag">Language:</span>
+        <span class="pill">EN</span>
+        <a class="pill" href="/zh/risk-glossary/" id="toZh">中文</a>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="/en/drawdown-test/">Take the Drawdown Tolerance Test →</a>
+        <a class="btn" href="/en/pendulum/">Explore Market Pendulum</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Scope</h2>
+      <div class="card">
+        <p>This glossary covers the core risk vocabulary used in RiskMeter tools and essays.</p>
+        <ul>
+          <li>Focus: portfolio risk, behavioral risk, drawdowns, and recovery.</li>
+          <li>Audience: long-term investors who want clarity, not trading jargon.</li>
+          <li>Not included: security recommendations or product-specific terminology.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>How to use this glossary</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Start with drawdown</h3>
+          <p>Use drawdown and recovery time as your anchor metrics for survivability.</p>
+        </div>
+        <div class="card">
+          <h3>Align words with action</h3>
+          <p>Each term connects to a tool or rule you can apply in real portfolios.</p>
+        </div>
+        <div class="card">
+          <h3>Share a common language</h3>
+          <p>Consistent definitions reduce confusion when discussing risk with others.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Core terms</h2>
+      <div class="grid termGrid">
+        <div class="card">
+          <h3>Risk</h3>
+          <p>The chance of permanent loss or failing to meet your goal.</p>
+        </div>
+        <div class="card">
+          <h3>Volatility</h3>
+          <p>How widely prices swing over time; noisy, but not always harmful.</p>
+        </div>
+        <div class="card">
+          <h3>Drawdown</h3>
+          <p>The percentage drop from a prior peak to a subsequent trough.</p>
+        </div>
+        <div class="card">
+          <h3>Maximum drawdown</h3>
+          <p>The worst peak-to-trough decline within a specific period.</p>
+        </div>
+        <div class="card">
+          <h3>Recovery time</h3>
+          <p>How long it takes to regain the previous portfolio peak.</p>
+        </div>
+        <div class="card">
+          <h3>Risk asymmetry</h3>
+          <p>Losses require larger gains to recover (e.g., -50% needs +100%).</p>
+        </div>
+        <div class="card">
+          <h3>Tail risk</h3>
+          <p>Low-probability, high-impact losses outside normal ranges.</p>
+        </div>
+        <div class="card">
+          <h3>Diversification</h3>
+          <p>Spreading exposure across assets to reduce concentrated risk.</p>
+        </div>
+        <div class="card">
+          <h3>Concentration risk</h3>
+          <p>Overreliance on a small number of positions, sectors, or themes.</p>
+        </div>
+        <div class="card">
+          <h3>Correlation</h3>
+          <p>How two assets move together; higher correlation reduces diversification.</p>
+        </div>
+        <div class="card">
+          <h3>Liquidity risk</h3>
+          <p>Difficulty selling quickly without moving the price.</p>
+        </div>
+        <div class="card">
+          <h3>Leverage</h3>
+          <p>Borrowed exposure that amplifies both gains and losses.</p>
+        </div>
+        <div class="card">
+          <h3>Beta</h3>
+          <p>Sensitivity to broad market moves (beta 1.0 ≈ market).</p>
+        </div>
+        <div class="card">
+          <h3>Standard deviation</h3>
+          <p>Statistical measure of volatility around average returns.</p>
+        </div>
+        <div class="card">
+          <h3>Risk premium</h3>
+          <p>Expected extra return for bearing additional risk.</p>
+        </div>
+        <div class="card">
+          <h3>Expected return</h3>
+          <p>Long-run average outcome, not a guaranteed result.</p>
+        </div>
+        <div class="card">
+          <h3>Risk budget</h3>
+          <p>The maximum loss or volatility you are willing to accept.</p>
+        </div>
+        <div class="card">
+          <h3>Position sizing</h3>
+          <p>How much of a portfolio you allocate to a single position.</p>
+        </div>
+        <div class="card">
+          <h3>Rebalancing</h3>
+          <p>Adjusting holdings back to target weights over time.</p>
+        </div>
+        <div class="card">
+          <h3>Margin of safety</h3>
+          <p>A buffer that reduces the cost of being wrong.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Where to go next</h2>
+      <div class="card">
+        <p>
+          Ready to translate these terms into action? Start with your drawdown tolerance and
+          then explore how market sentiment shifts risk over time.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="/en/drawdown-test/">Run the Drawdown Test</a>
+          <a class="btn" href="/en/pendulum/">Open Market Pendulum</a>
+          <a class="btn" href="/en/drawdown-risk/">Read: Drawdown Risk Explained</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+    <footer>
+      RiskMeter is for education only and does not provide investment advice.
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
+  </script>
+</body>
+</html>

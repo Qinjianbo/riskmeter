@@ -78,6 +78,43 @@ Goals:
 - Risk Glossary (EN / ZH)
 - Rebalancing Planner (risk‑based, non‑predictive)
 
+### Rebalancing Planner — Draft Spec (2026-01-24)
+
+Purpose: help users rebalance based on risk tolerance and drift, not forecasts.
+
+Inputs:
+- Portfolio value
+- Target allocation (up to 4 buckets: equity, fixed income, cash, alternatives)
+- Current allocation (percent or amount)
+- Drawdown tolerance band (Very low / Low / Moderate / High / Very high)
+- Drift trigger (%) with suggested defaults per band
+- Review cadence (monthly / quarterly / annual)
+- Contributions/withdrawals (optional)
+- Costs toggle (fees/taxes awareness, no calculations)
+
+Outputs:
+- Rebalance status (Rebalance now / Monitor / No action)
+- Drift summary (actual vs target, largest drift)
+- Suggested trades (buy/sell amounts)
+- Risk note aligned to tolerance band
+- Next review date
+
+Risk-based rules (defaults):
+- Drift thresholds: Very low 3%, Low 5%, Moderate 8%, High 12%, Very high 15%.
+- If any asset exceeds the drift threshold, recommend rebalancing.
+- If within threshold but review cadence is due, show Monitor with guidance.
+- Prefer contributions/withdrawals to correct drift before selling.
+- No prediction or return estimates; all outputs are mechanical.
+
+UI sketch (EN / ZH labels):
+- Header: Rebalancing Planner / 再平衡规划器
+- Input card: Portfolio value / 组合总值; Target allocation / 目标配置; Current allocation / 当前配置
+- Slider: Risk tolerance band / 风险承受度档位
+- Slider: Drift trigger (%) / 偏离触发值（%）
+- Select: Review cadence / 复查周期
+- Toggle: Use contributions first / 先用新增资金修正
+- Result cards: Rebalance status / 是否需要再平衡; Largest drift / 最大偏离; Suggested trades / 建议调整; Risk note / 风险提示; Next review / 下次复查
+
 ---
 
 ## Phase 3 — Light Monetization (Optional, Later)

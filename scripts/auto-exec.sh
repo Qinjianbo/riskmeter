@@ -8,15 +8,18 @@ set -euo pipefail
 #   scripts/auto-exec.sh --dry-run      # ask Codex to only propose a plan (no edits)
 #   scripts/auto-exec.sh --sandbox <mode>  # set codex sandbox (default: workspace-write)
 #   scripts/auto-exec.sh --full-auto      # no prompts; bypass approvals/sandbox (dangerous)
+#   scripts/auto-exec.sh --force-lock     # ignore existing lock file
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TASKS_FILE="$ROOT_DIR/TASKS.md"
 LOG_FILE="$ROOT_DIR/ITERATION_LOG.md"
+LOCK_FILE="$ROOT_DIR/.auto-exec.lock"
 
 ALLOW_DIRTY="false"
 DRY_RUN="false"
 SANDBOX_MODE="workspace-write"
 FULL_AUTO="false"
+FORCE_LOCK="false"
 
 for arg in "$@"; do
   case "$arg" in
@@ -29,6 +32,9 @@ for arg in "$@"; do
     --full-auto)
       FULL_AUTO="true"
       ;;
+    --force-lock)
+      FORCE_LOCK="true"
+      ;;
     *) echo "Unknown option: $arg" >&2; exit 1 ;;
   esac
 done
@@ -39,6 +45,20 @@ if [[ ! -f "$TASKS_FILE" ]]; then
   echo "Missing TASKS.md. Run scripts/auto-iterate.sh --codex first." >&2
   exit 1
 fi
+
+if [[ -f "$LOCK_FILE" && "$FORCE_LOCK" == "false" ]]; then
+  echo "auto-exec is already running (lock file exists): $LOCK_FILE" >&2
+  echo "Use --force-lock to override if you are sure it's stale." >&2
+  exit 1
+fi
+
+if [[ "$FORCE_LOCK" == "true" ]]; then
+  rm -f "$LOCK_FILE"
+fi
+
+echo "pid=$$" > "$LOCK_FILE"
+echo "started=$(date -Iseconds)" >> "$LOCK_FILE"
+trap 'rm -f "$LOCK_FILE"' EXIT
 
 if [[ "$ALLOW_DIRTY" == "false" ]]; then
   if git status --porcelain | grep -q .; then
@@ -58,6 +78,7 @@ Rules:
 - Prefer editing existing files; avoid new dependencies.
 - Update CHANGELOG.md if user-visible behavior changes.
 - Report what you changed and any manual checks.
+- After completing tasks, update TASKS.md by checking off items you completed.
 
 If --dry-run is enabled, produce a plan only and do not edit files.
 EOF

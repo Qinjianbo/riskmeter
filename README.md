@@ -92,6 +92,24 @@ See [`PLAN.md`](./PLAN.md) for upcoming milestones.
 
 ---
 
+## Automation Scripts
+
+These helpers orchestrate task generation, execution, and publishing via Codex CLI.
+
+- `scripts/codex-run.sh` — Wrapper for running Codex non‑TUI with the bundled Node.
+  - Example: `scripts/codex-run.sh exec "Summarize repo status"`
+- `scripts/auto-iterate.sh --codex` — Generate `TASKS.md` using Codex.
+- `scripts/auto-exec.sh` — Implement unchecked tasks from `TASKS.md` (also updates task status).
+  - Optional: `--dry-run`, `--allow-dirty`, `--full-auto`
+- `scripts/auto-commit.sh` — Codex stages, commits, and pushes to `origin/main`.
+  - Optional: `-m "feat: your message"`
+- `scripts/auto-run.sh` — End‑to‑end: generate tasks → execute → commit/push.
+  - Optional: `--dry-run`, `--skip-commit`, `--full-auto`
+
+Note: `--full-auto` uses Codex bypass mode; use with caution.
+
+---
+
 ## Contact / Feedback
 
 If you have feedback, suggestions, or ideas:
@@ -101,4 +119,3 @@ If you have feedback, suggestions, or ideas:
 ---
 
 © RiskMeter — Measure Risk. Stay Rational.
-

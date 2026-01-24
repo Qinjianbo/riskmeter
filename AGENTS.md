@@ -12,6 +12,12 @@
   - `python3 -m http.server 8080`
   - Visit `http://localhost:8080/en/` or `/zh/`.
 - You can also open `index.html` directly in a browser for quick checks.
+- Automation helpers (Codex CLI):
+  - `scripts/codex-run.sh exec "Summarize repo status"`
+  - `scripts/auto-iterate.sh --codex` (generate `TASKS.md`)
+  - `scripts/auto-exec.sh` (implement tasks; updates `TASKS.md`)
+  - `scripts/auto-commit.sh` (commit + push via Codex)
+  - `scripts/auto-run.sh` (end‑to‑end orchestration)
 
 ## Coding Style & Naming Conventions
 - Indentation: 2 spaces for HTML/CSS/JS.
