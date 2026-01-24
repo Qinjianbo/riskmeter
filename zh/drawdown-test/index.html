@@ -152,6 +152,46 @@
     }
     .kv .k{color:var(--mut); font-size:12px}
     .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
+    .tooltip{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      height:16px;
+      margin-left:6px;
+      border-radius:50%;
+      border:1px solid var(--line);
+      background: transparent;
+      color:var(--mut);
+      font-size:11px;
+      cursor:help;
+      padding:0;
+      line-height:1;
+      -webkit-appearance:none;
+      appearance:none;
+    }
+    .tooltipBox{
+      position:absolute;
+      left:0;
+      top:22px;
+      width:240px;
+      background:rgba(15,20,35,.96);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--fg);
+      padding:10px 12px;
+      border-radius:10px;
+      font-size:12px;
+      line-height:1.5;
+      opacity:0;
+      transform: translateY(6px);
+      pointer-events:none;
+      transition: opacity .2s ease, transform .2s ease;
+      z-index:20;
+    }
+    .tooltipWrap{position:relative; display:inline-block}
+    .tooltipWrap:hover .tooltipBox{opacity:1; transform: translateY(0)}
+    .tooltipWrap:focus-within .tooltipBox{opacity:1; transform: translateY(0)}
+    .tooltipBox strong{color:var(--accent2)}
 
     .insight{
       margin-top:16px;
@@ -338,7 +378,15 @@
               <div class="v" id="lossValue">-¥20,000</div>
             </div>
             <div class="kv">
-              <div class="k">回本所需涨幅</div>
+              <div class="k">回本所需涨幅
+                <span class="tooltipWrap">
+                  <button class="tooltip" type="button" aria-label="回本涨幅如何计算">?</button>
+                  <span class="tooltipBox">
+                    <strong>公式</strong>：回本涨幅 = 1 / (1 - 回撤) - 1<br/>
+                    <strong>例</strong>：回撤 25% → 1/(1-0.25)-1 = 33.3%
+                  </span>
+                </span>
+              </div>
               <div class="v" id="recoveryValue">+25.0%</div>
             </div>
             <div class="kv">
