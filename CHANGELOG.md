@@ -1,6 +1,11 @@
 # Changelog
 
 ## 2026-01-25
+- Launched the Drawdown Recovery Scenarios tool with local persistence and recovery-horizon outputs (EN/ZH).
+- Added public Ethics & Guardrails pages and linked them from home/about (EN/ZH).
+- Expanded cross-links and cluster navigation to include the new recovery tool across tools, guides, and glossary (EN/ZH).
+- Added canonical + JSON-LD metadata on key pages and aligned selected hreflang x-default targets.
+- Added sitemap.xml and robots.txt to expose canonical URLs to crawlers.
 - Added methodology, references, and disclaimer blocks to drawdown test and drawdown capacity tools (EN/ZH).
 - Expanded Rebalancing Planner education, examples, and confidence check with local-only signals (EN/ZH).
 - Added learning-journey CTAs on pendulum tool/guide pages and the rebalancing planner (EN/ZH).

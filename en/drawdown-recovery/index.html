@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Drawdown Capacity Calculator · RiskMeter</title>
-  <meta name="description" content="Estimate how much further a position could drop before your account hits its max drawdown." />
+  <title>Drawdown Recovery Scenarios · RiskMeter</title>
+  <meta name="description" content="Compare how much return is required to recover from a drawdown across fast, steady, and patient time horizons." />
 
-  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/drawdown-capacity/" />
-  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/drawdown-capacity/" />
-  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/drawdown-capacity/" />
-  <link rel="canonical" href="https://riskmeter.app/en/drawdown-capacity/" />
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/drawdown-recovery/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/drawdown-recovery/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/drawdown-recovery/" />
+  <link rel="canonical" href="https://riskmeter.app/en/drawdown-recovery/" />
 
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "Drawdown Capacity Calculator",
-      "description": "Estimate how much further a position could drop before your account hits its max drawdown.",
-      "url": "https://riskmeter.app/en/drawdown-capacity/",
+      "name": "Drawdown Recovery Scenarios",
+      "description": "Compare how much return is required to recover from a drawdown across fast, steady, and patient time horizons.",
+      "url": "https://riskmeter.app/en/drawdown-recovery/",
       "inLanguage": "en",
       "isPartOf": {
         "@type": "WebSite",
@@ -143,9 +143,12 @@
       font-size:12px;
       color: var(--mut);
     }
-    .ctrl input[type="number"]{
+    .ctrl input[type="number"],
+    .ctrl input[type="range"]{
       width:100%;
       margin-top:10px;
+    }
+    .ctrl input[type="number"]{
       padding:10px 12px;
       border-radius:12px;
       border:1px solid var(--line);
@@ -174,6 +177,26 @@
     }
     .kv .k{color:var(--mut); font-size:12px}
     .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
+
+    .scenarioGrid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+    @media (max-width: 900px){
+      .scenarioGrid{grid-template-columns:1fr}
+    }
+    .scenarioCard{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(0,0,0,.18);
+      padding:14px;
+    }
+    .scenarioCard h3{margin:0 0 8px;font-size:15px}
+    .metric{margin-top:8px}
+    .metric .k{color:var(--mut);font-size:12px}
+    .metric .v{font-size:14px;margin-top:4px}
 
     .note{
       margin-top:12px;
@@ -231,22 +254,21 @@
 <body>
   <div class="wrap">
     <section class="hero">
-      <span class="pill">Risk Sizing · Drawdown Control</span>
-      <h1>Drawdown Capacity Calculator</h1>
+      <span class="pill">Recovery Tool · Drawdown Scenarios</span>
+      <h1>Drawdown Recovery Scenarios</h1>
       <p class="sub">
-        Estimate how much further a position could drop before your account hits its maximum drawdown.
-        This uses simple sizing math — not prediction.
+        Quantify how much return is needed to climb back from a drawdown.
+        Compare fast, steady, and patient recovery paths with simple compounding math.
       </p>
 
       <div class="langBar">
         <span class="tag">Language:</span>
         <span class="pill">EN</span>
-        <a class="pill" href="/zh/drawdown-capacity/" id="toZh">中文</a>
+        <a class="pill" href="/zh/drawdown-recovery/" id="toZh">中文</a>
       </div>
 
       <div class="cta">
         <a class="btn primary" href="/en/drawdown-test/">Back to Drawdown Test →</a>
-        <a class="btn" href="/en/drawdown-recovery/">Drawdown Recovery Scenarios</a>
         <a class="btn" href="/en/drawdown-risk/">Read: Drawdown Risk</a>
         <a class="btn" href="/en/risk-glossary/">Open Risk Glossary</a>
       </div>
@@ -255,8 +277,8 @@
         <span>Behavioral risk cluster:</span>
         <a class="chip" href="/en/rebalancing-planner/">Rebalancing Planner</a>
         <a class="chip" href="/en/drawdown-test/">Drawdown Test</a>
-        <a class="chip" href="/en/drawdown-recovery/">Drawdown Recovery</a>
-        <span class="chip active">Drawdown Capacity</span>
+        <span class="chip active">Drawdown Recovery</span>
+        <a class="chip" href="/en/drawdown-capacity/">Drawdown Capacity</a>
         <a class="chip" href="/en/drawdown-risk/">Drawdown Risk Guide</a>
         <a class="chip" href="/en/pendulum/">Market Pendulum</a>
       </div>
@@ -267,14 +289,14 @@
         <div class="toolHead">
           <div>
             <h2>Methodology, references, & disclaimer</h2>
-            <p class="meta">How the sizing math works and what it excludes.</p>
+            <p class="meta">How recovery math is calculated, plus what it excludes.</p>
           </div>
         </div>
         <div class="toolBody">
           <div class="summary">
             <div class="kv">
               <div class="k">Methodology</div>
-              <div class="v">Remaining drawdown = max drawdown - current drawdown. Position weight = position / total. Max additional position drop = remaining / weight (assumes other holdings stay flat).</div>
+              <div class="v">Recovery gain = (1 / (1 - drawdown)) - 1. Annualized return for N years = (1 / (1 - drawdown))^(1/N) - 1.</div>
             </div>
             <div class="kv">
               <div class="k">References</div>
@@ -282,7 +304,7 @@
             </div>
             <div class="kv">
               <div class="k">Disclaimer</div>
-              <div class="v">Educational only. No price prediction. Ignores correlations, volatility shifts, taxes, fees, and liquidity.</div>
+              <div class="v">Educational only. Ignores cash flows, volatility, fees, taxes, and sequencing effects.</div>
             </div>
           </div>
         </div>
@@ -293,51 +315,77 @@
       <div class="toolCard">
         <div class="toolHead">
           <div>
-            <h2>From here, how much can it drop?</h2>
-            <p class="meta">The calculation assumes other holdings stay flat.</p>
+            <h2>Recovery math, scaled</h2>
+            <p class="meta">Pick a drawdown, then compare recovery horizons.</p>
           </div>
         </div>
         <div class="toolBody">
           <div class="controls">
             <div class="ctrl">
-              <label for="capTotal">Total portfolio value</label>
-              <input type="number" id="capTotal" value="100000" min="0" step="1000" inputmode="decimal" />
-              <div class="hint">Your current total account value.</div>
+              <label for="ddRange">Drawdown level <span id="ddValue">25%</span></label>
+              <input type="range" id="ddRange" min="5" max="80" step="0.5" value="25" />
+              <div class="hint">Peak-to-trough decline you want to recover.</div>
             </div>
             <div class="ctrl">
-              <label for="capPosition">Position value (current)</label>
-              <input type="number" id="capPosition" value="30000" min="0" step="1000" inputmode="decimal" />
-              <div class="hint">Current market value of the position.</div>
-            </div>
-            <div class="ctrl">
-              <label for="capMaxDd">Max account drawdown you can accept (%)</label>
-              <input type="number" id="capMaxDd" value="20" min="0" max="90" step="0.5" inputmode="decimal" />
-              <div class="hint">Your overall limit from peak to trough.</div>
-            </div>
-            <div class="ctrl">
-              <label for="capCurrentDd">Current account drawdown (%)</label>
-              <input type="number" id="capCurrentDd" value="0" min="0" max="90" step="0.5" inputmode="decimal" />
-              <div class="hint">How far you are already below your peak.</div>
+              <label for="portfolio">Portfolio size (optional)</label>
+              <input type="number" id="portfolio" value="100000" min="0" step="1000" inputmode="decimal" />
+              <div class="hint">Used to show the dollar gap to recover.</div>
             </div>
           </div>
 
           <div class="summary">
             <div class="kv">
-              <div class="k">Remaining account drawdown</div>
-              <div class="v" id="capRemaining">—</div>
+              <div class="k">Loss from peak</div>
+              <div class="v" id="lossValue">—</div>
             </div>
             <div class="kv">
-              <div class="k">Position weight</div>
-              <div class="v" id="capWeight">—</div>
+              <div class="k">Value after drawdown</div>
+              <div class="v" id="afterValue">—</div>
             </div>
             <div class="kv">
-              <div class="k">Max additional position drop</div>
-              <div class="v" id="capPosDrop">—</div>
+              <div class="k">Gain needed to recover</div>
+              <div class="v" id="recoveryGain">—</div>
+            </div>
+          </div>
+
+          <div class="scenarioGrid">
+            <div class="scenarioCard">
+              <h3>Recover in 1 year (fast)</h3>
+              <div class="metric">
+                <div class="k">Annualized return needed</div>
+                <div class="v" id="fastAnnual">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Approx monthly return</div>
+                <div class="v" id="fastMonthly">—</div>
+              </div>
+            </div>
+            <div class="scenarioCard">
+              <h3>Recover in 3 years (steady)</h3>
+              <div class="metric">
+                <div class="k">Annualized return needed</div>
+                <div class="v" id="steadyAnnual">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Approx monthly return</div>
+                <div class="v" id="steadyMonthly">—</div>
+              </div>
+            </div>
+            <div class="scenarioCard">
+              <h3>Recover in 5 years (patient)</h3>
+              <div class="metric">
+                <div class="k">Annualized return needed</div>
+                <div class="v" id="patientAnnual">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">Approx monthly return</div>
+                <div class="v" id="patientMonthly">—</div>
+              </div>
             </div>
           </div>
 
           <div class="note">
-            This is a sizing perspective only. It does not forecast prices or recommend trades.
+            If a drawdown requires you to double just to break even, consider tightening risk or position size.
           </div>
         </div>
       </div>
@@ -381,18 +429,24 @@
   </div>
 
   <script>
-    const capTotal = document.getElementById('capTotal');
-    const capPosition = document.getElementById('capPosition');
-    const capMaxDd = document.getElementById('capMaxDd');
-    const capCurrentDd = document.getElementById('capCurrentDd');
-    const capRemaining = document.getElementById('capRemaining');
-    const capWeight = document.getElementById('capWeight');
-    const capPosDrop = document.getElementById('capPosDrop');
+    const ddRange = document.getElementById('ddRange');
+    const ddValue = document.getElementById('ddValue');
+    const portfolioInput = document.getElementById('portfolio');
+    const lossValue = document.getElementById('lossValue');
+    const afterValue = document.getElementById('afterValue');
+    const recoveryGain = document.getElementById('recoveryGain');
+    const fastAnnual = document.getElementById('fastAnnual');
+    const fastMonthly = document.getElementById('fastMonthly');
+    const steadyAnnual = document.getElementById('steadyAnnual');
+    const steadyMonthly = document.getElementById('steadyMonthly');
+    const patientAnnual = document.getElementById('patientAnnual');
+    const patientMonthly = document.getElementById('patientMonthly');
     const copyFeedback = document.getElementById('copyFeedback');
     const feedbackHint = document.getElementById('feedbackHint');
 
+    const STORAGE_KEY = 'rm_drawdown_recovery_state';
     const SIGNAL_KEY = 'rm_signal_log';
-    const RM_PAGE = 'en/drawdown-capacity';
+    const RM_PAGE = 'en/drawdown-recovery';
 
     const formatCurrency = (value) => {
       const formatter = new Intl.NumberFormat('en-US', {
@@ -404,21 +458,7 @@
     };
 
     const formatPercent = (value) => `${value.toFixed(1)}%`;
-
-    const copyText = async (text) => {
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
-      }
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try{ document.execCommand('copy'); }catch(_){ }
-      document.body.removeChild(ta);
-      return true;
-    };
+    const formatSignedPercent = (value) => `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
 
     const loadSignals = () => {
       try{
@@ -443,38 +483,84 @@
       return page;
     };
 
-    bumpSignal('views');
-
-    const updateCapacity = () => {
-      const total = Number(capTotal.value) || 0;
-      const position = Number(capPosition.value) || 0;
-      const maxDd = Math.max(0, Number(capMaxDd.value) || 0);
-      const currentDd = Math.max(0, Number(capCurrentDd.value) || 0);
-      const remaining = Math.max(0, maxDd - currentDd);
-
-      capRemaining.textContent = total > 0 ? `${formatPercent(remaining)} · ${formatCurrency(total * remaining / 100)}` : '—';
-
-      if(total <= 0 || position <= 0){
-        capWeight.textContent = '—';
-        capPosDrop.textContent = '—';
-        return;
-      }
-
-      const weight = position / total;
-      capWeight.textContent = formatPercent(weight * 100);
-
-      const posDrop = remaining / weight;
-      if(!isFinite(posDrop)){
-        capPosDrop.textContent = '—';
-        return;
-      }
-      capPosDrop.textContent = posDrop >= 100 ? '≥100%' : formatPercent(posDrop);
+    const saveState = (drawdown, portfolio) => {
+      const payload = { drawdown, portfolio };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     };
 
-    [capTotal, capPosition, capMaxDd, capCurrentDd].forEach((el) => {
-      el.addEventListener('input', updateCapacity);
+    const loadState = () => {
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const state = JSON.parse(raw);
+        if(typeof state.drawdown === 'number') ddRange.value = String(state.drawdown);
+        if(typeof state.portfolio === 'number') portfolioInput.value = String(state.portfolio);
+      }catch(_){ }
+    };
+
+    const updateRecovery = () => {
+      const drawdown = Math.max(0, Number(ddRange.value) || 0);
+      const portfolio = Number(portfolioInput.value) || 0;
+      const ratio = drawdown / 100;
+      const base = 1 - ratio;
+      const safeBase = base > 0 ? base : 0;
+
+      ddValue.textContent = formatPercent(drawdown);
+
+      const loss = portfolio * ratio;
+      const after = portfolio - loss;
+
+      lossValue.textContent = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+      afterValue.textContent = portfolio > 0 ? formatCurrency(after) : '—';
+
+      if(safeBase <= 0 || drawdown >= 99){
+        recoveryGain.textContent = '—';
+        [fastAnnual, fastMonthly, steadyAnnual, steadyMonthly, patientAnnual, patientMonthly]
+          .forEach((el) => { el.textContent = '—'; });
+        return;
+      }
+
+      const recoveryPct = ((1 / safeBase) - 1) * 100;
+      recoveryGain.textContent = formatSignedPercent(recoveryPct);
+
+      const scenarios = [
+        { years: 1, annual: fastAnnual, monthly: fastMonthly },
+        { years: 3, annual: steadyAnnual, monthly: steadyMonthly },
+        { years: 5, annual: patientAnnual, monthly: patientMonthly }
+      ];
+
+      scenarios.forEach(({ years, annual, monthly }) => {
+        const annualRate = (Math.pow(1 / safeBase, 1 / years) - 1) * 100;
+        const monthlyRate = (Math.pow(1 / safeBase, 1 / (years * 12)) - 1) * 100;
+        annual.textContent = isFinite(annualRate) ? formatSignedPercent(annualRate) : '—';
+        monthly.textContent = isFinite(monthlyRate) ? formatSignedPercent(monthlyRate) : '—';
+      });
+
+      saveState(drawdown, portfolio);
+    };
+
+    bumpSignal('views');
+    loadState();
+    updateRecovery();
+
+    [ddRange, portfolioInput].forEach((el) => {
+      el.addEventListener('input', updateRecovery);
     });
-    updateCapacity();
+
+    const copyText = async (text) => {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); }catch(_){ }
+      document.body.removeChild(ta);
+      return true;
+    };
 
     if(copyFeedback && feedbackHint){
       document.querySelectorAll('[data-feedback]').forEach((btn) => {

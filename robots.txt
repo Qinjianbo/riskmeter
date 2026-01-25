@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /about/
+Disallow: /pendulum/
+Sitemap: https://riskmeter.app/sitemap.xml

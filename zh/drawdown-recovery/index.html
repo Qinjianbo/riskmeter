@@ -3,21 +3,21 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>回撤承受空间计算器 · RiskMeter</title>
-  <meta name="description" content="估算在不超过最大回撤的前提下，该仓位还能下跌多少。" />
+  <title>回撤恢复情景 · RiskMeter</title>
+  <meta name="description" content="对比不同回撤在快、稳、慢节奏下的恢复收益与年化回报需求。" />
 
-  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/drawdown-capacity/" />
-  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/drawdown-capacity/" />
-  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/drawdown-capacity/" />
-  <link rel="canonical" href="https://riskmeter.app/zh/drawdown-capacity/" />
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/drawdown-recovery/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/drawdown-recovery/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/drawdown-recovery/" />
+  <link rel="canonical" href="https://riskmeter.app/zh/drawdown-recovery/" />
 
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "回撤承受空间计算器",
-      "description": "估算在不超过最大回撤的前提下，该仓位还能下跌多少。",
-      "url": "https://riskmeter.app/zh/drawdown-capacity/",
+      "name": "回撤恢复情景",
+      "description": "对比不同回撤在快、稳、慢节奏下的恢复收益与年化回报需求。",
+      "url": "https://riskmeter.app/zh/drawdown-recovery/",
       "inLanguage": "zh-CN",
       "isPartOf": {
         "@type": "WebSite",
@@ -143,9 +143,12 @@
       font-size:12px;
       color: var(--mut);
     }
-    .ctrl input[type="number"]{
+    .ctrl input[type="number"],
+    .ctrl input[type="range"]{
       width:100%;
       margin-top:10px;
+    }
+    .ctrl input[type="number"]{
       padding:10px 12px;
       border-radius:12px;
       border:1px solid var(--line);
@@ -174,6 +177,26 @@
     }
     .kv .k{color:var(--mut); font-size:12px}
     .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
+
+    .scenarioGrid{
+      margin-top:16px;
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:12px;
+    }
+    @media (max-width: 900px){
+      .scenarioGrid{grid-template-columns:1fr}
+    }
+    .scenarioCard{
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:rgba(0,0,0,.18);
+      padding:14px;
+    }
+    .scenarioCard h3{margin:0 0 8px;font-size:15px}
+    .metric{margin-top:8px}
+    .metric .k{color:var(--mut);font-size:12px}
+    .metric .v{font-size:14px;margin-top:4px}
 
     .note{
       margin-top:12px;
@@ -231,33 +254,32 @@
 <body>
   <div class="wrap">
     <section class="hero">
-      <span class="pill">风险仓位 · 回撤控制</span>
-      <h1>回撤承受空间计算器</h1>
+      <span class="pill">恢复工具 · 回撤情景</span>
+      <h1>回撤恢复情景</h1>
       <p class="sub">
-        估算在不超过最大回撤的前提下，该仓位还可能下跌多少。
-        这是仓位与风险的数学关系，不是预测。
+        量化回撤后回到原点需要的收益，并对比快、稳、慢三种恢复节奏。
+        仅为数学测算，不做预测。
       </p>
 
       <div class="langBar">
         <span class="tag">语言：</span>
         <span class="pill">中文</span>
-        <a class="pill" href="/en/drawdown-capacity/" id="toEn">EN</a>
+        <a class="pill" href="/en/drawdown-recovery/" id="toEn">EN</a>
       </div>
 
       <div class="cta">
         <a class="btn primary" href="/zh/drawdown-test/">返回回撤承受度测试 →</a>
-        <a class="btn" href="/zh/drawdown-recovery/">回撤恢复情景</a>
         <a class="btn" href="/zh/drawdown-explained/">阅读：回撤风险</a>
-        <a class="btn" href="/zh/risk-glossary/">查看风险术语表</a>
+        <a class="btn" href="/zh/risk-glossary/">打开风险术语表</a>
       </div>
 
       <div class="clusterNav">
-        <span>行为风险组合：</span>
+        <span>行为风险工具群：</span>
         <a class="chip" href="/zh/rebalancing-planner/">再平衡计划器</a>
         <a class="chip" href="/zh/drawdown-test/">回撤测试</a>
-        <a class="chip" href="/zh/drawdown-recovery/">回撤恢复</a>
-        <span class="chip active">回撤容量</span>
-        <a class="chip" href="/zh/drawdown-explained/">回撤风险</a>
+        <span class="chip active">回撤恢复</span>
+        <a class="chip" href="/zh/drawdown-capacity/">回撤承受空间</a>
+        <a class="chip" href="/zh/drawdown-explained/">回撤风险指南</a>
         <a class="chip" href="/zh/pendulum/">市场钟摆</a>
       </div>
     </section>
@@ -266,23 +288,23 @@
       <div class="toolCard">
         <div class="toolHead">
           <div>
-            <h2>方法、引用与声明</h2>
-            <p class="meta">说明仓位计算逻辑与未覆盖的部分。</p>
+            <h2>方法、参考与声明</h2>
+            <p class="meta">公式来源与不包含的现实因素。</p>
           </div>
         </div>
         <div class="toolBody">
           <div class="summary">
             <div class="kv">
               <div class="k">方法</div>
-              <div class="v">剩余回撤 = 最大回撤 - 当前回撤。仓位占比 = 仓位市值 / 总资产。该仓位还能下跌 = 剩余回撤 / 仓位占比（假设其他资产不变）。</div>
+              <div class="v">恢复收益 = (1 / (1 - 回撤)) - 1。N 年恢复所需年化收益 = (1 / (1 - 回撤))^(1/N) - 1。</div>
             </div>
             <div class="kv">
               <div class="k">参考</div>
-              <div class="v">术语定义：<a href="/zh/risk-glossary/">风险术语表</a>。背景说明：<a href="/zh/drawdown-explained/">回撤风险</a>、<a href="/zh/drawdown-test/">回撤承受度测试</a>。所有计算在浏览器本地完成。</div>
+              <div class="v">定义：<a href="/zh/risk-glossary/">风险术语表</a>。延伸阅读：<a href="/zh/drawdown-explained/">回撤风险指南</a>与<a href="/zh/drawdown-test/">回撤承受度测试</a>。所有计算在浏览器本地完成。</div>
             </div>
             <div class="kv">
               <div class="k">声明</div>
-              <div class="v">仅用于教育用途，不预测价格。未考虑相关性、波动变化、税费、滑点与流动性。</div>
+              <div class="v">仅教育用途。不考虑现金流、波动、费用、税收与路径差异。</div>
             </div>
           </div>
         </div>
@@ -293,51 +315,77 @@
       <div class="toolCard">
         <div class="toolHead">
           <div>
-            <h2>从现在开始还能跌多少？</h2>
-            <p class="meta">计算假设其他资产不变。</p>
+            <h2>恢复测算与情景对比</h2>
+            <p class="meta">选择回撤水平，对比不同恢复时间窗口。</p>
           </div>
         </div>
         <div class="toolBody">
           <div class="controls">
             <div class="ctrl">
-              <label for="capTotal">总资产当前市值</label>
-              <input type="number" id="capTotal" value="100000" min="0" step="1000" inputmode="decimal" />
-              <div class="hint">你当前账户的总市值。</div>
+              <label for="ddRange">回撤水平 <span id="ddValue">25%</span></label>
+              <input type="range" id="ddRange" min="5" max="80" step="0.5" value="25" />
+              <div class="hint">从高点到低点的下跌幅度。</div>
             </div>
             <div class="ctrl">
-              <label for="capPosition">该仓位当前市值</label>
-              <input type="number" id="capPosition" value="30000" min="0" step="1000" inputmode="decimal" />
-              <div class="hint">该标的当前市值。</div>
-            </div>
-            <div class="ctrl">
-              <label for="capMaxDd">可接受的最大账户回撤（%）</label>
-              <input type="number" id="capMaxDd" value="20" min="0" max="90" step="0.5" inputmode="decimal" />
-              <div class="hint">你的总体回撤上限（从峰值到谷值）。</div>
-            </div>
-            <div class="ctrl">
-              <label for="capCurrentDd">当前账户回撤（%）</label>
-              <input type="number" id="capCurrentDd" value="0" min="0" max="90" step="0.5" inputmode="decimal" />
-              <div class="hint">你当前距离峰值还差多少。</div>
+              <label for="portfolio">组合规模（可选）</label>
+              <input type="number" id="portfolio" value="100000" min="0" step="1000" inputmode="decimal" />
+              <div class="hint">用于展示恢复所需的金额差距。</div>
             </div>
           </div>
 
           <div class="summary">
             <div class="kv">
-              <div class="k">剩余可承受账户回撤</div>
-              <div class="v" id="capRemaining">—</div>
+              <div class="k">回撤损失</div>
+              <div class="v" id="lossValue">—</div>
             </div>
             <div class="kv">
-              <div class="k">该仓位占比</div>
-              <div class="v" id="capWeight">—</div>
+              <div class="k">回撤后净值</div>
+              <div class="v" id="afterValue">—</div>
             </div>
             <div class="kv">
-              <div class="k">该仓位还能下跌</div>
-              <div class="v" id="capPosDrop">—</div>
+              <div class="k">恢复所需收益</div>
+              <div class="v" id="recoveryGain">—</div>
+            </div>
+          </div>
+
+          <div class="scenarioGrid">
+            <div class="scenarioCard">
+              <h3>1 年内恢复（快）</h3>
+              <div class="metric">
+                <div class="k">所需年化收益</div>
+                <div class="v" id="fastAnnual">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">约等月度收益</div>
+                <div class="v" id="fastMonthly">—</div>
+              </div>
+            </div>
+            <div class="scenarioCard">
+              <h3>3 年内恢复（稳）</h3>
+              <div class="metric">
+                <div class="k">所需年化收益</div>
+                <div class="v" id="steadyAnnual">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">约等月度收益</div>
+                <div class="v" id="steadyMonthly">—</div>
+              </div>
+            </div>
+            <div class="scenarioCard">
+              <h3>5 年内恢复（慢）</h3>
+              <div class="metric">
+                <div class="k">所需年化收益</div>
+                <div class="v" id="patientAnnual">—</div>
+              </div>
+              <div class="metric">
+                <div class="k">约等月度收益</div>
+                <div class="v" id="patientMonthly">—</div>
+              </div>
             </div>
           </div>
 
           <div class="note">
-            该计算仅用于仓位与风险理解，不构成任何建议。
+            如果回撤意味着需要翻倍才能回本，通常说明风险过高或仓位过大。
           </div>
         </div>
       </div>
@@ -348,7 +396,7 @@
         <div class="toolHead">
           <div>
             <h2>学习路径</h2>
-            <p class="meta">从回撤边界到周期感知，再到再平衡规则。</p>
+            <p class="meta">先定回撤边界，再理解周期，最后建立再平衡规则。</p>
           </div>
         </div>
         <div class="toolBody">
@@ -381,18 +429,24 @@
   </div>
 
   <script>
-    const capTotal = document.getElementById('capTotal');
-    const capPosition = document.getElementById('capPosition');
-    const capMaxDd = document.getElementById('capMaxDd');
-    const capCurrentDd = document.getElementById('capCurrentDd');
-    const capRemaining = document.getElementById('capRemaining');
-    const capWeight = document.getElementById('capWeight');
-    const capPosDrop = document.getElementById('capPosDrop');
+    const ddRange = document.getElementById('ddRange');
+    const ddValue = document.getElementById('ddValue');
+    const portfolioInput = document.getElementById('portfolio');
+    const lossValue = document.getElementById('lossValue');
+    const afterValue = document.getElementById('afterValue');
+    const recoveryGain = document.getElementById('recoveryGain');
+    const fastAnnual = document.getElementById('fastAnnual');
+    const fastMonthly = document.getElementById('fastMonthly');
+    const steadyAnnual = document.getElementById('steadyAnnual');
+    const steadyMonthly = document.getElementById('steadyMonthly');
+    const patientAnnual = document.getElementById('patientAnnual');
+    const patientMonthly = document.getElementById('patientMonthly');
     const copyFeedback = document.getElementById('copyFeedback');
     const feedbackHint = document.getElementById('feedbackHint');
 
+    const STORAGE_KEY = 'rm_drawdown_recovery_state';
     const SIGNAL_KEY = 'rm_signal_log';
-    const RM_PAGE = 'zh/drawdown-capacity';
+    const RM_PAGE = 'zh/drawdown-recovery';
 
     const formatCurrency = (value) => {
       const formatter = new Intl.NumberFormat('zh-CN', {
@@ -404,21 +458,7 @@
     };
 
     const formatPercent = (value) => `${value.toFixed(1)}%`;
-
-    const copyText = async (text) => {
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
-      }
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try{ document.execCommand('copy'); }catch(_){ }
-      document.body.removeChild(ta);
-      return true;
-    };
+    const formatSignedPercent = (value) => `${value >= 0 ? '+' : ''}${value.toFixed(1)}%`;
 
     const loadSignals = () => {
       try{
@@ -443,38 +483,84 @@
       return page;
     };
 
-    bumpSignal('views');
-
-    const updateCapacity = () => {
-      const total = Number(capTotal.value) || 0;
-      const position = Number(capPosition.value) || 0;
-      const maxDd = Math.max(0, Number(capMaxDd.value) || 0);
-      const currentDd = Math.max(0, Number(capCurrentDd.value) || 0);
-      const remaining = Math.max(0, maxDd - currentDd);
-
-      capRemaining.textContent = total > 0 ? `${formatPercent(remaining)} · ${formatCurrency(total * remaining / 100)}` : '—';
-
-      if(total <= 0 || position <= 0){
-        capWeight.textContent = '—';
-        capPosDrop.textContent = '—';
-        return;
-      }
-
-      const weight = position / total;
-      capWeight.textContent = formatPercent(weight * 100);
-
-      const posDrop = remaining / weight;
-      if(!isFinite(posDrop)){
-        capPosDrop.textContent = '—';
-        return;
-      }
-      capPosDrop.textContent = posDrop >= 100 ? '≥100%' : formatPercent(posDrop);
+    const saveState = (drawdown, portfolio) => {
+      const payload = { drawdown, portfolio };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
     };
 
-    [capTotal, capPosition, capMaxDd, capCurrentDd].forEach((el) => {
-      el.addEventListener('input', updateCapacity);
+    const loadState = () => {
+      try{
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if(!raw) return;
+        const state = JSON.parse(raw);
+        if(typeof state.drawdown === 'number') ddRange.value = String(state.drawdown);
+        if(typeof state.portfolio === 'number') portfolioInput.value = String(state.portfolio);
+      }catch(_){ }
+    };
+
+    const updateRecovery = () => {
+      const drawdown = Math.max(0, Number(ddRange.value) || 0);
+      const portfolio = Number(portfolioInput.value) || 0;
+      const ratio = drawdown / 100;
+      const base = 1 - ratio;
+      const safeBase = base > 0 ? base : 0;
+
+      ddValue.textContent = formatPercent(drawdown);
+
+      const loss = portfolio * ratio;
+      const after = portfolio - loss;
+
+      lossValue.textContent = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
+      afterValue.textContent = portfolio > 0 ? formatCurrency(after) : '—';
+
+      if(safeBase <= 0 || drawdown >= 99){
+        recoveryGain.textContent = '—';
+        [fastAnnual, fastMonthly, steadyAnnual, steadyMonthly, patientAnnual, patientMonthly]
+          .forEach((el) => { el.textContent = '—'; });
+        return;
+      }
+
+      const recoveryPct = ((1 / safeBase) - 1) * 100;
+      recoveryGain.textContent = formatSignedPercent(recoveryPct);
+
+      const scenarios = [
+        { years: 1, annual: fastAnnual, monthly: fastMonthly },
+        { years: 3, annual: steadyAnnual, monthly: steadyMonthly },
+        { years: 5, annual: patientAnnual, monthly: patientMonthly }
+      ];
+
+      scenarios.forEach(({ years, annual, monthly }) => {
+        const annualRate = (Math.pow(1 / safeBase, 1 / years) - 1) * 100;
+        const monthlyRate = (Math.pow(1 / safeBase, 1 / (years * 12)) - 1) * 100;
+        annual.textContent = isFinite(annualRate) ? formatSignedPercent(annualRate) : '—';
+        monthly.textContent = isFinite(monthlyRate) ? formatSignedPercent(monthlyRate) : '—';
+      });
+
+      saveState(drawdown, portfolio);
+    };
+
+    bumpSignal('views');
+    loadState();
+    updateRecovery();
+
+    [ddRange, portfolioInput].forEach((el) => {
+      el.addEventListener('input', updateRecovery);
     });
-    updateCapacity();
+
+    const copyText = async (text) => {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); }catch(_){ }
+      document.body.removeChild(ta);
+      return true;
+    };
 
     if(copyFeedback && feedbackHint){
       document.querySelectorAll('[data-feedback]').forEach((btn) => {
