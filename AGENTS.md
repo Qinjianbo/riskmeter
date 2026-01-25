@@ -12,13 +12,17 @@
   - `python3 -m http.server 8080`
   - Visit `http://localhost:8080/en/` or `/zh/`.
 - You can also open `index.html` directly in a browser for quick checks.
-- Automation scripts read defaults from `config.yaml` (ignored in git); copy `scripts/config.example.yaml`.
+- Automation scripts live in `tools/codex-scripts` (submodule).
+- Configure defaults in `config.yaml` (ignored in git); copy `tools/codex-scripts/config.example.yaml`.
+- Update submodule:
+  - `git submodule update --remote tools/codex-scripts`
+  - `git add tools/codex-scripts .gitmodules && git commit -m "chore: bump codex-scripts submodule"`
 - Automation helpers (Codex CLI):
-  - `scripts/codex-run.sh exec "Summarize repo status"`
-  - `scripts/auto-iterate.sh --codex` (generate `TASKS.md`)
-  - `scripts/auto-exec.sh` (implement tasks; updates `TASKS.md`)
-  - `scripts/auto-commit.sh` (commit + push via Codex)
-  - `scripts/auto-run.sh` (end‑to‑end orchestration)
+  - `tools/codex-scripts/codex-run.sh exec "Summarize repo status"`
+  - `tools/codex-scripts/auto-iterate.sh --codex` (generate `TASKS.md`)
+  - `tools/codex-scripts/auto-exec.sh` (implement tasks; updates `TASKS.md`)
+  - `tools/codex-scripts/auto-commit.sh` (commit + push via Codex)
+  - `tools/codex-scripts/auto-run.sh` (end‑to‑end orchestration)
 
 ## Coding Style & Naming Conventions
 - Indentation: 2 spaces for HTML/CSS/JS.
