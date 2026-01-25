@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-01-25
+- Added methodology, references, and disclaimer blocks to drawdown test and drawdown capacity tools (EN/ZH).
 - Expanded Rebalancing Planner education, examples, and confidence check with local-only signals (EN/ZH).
 - Added learning-journey CTAs on pendulum tool/guide pages and the rebalancing planner (EN/ZH).
 - Consolidated the Risk Glossary with a taxonomy map, tool map, and new sentiment/mean-reversion terms (EN/ZH).
