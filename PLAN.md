@@ -1,182 +1,22 @@
-# RiskMeter — Project Plan & Roadmap
+# Plan
 
-This document outlines the short- and medium-term direction of the RiskMeter project.
+High-level roadmap for RiskMeter. Focus on outcomes, not task lists.
 
-The goal is to build a **small but high-quality investment risk knowledge site**
-that can grow sustainably through search, sharing, and practical usefulness.
+## 2026-01-25
 
----
+- Deliver a production-ready Rebalancing Planner experience with bilingual parity, clear risk-aligned guidance, and UI consistency across tools.
+- Expand the evergreen content cluster around drawdowns, rebalancing, and behavioral risk, including a bilingual risk glossary and stronger internal linking.
+- Improve trust and retention via transparent methodology notes, privacy-first persistence, and effortless sharing of tool outputs.
+- Strengthen discovery for bilingual pages through metadata consistency, hreflang hygiene, and fast, accessible layouts.
+- Establish lightweight feedback loops to validate which tools and content provide the most decision value.
 
-## Project Vision
+## Vision
 
-RiskMeter aims to become:
+RiskMeter should be a trusted reference for investment risk, drawdowns, and behavioral cycles, supported by simple, intuitive tools.
 
-> A trusted reference for understanding investment risk, drawdowns, and behavioral cycles —  
-> supported by simple, intuitive tools.
+## Guardrails
 
-Not a trading platform.  
-Not a signal service.  
-Not a prediction engine.
+- Not a trading platform, signal service, or prediction engine.
+- Evergreen utility and clarity come before growth and complexity.
 
----
-
-## Phase 0 — Foundation (Completed ✅)
-
-- [x] Domain & hosting (Cloudflare Pages)
-- [x] Bilingual site structure (`/en`, `/zh`)
-- [x] Language-aware routing
-- [x] Core design system (simple, consistent, readable)
-- [x] Market Pendulum tool (EN / ZH)
-- [x] About & disclaimer pages (EN / ZH)
-
----
-
-## Phase 1 — Core Traffic & Value (Completed ✅)
-
-### 1. Core SEO Concept Pages
-Educational landing pages targeting evergreen queries.
-
-Planned pages:
-
-- [x] `/en/what-is-market-pendulum/`
-- [x] `/zh/market-pendulum-theory/`
-
-- [x] `/en/drawdown-risk/`
-- [x] `/zh/drawdown-explained/`
-
-Each page will:
-- Explain **one** concept clearly
-- Address common misconceptions
-- Link directly to a relevant RiskMeter tool
-
----
-
-### 2. Drawdown Tolerance Test (Key Tool)
-Planned paths:
-
-- [x] `/en/drawdown-test/`
-- [x] `/zh/drawdown-test/`
-
-Goals:
-- Help users understand their psychological loss tolerance
-- Shift focus from returns to survivability
-- Serve as the foundation for future personalization
-
----
-
-## Phase 2 — Retention & Personalization (4–8 weeks)
-
-- [x] Save tool results locally (localStorage)
-- [x] Allow users to compare multiple scenarios
-- [x] Generate shareable summaries (links or images)
-- Optional email capture (no forced accounts)
-
----
-
-## Backlog — Content & Tools (TBD)
-
-- Risk Glossary (EN / ZH)
-- Rebalancing Planner (risk‑based, non‑predictive)
-
-### Rebalancing Planner — Draft Spec (2026-01-24)
-
-Purpose: help users rebalance based on risk tolerance and drift, not forecasts.
-
-Inputs:
-- Portfolio value
-- Target allocation (up to 4 buckets: equity, fixed income, cash, alternatives)
-- Current allocation (percent or amount)
-- Drawdown tolerance band (Very low / Low / Moderate / High / Very high)
-- Drift trigger (%) with suggested defaults per band
-- Review cadence (monthly / quarterly / annual)
-- Contributions/withdrawals (optional)
-- Costs toggle (fees/taxes awareness, no calculations)
-
-Outputs:
-- Rebalance status (Rebalance now / Monitor / No action)
-- Drift summary (actual vs target, largest drift)
-- Suggested trades (buy/sell amounts)
-- Risk note aligned to tolerance band
-- Next review date
-
-Risk-based rules (defaults):
-- Drift thresholds: Very low 3%, Low 5%, Moderate 8%, High 12%, Very high 15%.
-- If any asset exceeds the drift threshold, recommend rebalancing.
-- If within threshold but review cadence is due, show Monitor with guidance.
-- Prefer contributions/withdrawals to correct drift before selling.
-- No prediction or return estimates; all outputs are mechanical.
-
-UI sketch (EN / ZH labels):
-- Header: Rebalancing Planner / 再平衡规划器
-- Input card: Portfolio value / 组合总值; Target allocation / 目标配置; Current allocation / 当前配置
-- Slider: Risk tolerance band / 风险承受度档位
-- Slider: Drift trigger (%) / 偏离触发值（%）
-- Select: Review cadence / 复查周期
-- Toggle: Use contributions first / 先用新增资金修正
-- Result cards: Rebalance status / 是否需要再平衡; Largest drift / 最大偏离; Suggested trades / 建议调整; Risk note / 风险提示; Next review / 下次复查
-
----
-
-## Phase 3 — Light Monetization (Optional, Later)
-
-Only after clear user value is established:
-
-- Advanced tools or reports
-- Historical comparisons
-- Personalized risk dashboards
-
-No ads.  
-No paywalls on core educational content.
-
----
-
-## Content Philosophy
-
-- Evergreen > trending
-- Depth > volume
-- Utility > opinion
-
-Each page should answer:
-> “Does this help someone make a better decision under uncertainty?”
-
----
-
-## What This Project Is Not Trying to Do
-
-- Beat the market
-- Predict macro events
-- Provide trading signals
-- Compete with professional research platforms
-
----
-
-## Success Metrics (Early Stage)
-
-- Organic search traffic growth
-- Time spent on tools
-- Repeat usage
-- Bookmarks & shares
-- Qualitative feedback
-
-Revenue is **not** a primary metric in early stages.
-
----
-
-## Open Questions (To Revisit)
-
-- When (if ever) to require accounts?
-- How much personalization is useful vs distracting?
-- What level of sophistication users actually want?
-
----
-
-## Final Note
-
-RiskMeter is intentionally simple.
-
-If it ever becomes complex, that complexity must serve clarity —  
-not growth for growth’s sake.
-
----
-
-© RiskMeter
+<!-- Unable to write to PLAN.md in this environment; please paste this content into PLAN.md. -->

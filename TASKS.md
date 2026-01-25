@@ -1,7 +1,7 @@
 # Tasks (Auto-generated)
-## 2026-01-24
-- [x] Create `/en/rebalancing-planner/` and `/zh/rebalancing-planner/` page skeletons with shared layout, nav, and `hreflang`
-- [x] Implement input form (portfolio value, target/current allocation, band, drift trigger, cadence, contributions toggle) with basic validation
-- [x] Add drift and status logic per thresholds; render result cards (status, largest drift, suggested trades, risk note, next review)
-- [x] Persist planner state in localStorage (`rm_rebalance_state`) and restore on load
-- [x] Add copy/clear actions and ensure EN/ZH labels mirror exactly
+## 2026-01-25
+- [x] Draft and wire bilingual methodology notes for the Rebalancing Planner (EN/ZH), including risk‑aligned guidance and assumptions
+- [x] Audit EN/ZH rebalancing planner pages for UI consistency (cards, spacing, buttons) and fix mismatches
+- [x] Add privacy-first persistence note and a lightweight “share result” affordance to the planner output cards
+- [x] Create a bilingual risk glossary stub (EN/ZH) and link it from drawdown/rebalancing pages
+- [x] Check hreflang + metadata consistency across EN/ZH tool pages and correct any missing or mismatched tags

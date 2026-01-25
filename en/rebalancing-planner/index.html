@@ -239,6 +239,18 @@
       background: rgba(118,228,255,.12);
     }
     .copyHint{font-size:12px;color:var(--mut)}
+    .summaryNote{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--mut);
+    }
+    .methodList{
+      margin:12px 0 0 18px;
+      color:var(--mut);
+      font-size:13px;
+    }
+    .methodList li{margin:6px 0}
+    .methodList strong{color:var(--fg)}
 
     .divider{height:1px;background:var(--line);margin:34px 0 18px}
     footer{margin-top:36px;font-size:12px;color:var(--mut)}
@@ -356,11 +368,36 @@
             </div>
           </div>
 
+          <div class="summaryNote" id="persistNote">
+            Saved locally in your browser (localStorage) so your plan returns on refresh. Use Clear to remove.
+          </div>
+
           <div class="actions">
             <button class="miniBtn primary" id="copyPlan">Copy summary</button>
+            <button class="miniBtn" id="sharePlan">Share result</button>
             <button class="miniBtn" id="clearPlan">Clear</button>
             <span class="copyHint" id="copyHint">Local only · Nothing leaves your browser.</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>Methodology & assumptions</h2>
+            <p class="meta">Risk-aligned guidance for setting bands and reviewing drift.</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <ul class="methodList">
+            <li><strong>Single sleeve focus:</strong> Compare one sleeve's target vs current share. Run multiple passes for multi-sleeve portfolios.</li>
+            <li><strong>Drift bands:</strong> Band = no-action zone; trigger = action threshold. Lower drawdown tolerance means tighter bands; higher tolerance means wider bands.</li>
+            <li><strong>Trade sizing:</strong> Suggested trade returns the sleeve to target and assumes other sleeves stay flat between reviews.</li>
+            <li><strong>Costs & constraints:</strong> Taxes, spreads, and liquidity limits are not modeled — adjust for your account and market.</li>
+            <li><strong>Cadence is a reminder:</strong> Review on schedule, but act sooner if drift breaches the trigger.</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -389,6 +426,7 @@
     const reviewValue = document.getElementById('reviewValue');
     const formAlert = document.getElementById('formAlert');
     const copyPlan = document.getElementById('copyPlan');
+    const sharePlan = document.getElementById('sharePlan');
     const clearPlan = document.getElementById('clearPlan');
     const copyHint = document.getElementById('copyHint');
 
@@ -534,6 +572,7 @@
         riskValue.textContent = '—';
         reviewValue.textContent = '—';
         copyPlan.dataset.summary = '';
+        sharePlan.dataset.summary = '';
         return;
       }
 
@@ -583,7 +622,9 @@
 
       saveState(data);
 
-      copyPlan.dataset.summary = buildSummaryText(data, drift, statusLabel, tradeText, reviewText);
+      const summaryText = buildSummaryText(data, drift, statusLabel, tradeText, reviewText);
+      copyPlan.dataset.summary = summaryText;
+      sharePlan.dataset.summary = summaryText;
     };
 
     const copyText = async (text) => {
@@ -611,6 +652,29 @@
       if(!summary) return;
       await copyText(summary);
       copyHint.textContent = 'Copied summary.';
+      setTimeout(() => {
+        copyHint.textContent = 'Local only · Nothing leaves your browser.';
+      }, 1400);
+    });
+
+    sharePlan.addEventListener('click', async () => {
+      const summary = sharePlan.dataset.summary || '';
+      if(!summary) return;
+      let shared = false;
+      if(navigator.share){
+        try{
+          await navigator.share({ title: 'Rebalancing Plan', text: summary });
+          shared = true;
+        }catch(err){
+          if(err && err.name === 'AbortError') return;
+        }
+      }
+      if(shared){
+        copyHint.textContent = 'Share sheet opened.';
+      }else{
+        await copyText(summary);
+        copyHint.textContent = 'Share text copied.';
+      }
       setTimeout(() => {
         copyHint.textContent = 'Local only · Nothing leaves your browser.';
       }, 1400);

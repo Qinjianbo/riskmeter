@@ -8,7 +8,7 @@
 
   <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/rebalancing-planner/" />
   <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/rebalancing-planner/" />
-  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/zh/rebalancing-planner/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/rebalancing-planner/" />
 
   <style>
     :root{
@@ -239,6 +239,18 @@
       background: rgba(118,228,255,.12);
     }
     .copyHint{font-size:12px;color:var(--mut)}
+    .summaryNote{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--mut);
+    }
+    .methodList{
+      margin:12px 0 0 18px;
+      color:var(--mut);
+      font-size:13px;
+    }
+    .methodList li{margin:6px 0}
+    .methodList strong{color:var(--fg)}
 
     .divider{height:1px;background:var(--line);margin:34px 0 18px}
     footer{margin-top:36px;font-size:12px;color:var(--mut)}
@@ -356,11 +368,36 @@
             </div>
           </div>
 
+          <div class="summaryNote" id="persistNote">
+            数据仅保存在你的浏览器（localStorage），刷新后仍会保留。点击“清空”即可移除。
+          </div>
+
           <div class="actions">
             <button class="miniBtn primary" id="copyPlan">复制摘要</button>
+            <button class="miniBtn" id="sharePlan">分享结果</button>
             <button class="miniBtn" id="clearPlan">清空</button>
             <span class="copyHint" id="copyHint">仅本地 · 不会离开浏览器</span>
           </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>方法说明与假设</h2>
+            <p class="meta">根据你的风险承受度设定偏离区间，并安排复查节奏。</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <ul class="methodList">
+            <li><strong>单一资产篮子：</strong>仅比较一个资产篮子的目标与当前占比，多资产请分别运行。</li>
+            <li><strong>偏离区间：</strong>容忍带=不动作区间；触发阈值=行动门槛。回撤承受度低则区间更窄，高则更宽。</li>
+            <li><strong>调整金额：</strong>建议交易是回到目标占比的金额，假设其他资产在复查间隔内不变。</li>
+            <li><strong>成本与限制：</strong>未计入税费、点差、流动性限制，请结合账户情况修正。</li>
+            <li><strong>复查节奏：</strong>按设定频率提醒即可，若偏离超阈值可提前行动。</li>
+          </ul>
         </div>
       </div>
     </section>
@@ -389,6 +426,7 @@
     const reviewValue = document.getElementById('reviewValue');
     const formAlert = document.getElementById('formAlert');
     const copyPlan = document.getElementById('copyPlan');
+    const sharePlan = document.getElementById('sharePlan');
     const clearPlan = document.getElementById('clearPlan');
     const copyHint = document.getElementById('copyHint');
 
@@ -534,6 +572,7 @@
         riskValue.textContent = '—';
         reviewValue.textContent = '—';
         copyPlan.dataset.summary = '';
+        sharePlan.dataset.summary = '';
         return;
       }
 
@@ -583,7 +622,9 @@
 
       saveState(data);
 
-      copyPlan.dataset.summary = buildSummaryText(data, drift, statusLabel, tradeText, reviewText);
+      const summaryText = buildSummaryText(data, drift, statusLabel, tradeText, reviewText);
+      copyPlan.dataset.summary = summaryText;
+      sharePlan.dataset.summary = summaryText;
     };
 
     const copyText = async (text) => {
@@ -611,6 +652,29 @@
       if(!summary) return;
       await copyText(summary);
       copyHint.textContent = '已复制摘要。';
+      setTimeout(() => {
+        copyHint.textContent = '仅本地 · 不会离开浏览器';
+      }, 1400);
+    });
+
+    sharePlan.addEventListener('click', async () => {
+      const summary = sharePlan.dataset.summary || '';
+      if(!summary) return;
+      let shared = false;
+      if(navigator.share){
+        try{
+          await navigator.share({ title: '再平衡计划', text: summary });
+          shared = true;
+        }catch(err){
+          if(err && err.name === 'AbortError') return;
+        }
+      }
+      if(shared){
+        copyHint.textContent = '已打开分享面板。';
+      }else{
+        await copyText(summary);
+        copyHint.textContent = '已复制分享摘要。';
+      }
       setTimeout(() => {
         copyHint.textContent = '仅本地 · 不会离开浏览器';
       }, 1400);

@@ -1,3 +1,6 @@
+auto-run.err
+auto-run.log
+.auto-exec.lock
 # OS files
 .DS_Store
 config.yaml
