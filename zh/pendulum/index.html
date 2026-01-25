@@ -67,7 +67,10 @@
       background:rgba(255,255,255,.08);
       color:var(--fg);
       font-size:15px;
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
     }
     .btn.primary{
       background:rgba(118,228,255,.16);
@@ -154,6 +157,10 @@
       border-radius: 12px;
       cursor:pointer;
       font-size: 13px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
     }
     .miniBtn:hover{background: rgba(255,255,255,.11)}
     .miniBtn.primary{
@@ -184,6 +191,43 @@
     .mono{font-family: var(--mono)}
     .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
     .langBar .tag{font-size:12px;color:var(--mut)}
+    .clusterNav{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:12px;
+      color:var(--mut);
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--mut);
+      font-size:12px;
+    }
+    .chip.active{
+      color:var(--fg);
+      border-color:rgba(118,228,255,.45);
+      background:rgba(118,228,255,.12);
+    }
+    .feedbackHint{margin-top:10px;color:var(--mut);font-size:12px}
+    @media (max-width: 720px){
+      .cta .btn,
+      .row .miniBtn{
+        width:100%;
+      }
+      .toolHead{flex-direction:column;align-items:flex-start}
+    }
   </style>
 </head>
 
@@ -209,6 +253,15 @@
         <a class="btn primary" href="#tool">开始使用 →</a>
         <a class="btn" href="/zh/">返回首页</a>
         <a class="btn" href="/zh/about/">关于 / 免责声明</a>
+      </div>
+
+      <div class="clusterNav">
+        <span>行为风险组合：</span>
+        <a class="chip" href="/zh/rebalancing-planner/">再平衡计划器</a>
+        <a class="chip" href="/zh/drawdown-test/">回撤测试</a>
+        <a class="chip" href="/zh/drawdown-capacity/">回撤容量</a>
+        <a class="chip" href="/zh/drawdown-explained/">回撤风险</a>
+        <span class="chip active">市场钟摆</span>
       </div>
     </section>
 
@@ -310,6 +363,19 @@
       </div>
     </section>
 
+    <section class="section">
+      <div class="card">
+        <h2>这页有帮助吗？</h2>
+        <p>帮助我们判断哪些工具更有价值。反馈只保存在本地，除非你选择分享。</p>
+        <div class="cta">
+          <button class="btn primary" data-feedback="helpful">有帮助</button>
+          <button class="btn" data-feedback="needsWork">还需改进</button>
+          <button class="btn" id="copyFeedback">复制反馈摘要</button>
+        </div>
+        <div class="feedbackHint" id="feedbackHint">仅本地 · 由你决定是否分享</div>
+      </div>
+    </section>
+
     <div class="divider"></div>
     <footer>
       RiskMeter 为教育用途，不提供投资建议，不推荐任何具体证券或标的。
@@ -332,14 +398,58 @@
 
     const actionHint = document.getElementById('actionHint');
     const riskHint = document.getElementById('riskHint');
+    const copyFeedback = document.getElementById('copyFeedback');
+    const feedbackHint = document.getElementById('feedbackHint');
 
     let auto = false;
     let x = 0; // [-1,1]
     let v = 0;
     const PENDULUM_KEY = 'rm_pendulum_state';
+    const SIGNAL_KEY = 'rm_signal_log';
+    const RM_PAGE = 'zh/pendulum';
 
     function sliderToX(val){ return Math.max(-1, Math.min(1, val / 100)); }
     function xToSlider(x){ return Math.round(x * 100); }
+
+    const copyText = async (text) => {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); }catch(_){ }
+      document.body.removeChild(ta);
+      return true;
+    };
+
+    const loadSignals = () => {
+      try{
+        const raw = localStorage.getItem(SIGNAL_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      }catch(_){
+        return {};
+      }
+    };
+
+    const saveSignals = (signals) => {
+      localStorage.setItem(SIGNAL_KEY, JSON.stringify(signals));
+    };
+
+    const bumpSignal = (kind) => {
+      const signals = loadSignals();
+      const page = signals[RM_PAGE] || { views:0, helpful:0, needsWork:0, feedbackCopy:0 };
+      page[kind] = (page[kind] || 0) + 1;
+      signals[RM_PAGE] = page;
+      saveSignals(signals);
+      return page;
+    };
+
+    bumpSignal('views');
 
     function isZh(){
       return document.documentElement.lang && document.documentElement.lang.toLowerCase().startsWith('zh');
@@ -574,6 +684,30 @@
       draw();
       localStorage.setItem(PENDULUM_KEY, JSON.stringify({ pos: 0, spring: 120 }));
     });
+
+    if(copyFeedback && feedbackHint){
+      document.querySelectorAll('[data-feedback]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const kind = btn.dataset.feedback;
+          if(kind) bumpSignal(kind);
+          feedbackHint.textContent = '已保存到本地。';
+          setTimeout(() => {
+            feedbackHint.textContent = '仅本地 · 由你决定是否分享';
+          }, 1400);
+        });
+      });
+
+      copyFeedback.addEventListener('click', async () => {
+        const signals = loadSignals();
+        const summary = `RiskMeter 反馈（${RM_PAGE}）：${JSON.stringify(signals[RM_PAGE] || {})}`;
+        await copyText(summary);
+        bumpSignal('feedbackCopy');
+        feedbackHint.textContent = '已复制反馈摘要。';
+        setTimeout(() => {
+          feedbackHint.textContent = '仅本地 · 由你决定是否分享';
+        }, 1400);
+      });
+    }
 
     function init(){
       resizeCanvas();

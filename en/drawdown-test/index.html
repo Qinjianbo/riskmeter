@@ -69,7 +69,10 @@
       background:rgba(255,255,255,.08);
       color:var(--fg);
       font-size:15px;
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
     }
     .btn.primary{
       background:rgba(118,228,255,.16);
@@ -131,6 +134,7 @@
       background:rgba(0,0,0,.2);
       color:var(--fg);
       font-size:14px;
+      min-height:44px;
     }
     .hint{margin-top:8px; font-size:12px; color: var(--mut)}
 
@@ -241,6 +245,10 @@
       border-radius: 12px;
       cursor:pointer;
       font-size: 13px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
     }
     .miniBtn:hover{background: rgba(255,255,255,.12)}
     .miniBtn.primary{
@@ -349,6 +357,42 @@
     footer{margin-top:36px;font-size:12px;color:var(--mut)}
     .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
     .langBar .tag{font-size:12px;color:var(--mut)}
+    .clusterNav{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:12px;
+      color:var(--mut);
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--mut);
+      font-size:12px;
+    }
+    .chip.active{
+      color:var(--fg);
+      border-color:rgba(118,228,255,.45);
+      background:rgba(118,228,255,.12);
+    }
+    @media (max-width: 720px){
+      .cta .btn,
+      .actions .miniBtn{
+        width:100%;
+      }
+      .toolHead{flex-direction:column;align-items:flex-start}
+    }
   </style>
 </head>
 
@@ -372,6 +416,15 @@
         <a class="btn primary" href="/en/drawdown-risk/">Read: Drawdown Risk</a>
         <a class="btn" href="/en/pendulum/">Market Pendulum Tool</a>
         <a class="btn" href="/en/risk-glossary/">Open Risk Glossary</a>
+      </div>
+
+      <div class="clusterNav">
+        <span>Behavioral risk cluster:</span>
+        <a class="chip" href="/en/rebalancing-planner/">Rebalancing Planner</a>
+        <span class="chip active">Drawdown Test</span>
+        <a class="chip" href="/en/drawdown-capacity/">Drawdown Capacity</a>
+        <a class="chip" href="/en/drawdown-risk/">Drawdown Risk Guide</a>
+        <a class="chip" href="/en/pendulum/">Market Pendulum</a>
       </div>
     </section>
 
@@ -539,6 +592,25 @@
       </div>
     </section>
 
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>Was this useful?</h2>
+            <p class="meta">Help us learn which tools drive value. Feedback stays local unless you share it.</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="actions">
+            <button class="miniBtn primary" data-feedback="helpful">Helpful</button>
+            <button class="miniBtn" data-feedback="needsWork">Needs work</button>
+            <button class="miniBtn" id="copyFeedback">Copy feedback summary</button>
+            <span class="copyHint" id="feedbackHint">Local only · You choose if you share.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="divider"></div>
     <footer>
       RiskMeter is for education only and does not provide investment advice.
@@ -567,6 +639,8 @@
     const capRemaining = document.getElementById('capRemaining');
     const capWeight = document.getElementById('capWeight');
     const capPosDrop = document.getElementById('capPosDrop');
+    const copyFeedback = document.getElementById('copyFeedback');
+    const feedbackHint = document.getElementById('feedbackHint');
 
     const bands = [
       {
@@ -598,6 +672,8 @@
 
     const STORAGE_KEY = 'rm_drawdown_state';
     const SCENARIOS_KEY = 'rm_drawdown_scenarios';
+    const SIGNAL_KEY = 'rm_signal_log';
+    const RM_PAGE = 'en/drawdown-test';
     const NOTE_LIMIT = 40;
 
     const toast = (() => {
@@ -789,6 +865,31 @@
       return true;
     };
 
+    const loadSignals = () => {
+      try{
+        const raw = localStorage.getItem(SIGNAL_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      }catch(_){
+        return {};
+      }
+    };
+
+    const saveSignals = (signals) => {
+      localStorage.setItem(SIGNAL_KEY, JSON.stringify(signals));
+    };
+
+    const bumpSignal = (kind) => {
+      const signals = loadSignals();
+      const page = signals[RM_PAGE] || { views:0, helpful:0, needsWork:0, summaryCopy:0, scenarioCopy:0, feedbackCopy:0 };
+      page[kind] = (page[kind] || 0) + 1;
+      signals[RM_PAGE] = page;
+      saveSignals(signals);
+      return page;
+    };
+
+    bumpSignal('views');
+
     const update = () => {
       const drawdown = Number(ddRange.value);
       const portfolio = Number(portfolioInput.value) || 0;
@@ -837,6 +938,7 @@
       const portfolio = Number(portfolioInput.value) || 0;
       const text = buildSummary(drawdown, portfolio);
       await copyText(text);
+      bumpSignal('summaryCopy');
       toast('Copied');
     });
     clearScenariosBtn.addEventListener('click', () => {
@@ -864,7 +966,10 @@
       if(copyId){
         const item = loadScenarios().find((entry) => entry.id === copyId);
         if(item){
-          copyText(buildScenarioSummary(item)).then(() => toast('Copied'));
+          copyText(buildScenarioSummary(item)).then(() => {
+            bumpSignal('scenarioCopy');
+            toast('Copied');
+          });
         }
         return;
       }
@@ -875,6 +980,30 @@
       renderScenarios();
       toast('Removed');
     });
+
+    if(copyFeedback && feedbackHint){
+      document.querySelectorAll('[data-feedback]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const kind = btn.dataset.feedback;
+          if(kind) bumpSignal(kind);
+          feedbackHint.textContent = 'Thanks — saved locally.';
+          setTimeout(() => {
+            feedbackHint.textContent = 'Local only · You choose if you share.';
+          }, 1400);
+        });
+      });
+
+      copyFeedback.addEventListener('click', async () => {
+        const signals = loadSignals();
+        const summary = `RiskMeter feedback (${RM_PAGE}): ${JSON.stringify(signals[RM_PAGE] || {})}`;
+        await copyText(summary);
+        bumpSignal('feedbackCopy');
+        feedbackHint.textContent = 'Feedback copied.';
+        setTimeout(() => {
+          feedbackHint.textContent = 'Local only · You choose if you share.';
+        }, 1400);
+      });
+    }
 
     loadState();
     update();

@@ -80,7 +80,10 @@
       background:rgba(255,255,255,.08);
       color:var(--fg);
       font-size:15px;
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
     }
     .btn.primary{
       background:rgba(118,228,255,.16);
@@ -143,6 +146,7 @@
       color:var(--fg);
       font-size:14px;
       appearance:none;
+      min-height:44px;
     }
     .ctrl input.invalid,
     .ctrl select.invalid{
@@ -232,6 +236,10 @@
       border-radius: 12px;
       cursor:pointer;
       font-size: 13px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
     }
     .miniBtn:hover{background: rgba(255,255,255,.12)}
     .miniBtn.primary{
@@ -256,6 +264,42 @@
     footer{margin-top:36px;font-size:12px;color:var(--mut)}
     .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
     .langBar .tag{font-size:12px;color:var(--mut)}
+    .clusterNav{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:12px;
+      color:var(--mut);
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--mut);
+      font-size:12px;
+    }
+    .chip.active{
+      color:var(--fg);
+      border-color:rgba(118,228,255,.45);
+      background:rgba(118,228,255,.12);
+    }
+    @media (max-width: 720px){
+      .cta .btn,
+      .actions .miniBtn{
+        width:100%;
+      }
+      .toolHead{flex-direction:column;align-items:flex-start}
+    }
   </style>
 </head>
 
@@ -274,7 +318,7 @@
       <h1>Rebalancing Planner</h1>
       <p class="sub">
         Set your drift bands and cadence to decide when to rebalance and how much to trade.
-        Focus on one sleeve (equities, bonds, crypto) to keep it simple.
+        Get a clear status, estimated trade size, and next review date for one sleeve.
       </p>
 
       <div class="langBar">
@@ -286,6 +330,15 @@
       <div class="cta">
         <a class="btn primary" href="/en/">Back to RiskMeter Home</a>
         <a class="btn" href="/en/risk-glossary/">Open Risk Glossary</a>
+      </div>
+
+      <div class="clusterNav">
+        <span>Behavioral risk cluster:</span>
+        <span class="chip active">Rebalancing Planner</span>
+        <a class="chip" href="/en/drawdown-test/">Drawdown Test</a>
+        <a class="chip" href="/en/drawdown-capacity/">Drawdown Capacity</a>
+        <a class="chip" href="/en/drawdown-risk/">Drawdown Risk Guide</a>
+        <a class="chip" href="/en/pendulum/">Market Pendulum</a>
       </div>
     </section>
 
@@ -386,6 +439,29 @@
       <div class="toolCard">
         <div class="toolHead">
           <div>
+            <h2>Outcome guidance</h2>
+            <p class="meta">Translate the status into action without overreacting to noise.</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <ul class="methodList">
+            <li><strong>Within band:</strong> No trade needed; keep contributions balanced.</li>
+            <li><strong>Drift widening:</strong> Use contributions to nudge back; prepare liquidity for a future trade.</li>
+            <li><strong>Rebalance now:</strong> Plan the trade size, review tax/lot impacts, and execute within your rules.</li>
+            <li><strong>After rebalancing:</strong> Record the new target and set the next review date.</li>
+          </ul>
+          <div class="cta">
+            <a class="btn primary" href="/en/drawdown-test/">Check drawdown tolerance</a>
+            <a class="btn" href="/en/pendulum/">Sense cycle risk</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
             <h2>Methodology & assumptions</h2>
             <p class="meta">Risk-aligned guidance for setting bands and reviewing drift.</p>
           </div>
@@ -398,6 +474,25 @@
             <li><strong>Costs & constraints:</strong> Taxes, spreads, and liquidity limits are not modeled — adjust for your account and market.</li>
             <li><strong>Cadence is a reminder:</strong> Review on schedule, but act sooner if drift breaches the trigger.</li>
           </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>Was this useful?</h2>
+            <p class="meta">Help us learn which tools drive value. Feedback stays local unless you share it.</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="actions">
+            <button class="miniBtn primary" data-feedback="helpful">Helpful</button>
+            <button class="miniBtn" data-feedback="needsWork">Needs work</button>
+            <button class="miniBtn" id="copyFeedback">Copy feedback summary</button>
+            <span class="copyHint" id="feedbackHint">Local only · You choose if you share.</span>
+          </div>
         </div>
       </div>
     </section>
@@ -429,8 +524,12 @@
     const sharePlan = document.getElementById('sharePlan');
     const clearPlan = document.getElementById('clearPlan');
     const copyHint = document.getElementById('copyHint');
+    const copyFeedback = document.getElementById('copyFeedback');
+    const feedbackHint = document.getElementById('feedbackHint');
 
     const STORAGE_KEY = 'rm_rebalance_state';
+    const SIGNAL_KEY = 'rm_signal_log';
+    const RM_PAGE = 'en/rebalancing-planner';
     const locale = 'en-US';
     const currency = 'USD';
 
@@ -642,6 +741,31 @@
       return true;
     };
 
+    const loadSignals = () => {
+      try{
+        const raw = localStorage.getItem(SIGNAL_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      }catch(_){
+        return {};
+      }
+    };
+
+    const saveSignals = (signals) => {
+      localStorage.setItem(SIGNAL_KEY, JSON.stringify(signals));
+    };
+
+    const bumpSignal = (kind) => {
+      const signals = loadSignals();
+      const page = signals[RM_PAGE] || { views:0, helpful:0, needsWork:0, summaryCopy:0, summaryShare:0, feedbackCopy:0 };
+      page[kind] = (page[kind] || 0) + 1;
+      signals[RM_PAGE] = page;
+      saveSignals(signals);
+      return page;
+    };
+
+    bumpSignal('views');
+
     Object.values(inputs).forEach((el) => {
       el.addEventListener('input', update);
       el.addEventListener('change', update);
@@ -651,6 +775,7 @@
       const summary = copyPlan.dataset.summary || '';
       if(!summary) return;
       await copyText(summary);
+      bumpSignal('summaryCopy');
       copyHint.textContent = 'Copied summary.';
       setTimeout(() => {
         copyHint.textContent = 'Local only · Nothing leaves your browser.';
@@ -675,6 +800,7 @@
         await copyText(summary);
         copyHint.textContent = 'Share text copied.';
       }
+      bumpSignal('summaryShare');
       setTimeout(() => {
         copyHint.textContent = 'Local only · Nothing leaves your browser.';
       }, 1400);
@@ -689,6 +815,30 @@
         copyHint.textContent = 'Local only · Nothing leaves your browser.';
       }, 1400);
     });
+
+    if(copyFeedback && feedbackHint){
+      document.querySelectorAll('[data-feedback]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const kind = btn.dataset.feedback;
+          if(kind) bumpSignal(kind);
+          feedbackHint.textContent = 'Thanks — saved locally.';
+          setTimeout(() => {
+            feedbackHint.textContent = 'Local only · You choose if you share.';
+          }, 1400);
+        });
+      });
+
+      copyFeedback.addEventListener('click', async () => {
+        const signals = loadSignals();
+        const summary = `RiskMeter feedback (${RM_PAGE}): ${JSON.stringify(signals[RM_PAGE] || {})}`;
+        await copyText(summary);
+        bumpSignal('feedbackCopy');
+        feedbackHint.textContent = 'Feedback copied.';
+        setTimeout(() => {
+          feedbackHint.textContent = 'Local only · You choose if you share.';
+        }, 1400);
+      });
+    }
 
     loadState();
     if(!inputs.portfolioValue.value) resetDefaults();

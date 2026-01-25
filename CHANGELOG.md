@@ -5,6 +5,11 @@
 - Added a share-result action and a local-only persistence note to Rebalancing Planner outputs.
 - Linked the Risk Glossary from drawdown test/risk/capacity pages in EN/ZH.
 - Aligned tool-page hreflang x-default targets to the English counterparts.
+- Promoted the Rebalancing Planner as the flagship entry on EN/ZH homepages with clearer outcome guidance.
+- Expanded the Risk Glossary into a learning hub with new terms, learning paths, and cross-links.
+- Added behavioral-risk cluster navigation across drawdown, rebalancing, and cycle pages.
+- Improved mobile touch targets and action stacking across all tools.
+- Added local-only feedback signals (page views and helpfulness) with copyable summaries.
 
 ## 2026-01-24
 - Added local persistence for drawdown test inputs and pendulum settings.

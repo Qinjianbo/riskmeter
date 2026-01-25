@@ -80,7 +80,10 @@
       background:rgba(255,255,255,.08);
       color:var(--fg);
       font-size:15px;
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:44px;
     }
     .btn.primary{
       background:rgba(118,228,255,.16);
@@ -143,6 +146,7 @@
       color:var(--fg);
       font-size:14px;
       appearance:none;
+      min-height:44px;
     }
     .ctrl input.invalid,
     .ctrl select.invalid{
@@ -232,6 +236,10 @@
       border-radius: 12px;
       cursor:pointer;
       font-size: 13px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:40px;
     }
     .miniBtn:hover{background: rgba(255,255,255,.12)}
     .miniBtn.primary{
@@ -256,6 +264,42 @@
     footer{margin-top:36px;font-size:12px;color:var(--mut)}
     .langBar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:12px}
     .langBar .tag{font-size:12px;color:var(--mut)}
+    .clusterNav{
+      margin-top:18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:12px;
+      color:var(--mut);
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.05);
+      color:var(--mut);
+      font-size:12px;
+    }
+    .chip.active{
+      color:var(--fg);
+      border-color:rgba(118,228,255,.45);
+      background:rgba(118,228,255,.12);
+    }
+    @media (max-width: 720px){
+      .cta .btn,
+      .actions .miniBtn{
+        width:100%;
+      }
+      .toolHead{flex-direction:column;align-items:flex-start}
+    }
   </style>
 </head>
 
@@ -274,7 +318,7 @@
       <h1>再平衡计划器</h1>
       <p class="sub">
         设定偏离区间与复查频率，判断何时再平衡以及需要调整多少。
-        聚焦单一资产篮子（股票/债券/加密）更清晰。
+        输出清晰状态、估算交易规模与下次复查日期。
       </p>
 
       <div class="langBar">
@@ -286,6 +330,38 @@
       <div class="cta">
         <a class="btn primary" href="/zh/">返回 RiskMeter 首页</a>
         <a class="btn" href="/zh/risk-glossary/">查看风险术语表</a>
+      </div>
+
+      <div class="clusterNav">
+        <span>行为风险组合：</span>
+        <span class="chip active">再平衡计划器</span>
+        <a class="chip" href="/zh/drawdown-test/">回撤测试</a>
+        <a class="chip" href="/zh/drawdown-capacity/">回撤容量</a>
+        <a class="chip" href="/zh/drawdown-explained/">回撤风险</a>
+        <a class="chip" href="/zh/pendulum/">市场钟摆</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>结果解读</h2>
+            <p class="meta">把状态转换成行动，避免被短期噪音牵着走。</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <ul class="methodList">
+            <li><strong>区间内：</strong>无需交易；保持新增资金的平衡分配。</li>
+            <li><strong>偏离扩大：</strong>用新增资金慢慢拉回，提前准备流动性。</li>
+            <li><strong>立即再平衡：</strong>确定交易规模，检查税费/成本后执行。</li>
+            <li><strong>再平衡完成后：</strong>记录新目标并设定下次复查日期。</li>
+          </ul>
+          <div class="cta">
+            <a class="btn primary" href="/zh/drawdown-test/">测回撤承受度</a>
+            <a class="btn" href="/zh/pendulum/">感知周期风险</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -402,6 +478,25 @@
       </div>
     </section>
 
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>这页有帮助吗？</h2>
+            <p class="meta">帮助我们判断哪些工具更有价值。反馈只保存在本地，除非你选择分享。</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="actions">
+            <button class="miniBtn primary" data-feedback="helpful">有帮助</button>
+            <button class="miniBtn" data-feedback="needsWork">还需改进</button>
+            <button class="miniBtn" id="copyFeedback">复制反馈摘要</button>
+            <span class="copyHint" id="feedbackHint">仅本地 · 由你决定是否分享</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <div class="divider"></div>
     <footer>
       RiskMeter 仅用于教育目的，不构成投资建议。
@@ -429,8 +524,12 @@
     const sharePlan = document.getElementById('sharePlan');
     const clearPlan = document.getElementById('clearPlan');
     const copyHint = document.getElementById('copyHint');
+    const copyFeedback = document.getElementById('copyFeedback');
+    const feedbackHint = document.getElementById('feedbackHint');
 
     const STORAGE_KEY = 'rm_rebalance_state';
+    const SIGNAL_KEY = 'rm_signal_log';
+    const RM_PAGE = 'zh/rebalancing-planner';
     const locale = 'zh-CN';
     const currency = 'CNY';
 
@@ -642,6 +741,31 @@
       return true;
     };
 
+    const loadSignals = () => {
+      try{
+        const raw = localStorage.getItem(SIGNAL_KEY);
+        const parsed = raw ? JSON.parse(raw) : {};
+        return parsed && typeof parsed === 'object' ? parsed : {};
+      }catch(_){
+        return {};
+      }
+    };
+
+    const saveSignals = (signals) => {
+      localStorage.setItem(SIGNAL_KEY, JSON.stringify(signals));
+    };
+
+    const bumpSignal = (kind) => {
+      const signals = loadSignals();
+      const page = signals[RM_PAGE] || { views:0, helpful:0, needsWork:0, summaryCopy:0, summaryShare:0, feedbackCopy:0 };
+      page[kind] = (page[kind] || 0) + 1;
+      signals[RM_PAGE] = page;
+      saveSignals(signals);
+      return page;
+    };
+
+    bumpSignal('views');
+
     Object.values(inputs).forEach((el) => {
       el.addEventListener('input', update);
       el.addEventListener('change', update);
@@ -651,6 +775,7 @@
       const summary = copyPlan.dataset.summary || '';
       if(!summary) return;
       await copyText(summary);
+      bumpSignal('summaryCopy');
       copyHint.textContent = '已复制摘要。';
       setTimeout(() => {
         copyHint.textContent = '仅本地 · 不会离开浏览器';
@@ -675,6 +800,7 @@
         await copyText(summary);
         copyHint.textContent = '已复制分享摘要。';
       }
+      bumpSignal('summaryShare');
       setTimeout(() => {
         copyHint.textContent = '仅本地 · 不会离开浏览器';
       }, 1400);
@@ -689,6 +815,30 @@
         copyHint.textContent = '仅本地 · 不会离开浏览器';
       }, 1400);
     });
+
+    if(copyFeedback && feedbackHint){
+      document.querySelectorAll('[data-feedback]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const kind = btn.dataset.feedback;
+          if(kind) bumpSignal(kind);
+          feedbackHint.textContent = '已保存到本地。';
+          setTimeout(() => {
+            feedbackHint.textContent = '仅本地 · 由你决定是否分享';
+          }, 1400);
+        });
+      });
+
+      copyFeedback.addEventListener('click', async () => {
+        const signals = loadSignals();
+        const summary = `RiskMeter 反馈（${RM_PAGE}）：${JSON.stringify(signals[RM_PAGE] || {})}`;
+        await copyText(summary);
+        bumpSignal('feedbackCopy');
+        feedbackHint.textContent = '已复制反馈摘要。';
+        setTimeout(() => {
+          feedbackHint.textContent = '仅本地 · 由你决定是否分享';
+        }, 1400);
+      });
+    }
 
     loadState();
     if(!inputs.portfolioValue.value) resetDefaults();
