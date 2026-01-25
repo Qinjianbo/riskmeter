@@ -1,3 +1,4 @@
 [submodule "tools/codex-scripts"]
 	path = tools/codex-scripts
 	url = git@github.com:Qinjianbo/codex-automation-scripts.git
+	branch = main
