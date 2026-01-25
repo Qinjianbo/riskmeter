@@ -2,6 +2,10 @@
 
 ## 2026-01-26
 - Added “next step” CTAs from the Pendulum tool and Rebalancing Planner to the Market Pendulum guide and Risk Glossary (EN/ZH).
+- Expanded Drawdown Recovery Scenarios with how-to-use and guardrails blocks plus glossary-linked definitions (EN/ZH).
+- Added Support & Education pages covering local-only data, expectations, and feedback guidance (EN/ZH).
+- Linked drawdown tools to glossary anchors and added glossary anchor IDs for core terms (EN/ZH).
+- Added sitemap link tags on entry-point pages and linked Support & Education from the homepages (EN/ZH).
 
 ## 2026-01-25
 - Launched the Drawdown Recovery Scenarios tool with local persistence and recovery-horizon outputs (EN/ZH).

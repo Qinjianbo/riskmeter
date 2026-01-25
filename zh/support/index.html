@@ -1,25 +1,25 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>About · RiskMeter</title>
-  <meta name="description" content="About RiskMeter and important disclaimers." />
+  <title>支持与使用说明 · RiskMeter</title>
+  <meta name="description" content="了解 RiskMeter 的使用方式、本地数据说明与反馈渠道。" />
 
-  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/about/" />
-  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/about/" />
-  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/" />
-  <link rel="canonical" href="https://riskmeter.app/en/about/" />
+  <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/support/" />
+  <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/support/" />
+  <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/en/support/" />
+  <link rel="canonical" href="https://riskmeter.app/zh/support/" />
   <link rel="sitemap" href="https://riskmeter.app/sitemap.xml" />
 
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebPage",
-      "name": "About RiskMeter",
-      "description": "About RiskMeter and important disclaimers.",
-      "url": "https://riskmeter.app/en/about/",
-      "inLanguage": "en",
+      "name": "支持与使用说明",
+      "description": "了解 RiskMeter 的使用方式、本地数据说明与反馈渠道。",
+      "url": "https://riskmeter.app/zh/support/",
+      "inLanguage": "zh-CN",
       "isPartOf": {
         "@type": "WebSite",
         "name": "RiskMeter",
@@ -66,60 +66,69 @@
   <div class="wrap">
     <div class="hero">
       <div class="row" style="justify-content:space-between;align-items:center">
-        <span class="pill">About / Disclaimer</span>
+        <span class="pill">支持 / 使用说明</span>
         <div class="row" style="margin:0">
-          <span class="pill">EN</span>
-          <a class="pill" href="/zh/about/" id="toZh">中文</a>
+          <span class="pill">中文</span>
+          <a class="pill" href="/en/support/" id="toEn">EN</a>
         </div>
       </div>
 
-      <h1>About RiskMeter</h1>
+      <h1>支持与使用说明</h1>
       <p>
-        RiskMeter is an educational toolkit that helps investors understand risk,
-        sentiment cycles, and drawdowns through practical visualizations and tests.
+        用于设置预期、了解本地数据行为，并提供有价值的反馈。
       </p>
 
       <div class="row">
-        <a class="btn" href="/en/">Home</a>
-        <a class="btn" href="/en/pendulum/">Market Pendulum</a>
-        <a class="btn" href="/en/ethics/">Ethics & Guardrails</a>
+        <a class="btn" href="/zh/">首页</a>
+        <a class="btn" href="/zh/risk-glossary/">风险术语表</a>
+        <a class="btn" href="/zh/drawdown-test/">回撤测试</a>
+        <a class="btn" href="/zh/ethics/">伦理与守则</a>
       </div>
     </div>
 
     <div class="section">
-      <h2>What RiskMeter is</h2>
+      <h2>你可以期待什么</h2>
       <ul>
-        <li>Tools to reason about risk and behavior (not price prediction).</li>
-        <li>Frameworks inspired by behavioral investing and risk management.</li>
-        <li>Simple visualizations and tools you can use in your own process.</li>
+        <li>帮助理解回撤、行为与流程的教育型工具。</li>
+        <li>简化的数学模型，用来辅助思考而非预测收益。</li>
+        <li>无需账户，结果用于支持你的个人计划。</li>
       </ul>
     </div>
 
     <div class="section">
-      <h2>What RiskMeter is NOT</h2>
+      <h2>本地数据说明</h2>
       <ul>
-        <li>Not investment advice.</li>
-        <li>Not a recommendation of any security.</li>
-        <li>Not a guarantee of outcomes.</li>
+        <li>输入与反馈信号仅保存在你的浏览器（localStorage）。</li>
+        <li>清空浏览器数据或更换设备会重置已保存内容。</li>
+        <li>除非你选择分享，否则数据不会发送给 RiskMeter。</li>
       </ul>
     </div>
 
     <div class="section">
-      <h2>Important disclaimer</h2>
-      <p style="color:var(--fg)">
-        RiskMeter is provided for educational purposes only. It does not constitute investment advice,
-        financial advice, trading advice, or any other type of advice, and you should not treat any of the
-        site's content as such. You are solely responsible for your investment decisions.
-      </p>
+      <h2>使用边界与限制</h2>
+      <ul>
+        <li>未考虑现金流、费用、税收与路径依赖的波动影响。</li>
+        <li>RiskMeter 不提供投资建议，也不推荐任何证券。</li>
+        <li>把工具当作护栏，再结合你自己的假设验证。</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>反馈渠道</h2>
+      <ul>
+        <li>在各工具页点击“有帮助 / 还需改进”，反馈会保存在本地。</li>
+        <li>点击“复制反馈摘要”，再粘贴到你常用的反馈渠道。</li>
+        <li>请注明页面名称与当时的使用目标。</li>
+      </ul>
     </div>
 
     <footer>
-      © <span id="y"></span> RiskMeter. Educational use only.
+      © <span id="y"></span> RiskMeter. 仅教育用途。
     </footer>
   </div>
 
   <script>
-    document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
+    document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
     document.getElementById('y').textContent = new Date().getFullYear();
   </script>
 </body>
