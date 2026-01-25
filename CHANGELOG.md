@@ -1,6 +1,8 @@
 # Changelog
 
 ## 2026-01-25
+- Added drawdown-page learning journey links that move from drawdowns to cycles and rebalancing (EN/ZH).
+- Aligned ZH Rebalancing Planner flow with EN and improved mobile numeric input behavior.
 - Added bilingual Rebalancing Planner methodology notes with risk-aligned band guidance.
 - Added a share-result action and a local-only persistence note to Rebalancing Planner outputs.
 - Linked the Risk Glossary from drawdown test/risk/capacity pages in EN/ZH.

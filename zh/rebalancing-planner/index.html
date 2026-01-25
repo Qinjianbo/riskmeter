@@ -346,29 +346,6 @@
       <div class="toolCard">
         <div class="toolHead">
           <div>
-            <h2>结果解读</h2>
-            <p class="meta">把状态转换成行动，避免被短期噪音牵着走。</p>
-          </div>
-        </div>
-        <div class="toolBody">
-          <ul class="methodList">
-            <li><strong>区间内：</strong>无需交易；保持新增资金的平衡分配。</li>
-            <li><strong>偏离扩大：</strong>用新增资金慢慢拉回，提前准备流动性。</li>
-            <li><strong>立即再平衡：</strong>确定交易规模，检查税费/成本后执行。</li>
-            <li><strong>再平衡完成后：</strong>记录新目标并设定下次复查日期。</li>
-          </ul>
-          <div class="cta">
-            <a class="btn primary" href="/zh/drawdown-test/">测回撤承受度</a>
-            <a class="btn" href="/zh/pendulum/">感知周期风险</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="toolCard">
-        <div class="toolHead">
-          <div>
             <h2>计划输入</h2>
             <p class="meta">仅比较一个资产篮子的当前/目标占比，并设置不动作区间。</p>
           </div>
@@ -377,27 +354,27 @@
           <div class="controls">
             <div class="ctrl">
               <label for="portfolioValue">组合总价值 <span>¥</span></label>
-              <input type="number" id="portfolioValue" min="0" step="1000" />
+              <input type="number" id="portfolioValue" min="0" step="1000" inputmode="decimal" />
               <div class="hint">用于计划的总资产规模。</div>
             </div>
             <div class="ctrl">
               <label for="targetAlloc">目标占比 <span>%</span></label>
-              <input type="number" id="targetAlloc" min="0" max="100" step="0.1" />
+              <input type="number" id="targetAlloc" min="0" max="100" step="0.1" inputmode="decimal" />
               <div class="hint">该资产篮子的目标权重。</div>
             </div>
             <div class="ctrl">
               <label for="currentAlloc">当前占比 <span>%</span></label>
-              <input type="number" id="currentAlloc" min="0" max="100" step="0.1" />
+              <input type="number" id="currentAlloc" min="0" max="100" step="0.1" inputmode="decimal" />
               <div class="hint">当前的实际权重。</div>
             </div>
             <div class="ctrl">
               <label for="band">偏离容忍带 <span>%</span></label>
-              <input type="number" id="band" min="0" max="100" step="0.1" />
+              <input type="number" id="band" min="0" max="100" step="0.1" inputmode="decimal" />
               <div class="hint">允许偏离的安全区间。</div>
             </div>
             <div class="ctrl">
               <label for="trigger">触发阈值 <span>%</span></label>
-              <input type="number" id="trigger" min="0" max="100" step="0.1" />
+              <input type="number" id="trigger" min="0" max="100" step="0.1" inputmode="decimal" />
               <div class="hint">偏离超过该值即考虑再平衡。</div>
             </div>
             <div class="ctrl">
@@ -453,6 +430,29 @@
             <button class="miniBtn" id="sharePlan">分享结果</button>
             <button class="miniBtn" id="clearPlan">清空</button>
             <span class="copyHint" id="copyHint">仅本地 · 不会离开浏览器</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>结果解读</h2>
+            <p class="meta">把状态转换成行动，避免被短期噪音牵着走。</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <ul class="methodList">
+            <li><strong>区间内：</strong>无需交易；保持新增资金的平衡分配。</li>
+            <li><strong>偏离扩大：</strong>用新增资金慢慢拉回，提前准备流动性。</li>
+            <li><strong>立即再平衡：</strong>确定交易规模，检查税费/成本后执行。</li>
+            <li><strong>再平衡完成后：</strong>记录新目标并设定下次复查日期。</li>
+          </ul>
+          <div class="cta">
+            <a class="btn primary" href="/zh/drawdown-test/">测回撤承受度</a>
+            <a class="btn" href="/zh/pendulum/">感知周期风险</a>
           </div>
         </div>
       </div>

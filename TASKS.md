@@ -1,7 +1,7 @@
 # Tasks (Auto-generated)
 ## 2026-01-25
-- [x] Draft EN/ZH Rebalancing Planner page outline with key outcomes, steps, and CTA copy
-- [x] Map glossary expansion list (top 10 terms) and link each to at least one tool page
-- [x] Define the drawdowns → cycles → rebalancing navigation path and add cross-link plan for EN/ZH
-- [x] Audit mobile layout patterns across tool pages and list 3 fixes to standardize interactions
-- [x] Specify lightweight feedback signals (e.g., page-level “useful” toggle + storage key naming) and target pages
+- [x] Build EN rebalancing planner flow with inputs, outputs, and CTA sections in `en/rebalancing-planner/index.html`
+- [x] Mirror the rebalancing planner flow in ZH with matching structure and copy in `zh/rebalancing-planner/index.html`
+- [x] Draft glossary hub page with canonical term cards and tool links (EN/ZH)
+- [x] Add cross-page “learning journey” links from drawdowns → cycles → rebalancing (EN/ZH)
+- [x] Define and implement a mobile-first interaction pattern checklist and apply to one priority tool page
