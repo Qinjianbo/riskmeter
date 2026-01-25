@@ -71,6 +71,16 @@
   5) Portfolio size is marked optional, but the default value and “—” blanks after clearing are not explained inline.
 - Drawdown Recovery edge-case math check: 0%, 25%, 50%, 80% drawdowns match the formula (recovery gain and annualized/monthly rates), and outputs intentionally blank at ≥99%; no discrepancies found.
 - SEO audit (canonical/hreflang/sitemap) for EN/ZH entry points + new pages: all pages have canonical + hreflang pairs, and sitemap.xml covers all EN/ZH URLs; no fixes required.
+- Drawdown Recovery Scenarios v1 10-minute walkthrough checklist:
+  - [x] EN inputs/outputs/edge cases: slider range/step, optional portfolio behavior, output updates, 0/25/50/80% math, and ≥99% blanks.
+  - [x] ZH inputs/outputs/edge cases: same interactions plus language toggles and formatting parity.
+- Canonical/hreflang/sitemap spot-check (entry points): verified EN/ZH home, about, ethics, and support; added sitemap link tags to ethics pages; no other fixes needed.
+## 2026-01-26
+- Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
+## 2026-01-26
+- Generated PLAN.md via Codex.
+## 2026-01-26
+- Generated TASKS.md via Codex.
 ## 2026-01-26
 - Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
 ## 2026-01-26

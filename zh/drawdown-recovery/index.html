@@ -357,6 +357,10 @@
               <div class="v">不考虑现金流、费用、税收、波动拖累与路径差异。</div>
             </div>
             <div class="kv">
+              <div class="k">复利口径</div>
+              <div class="v">月度与年化收益均为复利估算，不是简单平均。</div>
+            </div>
+            <div class="kv">
               <div class="k">搭配其他工具</div>
               <div class="v">与<a href="/zh/drawdown-test/">回撤测试</a>和<a href="/zh/rebalancing-planner/">再平衡计划器</a>联合使用更贴近实际。</div>
             </div>
@@ -410,7 +414,7 @@
                 <div class="v" id="fastAnnual">—</div>
               </div>
               <div class="metric">
-                <div class="k">约等月度收益</div>
+                <div class="k">约等月度收益（复利）</div>
                 <div class="v" id="fastMonthly">—</div>
               </div>
             </div>
@@ -421,7 +425,7 @@
                 <div class="v" id="steadyAnnual">—</div>
               </div>
               <div class="metric">
-                <div class="k">约等月度收益</div>
+                <div class="k">约等月度收益（复利）</div>
                 <div class="v" id="steadyMonthly">—</div>
               </div>
             </div>
@@ -432,14 +436,32 @@
                 <div class="v" id="patientAnnual">—</div>
               </div>
               <div class="metric">
-                <div class="k">约等月度收益</div>
+                <div class="k">约等月度收益（复利）</div>
                 <div class="v" id="patientMonthly">—</div>
               </div>
             </div>
           </div>
 
           <div class="note">
+            <strong>限制条件：</strong>仅展示复利收益，忽略现金流、费用、税收、波动拖累与路径差异；极端回撤（≥99%）不展示结果。<br/>
             如果回撤意味着需要翻倍才能回本，通常说明风险过高或仓位过大。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>下一步工具</h2>
+            <p class="meta">把恢复压力转化为可执行的再平衡规则。</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="cta">
+            <a class="btn primary" href="/zh/rebalancing-planner/">下一步：再平衡计划器 →</a>
+            <a class="btn" href="/zh/drawdown-test/">返回：回撤承受度测试</a>
           </div>
         </div>
       </div>

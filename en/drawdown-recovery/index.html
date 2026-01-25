@@ -357,6 +357,10 @@
               <div class="v">Ignores cash flows, fees, taxes, volatility drag, and sequence effects.</div>
             </div>
             <div class="kv">
+              <div class="k">Compounding only</div>
+              <div class="v">Monthly and annualized rates are compounded, not simple averages.</div>
+            </div>
+            <div class="kv">
               <div class="k">Use with other tools</div>
               <div class="v">Pair with <a href="/en/drawdown-test/">Drawdown Test</a> and the <a href="/en/rebalancing-planner/">Rebalancing Planner</a> for practical limits.</div>
             </div>
@@ -410,7 +414,7 @@
                 <div class="v" id="fastAnnual">—</div>
               </div>
               <div class="metric">
-                <div class="k">Approx monthly return</div>
+                <div class="k">Approx monthly return (compounded)</div>
                 <div class="v" id="fastMonthly">—</div>
               </div>
             </div>
@@ -421,7 +425,7 @@
                 <div class="v" id="steadyAnnual">—</div>
               </div>
               <div class="metric">
-                <div class="k">Approx monthly return</div>
+                <div class="k">Approx monthly return (compounded)</div>
                 <div class="v" id="steadyMonthly">—</div>
               </div>
             </div>
@@ -432,14 +436,32 @@
                 <div class="v" id="patientAnnual">—</div>
               </div>
               <div class="metric">
-                <div class="k">Approx monthly return</div>
+                <div class="k">Approx monthly return (compounded)</div>
                 <div class="v" id="patientMonthly">—</div>
               </div>
             </div>
           </div>
 
           <div class="note">
+            <strong>Limitations:</strong> Compounded returns only, no cash flows, fees, taxes, volatility drag, or path effects. Outputs are hidden at extreme drawdowns (≥99%).<br/>
             If a drawdown requires you to double just to break even, consider tightening risk or position size.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
+            <h2>Next tool</h2>
+            <p class="meta">Turn recovery expectations into rebalancing rules.</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="cta">
+            <a class="btn primary" href="/en/rebalancing-planner/">Next: Rebalancing Planner →</a>
+            <a class="btn" href="/en/drawdown-test/">Back: Drawdown Test</a>
           </div>
         </div>
       </div>

@@ -6,6 +6,9 @@
 - Added Support & Education pages covering local-only data, expectations, and feedback guidance (EN/ZH).
 - Linked drawdown tools to glossary anchors and added glossary anchor IDs for core terms (EN/ZH).
 - Added sitemap link tags on entry-point pages and linked Support & Education from the homepages (EN/ZH).
+- Added “next tool” CTA blocks with back-links on drawdown test, drawdown recovery, and rebalancing planner pages (EN/ZH).
+- Clarified Drawdown Recovery guardrails with compounded-rate labeling and a visible limitations callout (EN/ZH).
+- Added Support & Education links to About/Ethics headers and footers, and added sitemap tags to Ethics pages (EN/ZH).
 
 ## 2026-01-25
 - Launched the Drawdown Recovery Scenarios tool with local persistence and recovery-horizon outputs (EN/ZH).

@@ -3,11 +3,11 @@
 High-level roadmap for RiskMeter. Focus on outcomes, not task lists.
 
 ## 2026-01-26
-- Ship Drawdown Recovery Scenarios v1 as a reliable, intuitive tool with clear guardrails and trust-building explanations.
-- Publish the guided learning path across tools with consistent EN/ZH cross-links and glossary anchors.
-- Establish a lightweight bilingual release governance rhythm that keeps terminology, numbers, and links aligned every release.
-- Launch a support/education page that sets expectations, explains local-only data, and provides a feedback channel.
-- Keep technical SEO and entry-point hygiene stable as new pages ship (canonical, hreflang, sitemap).
+- Release Drawdown Recovery Scenarios v1 with validated usability, clear guardrails, and bilingual clarity on limitations.
+- Establish a coherent guided learning journey across tools so users can progress through concepts without dead ends.
+- Operationalize bilingual release governance so terminology, numbers, and links stay aligned each update.
+- Provide a trusted support/education hub that sets expectations, explains local-only data, and captures feedback.
+- Sustain technical SEO and entry-point hygiene as new content ships (canonical, hreflang, sitemap).
 
 ## Vision
 RiskMeter should be a trusted reference for investment risk, drawdowns, and behavioral cycles, supported by simple, intuitive tools.
