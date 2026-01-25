@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-01-26
+- Added “next step” CTAs from the Pendulum tool and Rebalancing Planner to the Market Pendulum guide and Risk Glossary (EN/ZH).
+
 ## 2026-01-25
 - Launched the Drawdown Recovery Scenarios tool with local persistence and recovery-horizon outputs (EN/ZH).
 - Added public Ethics & Guardrails pages and linked them from home/about (EN/ZH).

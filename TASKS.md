@@ -1,7 +1,7 @@
 # Tasks (Auto-generated)
 ## 2026-01-26
-- [x] Build Drawdown Recovery Scenarios tool page shell with EN/ZH structure and shared UI styles
-- [x] Implement Drawdown Recovery tool logic + localStorage persistence in EN/ZH pages
-- [x] Add JSON-LD + canonical + hreflang on key page types and update sitemap/robots references
-- [x] Add cross-link CTAs between tools, glossary, and guides to reduce dead ends (EN/ZH)
-- [x] Draft a public ethics/guardrails page outlining sustainability/supporter approach (EN/ZH)
+- [x] Run UX QA on Drawdown Recovery Scenarios (desktop + mobile) and log top 5 friction points
+- [x] Verify edge-case math for drawdown recovery inputs; document any discrepancies to fix
+- [x] Audit canonical/hreflang/sitemap for EN/ZH entry points and new pages; note fixes
+- [x] Add “next step” CTA paths from each tool to glossary/guide in both languages
+- [x] Draft a bilingual governance checklist (terminology, cadence, reviewer) and add to internal docs
