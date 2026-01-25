@@ -4,19 +4,11 @@ High-level roadmap for RiskMeter. Focus on outcomes, not task lists.
 
 ## 2026-01-25
 
-- Deliver a polished rebalancing planner experience (EN/ZH) that users can complete end-to-end with confident decisions.
-- Publish a connected risk glossary that serves as the canonical reference and drives tool discovery.
-- Create a cohesive behavioral-risk learning journey that increases cross-page exploration and return visits.
-- Standardize mobile-first interaction patterns and speed across all tool pages.
-- Implement lightweight feedback and usage signals to prioritize the next deep investment.
-
-### Mobile-first interaction checklist (tool pages)
-
-- [ ] Touch targets stay ≥ 44px; primary actions stack full width on small screens.
-- [ ] Numeric inputs use `inputmode="decimal"` with sensible `step` values.
-- [ ] Outputs stack into a single column on mobile with clear labels.
-- [ ] No hover-only interactions; tap reveals tooltips or helper text.
-- [ ] Clear/save actions sit beside outputs with local-only notes visible.
+- Deliver a complete rebalancing planner journey with clear education, examples, and confidence-building guidance (EN/ZH).
+- Establish the risk glossary as the canonical hub with consistent taxonomy and cross-tool discovery.
+- Build a cohesive behavioral-risk learning path that increases cross-page exploration and return visits.
+- Apply mobile-first interaction and performance standards across all tool pages.
+- Add lightweight, privacy-respecting feedback and usage signals to prioritize the next investment.
 
 ## Vision
 

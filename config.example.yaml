@@ -1,0 +1,19 @@
+# Example automation configuration
+
+project_name: ExampleProject
+
+codex_node: ~/.nvm/versions/node/v22.18.0/bin/node
+codex_cli: ~/.nvm/versions/node/v22.18.0/lib/node_modules/@openai/codex/bin/codex.js
+
+git_branch: main
+git_remote: origin
+
+tasks_file: TASKS.md
+plan_file: PLAN.md
+log_file: ITERATION_LOG.md
+lock_file: .auto-run.lock
+
+plan_context_files: README.md,ROADMAP.md,CHANGELOG.md
+plan_context_max_chars: 12000
+
+default_sandbox: workspace-write

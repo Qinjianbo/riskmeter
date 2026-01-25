@@ -1,6 +1,10 @@
 # Changelog
 
 ## 2026-01-25
+- Expanded Rebalancing Planner education, examples, and confidence check with local-only signals (EN/ZH).
+- Added learning-journey CTAs on pendulum tool/guide pages and the rebalancing planner (EN/ZH).
+- Consolidated the Risk Glossary with a taxonomy map, tool map, and new sentiment/mean-reversion terms (EN/ZH).
+- Improved mobile numeric keyboard behavior in drawdown test and drawdown capacity inputs (EN/ZH).
 - Added drawdown-page learning journey links that move from drawdowns to cycles and rebalancing (EN/ZH).
 - Aligned ZH Rebalancing Planner flow with EN and improved mobile numeric input behavior.
 - Added bilingual Rebalancing Planner methodology notes with risk-aligned band guidance.

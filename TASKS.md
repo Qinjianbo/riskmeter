@@ -1,7 +1,7 @@
 # Tasks (Auto-generated)
 ## 2026-01-25
-- [x] Build EN rebalancing planner flow with inputs, outputs, and CTA sections in `en/rebalancing-planner/index.html`
-- [x] Mirror the rebalancing planner flow in ZH with matching structure and copy in `zh/rebalancing-planner/index.html`
-- [x] Draft glossary hub page with canonical term cards and tool links (EN/ZH)
-- [x] Add cross-page “learning journey” links from drawdowns → cycles → rebalancing (EN/ZH)
-- [x] Define and implement a mobile-first interaction pattern checklist and apply to one priority tool page
+- [x] Expand the rebalancing planner journey with education, examples, and confidence guidance in `en/rebalancing-planner/index.html` and `zh/rebalancing-planner/index.html`
+- [x] Consolidate the risk glossary as the canonical hub with consistent taxonomy and cross-tool discovery links (EN/ZH)
+- [x] Add a behavioral-risk learning path across drawdowns → cycles → rebalancing pages, with clear next-step CTAs (EN/ZH)
+- [x] Apply the mobile-first interaction standards across remaining tool pages, starting with the highest-traffic page
+- [x] Add lightweight, privacy-respecting feedback and usage signals to inform next priorities

@@ -454,7 +454,7 @@
             </div>
             <div class="ctrl">
               <label for="portfolio">Portfolio size (optional)</label>
-              <input type="number" id="portfolio" value="100000" min="0" step="1000" />
+              <input type="number" id="portfolio" value="100000" min="0" step="1000" inputmode="decimal" />
               <div class="hint">Use your current portfolio or the amount you plan to invest.</div>
             </div>
           </div>
@@ -527,22 +527,22 @@
           <div class="controls">
             <div class="ctrl">
               <label for="capTotal">Total portfolio value</label>
-              <input type="number" id="capTotal" value="100000" min="0" step="1000" />
+              <input type="number" id="capTotal" value="100000" min="0" step="1000" inputmode="decimal" />
               <div class="hint">Your current total account value.</div>
             </div>
             <div class="ctrl">
               <label for="capPosition">Position value (current)</label>
-              <input type="number" id="capPosition" value="30000" min="0" step="1000" />
+              <input type="number" id="capPosition" value="30000" min="0" step="1000" inputmode="decimal" />
               <div class="hint">Current market value of the position.</div>
             </div>
             <div class="ctrl">
               <label for="capMaxDd">Max account drawdown you can accept (%)</label>
-              <input type="number" id="capMaxDd" value="20" min="0" max="90" step="0.5" />
+              <input type="number" id="capMaxDd" value="20" min="0" max="90" step="0.5" inputmode="decimal" />
               <div class="hint">Your overall limit from peak to trough.</div>
             </div>
             <div class="ctrl">
               <label for="capCurrentDd">Current account drawdown (%)</label>
-              <input type="number" id="capCurrentDd" value="0" min="0" max="90" step="0.5" />
+              <input type="number" id="capCurrentDd" value="0" min="0" max="90" step="0.5" inputmode="decimal" />
               <div class="hint">How far you are already below your peak.</div>
             </div>
           </div>
