@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
+  <script src="/assets/head-common.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>关于 · RiskMeter</title>
@@ -113,14 +114,12 @@
       </p>
     </div>
 
-    <footer>
-      © <span id="y"></span> RiskMeter. 仅供学习与研究使用。 · <a href="/zh/support/">支持与使用说明</a>
-    </footer>
+        <div class="footer-slot" data-footer></div>
   </div>
 
   <script>
     document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
-    document.getElementById('y').textContent = new Date().getFullYear();
   </script>
+  <script src="/assets/footer-common.js"></script>
 </body>
 </html>

@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="/assets/head-common.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Ethics & Guardrails · RiskMeter</title>
@@ -131,14 +132,12 @@
       </ul>
     </div>
 
-    <footer>
-      © <span id="y"></span> RiskMeter. Educational use only. · <a href="/en/support/">Support & Education</a>
-    </footer>
+        <div class="footer-slot" data-footer></div>
   </div>
 
   <script>
     document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
-    document.getElementById('y').textContent = new Date().getFullYear();
   </script>
+  <script src="/assets/footer-common.js"></script>
 </body>
 </html>

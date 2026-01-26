@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="/assets/head-common.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Rebalancing Planner · RiskMeter</title>
@@ -663,9 +664,7 @@
     </section>
 
     <div class="divider"></div>
-    <footer>
-      RiskMeter is for education only and does not provide investment advice.
-    </footer>
+        <div class="footer-slot" data-footer></div>
   </div>
 
   <script>
@@ -1025,5 +1024,6 @@
 
     document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
   </script>
+  <script src="/assets/footer-common.js"></script>
 </body>
 </html>

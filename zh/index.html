@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
+  <script src="/assets/head-common.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>RiskMeter — 衡量风险，保持理性</title>
@@ -137,14 +138,12 @@
     </section>
 
     <div class="divider"></div>
-    <footer>
-      RiskMeter 为教育用途，不提供投资建议，不推荐任何具体证券或标的。
-      · <a href="/zh/support/">支持与使用说明</a>
-    </footer>
+        <div class="footer-slot" data-footer></div>
   </div>
 
   <script>
     document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
   </script>
+  <script src="/assets/footer-common.js"></script>
 </body>
 </html>
