@@ -15,6 +15,8 @@ RiskMeter 的高层路线图，聚焦结果而非任务清单。
 - “术语表 → 工具 → 支持” 导航上线到主页与核心工具页，Glossary/Support 互链保持一致。
 - 完成一次 hreflang/canonical/sitemap 巡检，补齐 pendulum 根页的 canonical/hreflang。
 - 发布治理清单已写入 README/README.zh，包含责任人、频率与可勾选项。
+- Support 与 Drawdown FAQ 现已加入可复制的本地存储/风险提示与工具互链；回撤恢复/测试/再平衡分享片段已提供 EN/ZH 版本。
+- 移动端回归问题（滑杆/输入/tooltip、跳至工具锚点）已整理责任页面与修复列表；rm_* + hreflang/canonical 巡检脚本思路与伪代码已成稿（待实现）。
 
 ### Milestones & Dates
 - 2026-02：发布回撤恢复知识中心 EN/ZH 版本，内嵌工具解读与场景示例。
@@ -31,10 +33,9 @@ RiskMeter 的高层路线图，聚焦结果而非任务清单。
 - 交互改动未覆盖移动端：建立关键工具的移动端快速回归（滑块/输入/tooltip）清单。
 
 ### Next 1-2 Weeks
-- 整理可复制的回撤恢复/工具分享片段，确保 EN/ZH 文案同步。
-- 针对移动端回归记录的问题（输入/滑杆/tooltip），制定并落地修复方案。
-- 继续固化导航与 SEO 巡检，考虑脚本化检查 rm_* 键与 hreflang/canonical。
-- 丰富支持页或 FAQ 中的本地存储与风险提示示例，保持双语一致。
+- 落地移动端修复（滑杆/输入命中区、跳至工具锚点、tooltip 点击区），并复测 EN/ZH 页面。
+- 将 rm_* + hreflang/canonical 巡检脚本从伪代码落地为可运行脚本；纳入发布前检查。
+- 继续固化导航与 SEO 巡检，监测新增页面的 canonical/hreflang 一致性。
 - 观察反馈信号，评估是否增加自定义恢复周期或“跳至工具”锚点以降低折叠风险。
 
 ### Out of Scope / Not Now

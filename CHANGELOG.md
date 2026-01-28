@@ -6,6 +6,8 @@
 - Standardized tool-level localStorage/risk copy and highlighted optional portfolio handling and extreme-drawdown behavior (EN/ZH).
 - Added canonical + hreflang tags to the root pendulum entry page and logged SEO audit results.
 - Published release governance checklist (owner, cadence, checkboxes) in README/README.zh and updated PLAN status.
+- Support pages now include copy-ready local-storage/risk notes and three shareable snippets that link to recovery/test/rebalancing tools (EN/ZH).
+- Drawdown FAQ sections gained local-only + risk callouts with glossary/tool cross-links (EN/ZH).
 
 ## 2026-01-26
 - Added “next step” CTAs from the Pendulum tool and Rebalancing Planner to the Market Pendulum guide and Risk Glossary (EN/ZH).

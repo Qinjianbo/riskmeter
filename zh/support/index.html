@@ -60,6 +60,13 @@
     ul{margin:8px 0 0 18px;color:var(--mut)}
     li{margin:6px 0}
     footer{margin-top:28px;color:var(--mut);font-size:12px}
+    .snippetList{display:flex;flex-direction:column;gap:12px;margin-top:10px}
+    .snippetCard{border:1px solid var(--line);border-radius:14px;background:rgba(255,255,255,.05);padding:12px}
+    .snippetTitle{margin:0 0 6px;font-size:13px;color:var(--fg);font-weight:600}
+    .snippetText{margin:0 0 8px;color:var(--fg);font-size:13px;line-height:1.6;white-space:pre-wrap}
+    .snippetActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .hint{margin-top:6px;font-size:12px;color:var(--mut)}
+    button.btn{cursor:pointer}
   </style>
 </head>
 
@@ -106,6 +113,14 @@
     </div>
 
     <div class="section">
+      <h2>可复制的本地存储与风险提示</h2>
+      <ul>
+        <li><strong>本地存储提示（rm_*）：</strong>“输入与反馈保存在浏览器的 rm_* 键下。清缓存或换设备会清空；除非你主动分享，不会发送给 RiskMeter。”</li>
+        <li><strong>范围与风险提醒：</strong>“仅为教育用途的简单数学，不含现金流、费用、税收与路径依赖。建议结合 <a href="/zh/risk-glossary/#drawdown">风险术语表</a>、<a href="/zh/drawdown-test/">回撤测试</a>、<a href="/zh/drawdown-recovery/">回撤恢复</a> 与 <a href="/zh/drawdown-capacity/">回撤承受度</a> 一起使用。”</li>
+      </ul>
+    </div>
+
+    <div class="section">
       <h2>使用边界与限制</h2>
       <ul>
         <li>未考虑现金流、费用、税收与路径依赖的波动影响。</li>
@@ -123,11 +138,80 @@
       </ul>
     </div>
 
+    <div class="section">
+      <h2>可分享片段</h2>
+      <p style="margin:6px 0 10px;color:var(--mut)">复制即可转发的短文案，包含固定链接。</p>
+      <div class="snippetList">
+        <div class="snippetCard">
+          <p class="snippetTitle">1) 回撤恢复 · 情景对比</p>
+          <p class="snippetText" id="snippet-zh-1">回撤恢复情景：对比 1/3/5 年复利路径，看看需要多少收益才能爬出回撤；输入仅保存在本地 rm_* 键。工具：https://riskmeter.app/zh/drawdown-recovery/</p>
+          <div class="snippetActions">
+            <button class="btn" data-copy-target="snippet-zh-1" data-hint-id="hint-zh-1">复制片段</button>
+            <a class="pill" href="https://riskmeter.app/zh/drawdown-recovery/">固定链接</a>
+          </div>
+          <div class="hint" id="hint-zh-1">可复制。</div>
+        </div>
+
+        <div class="snippetCard">
+          <p class="snippetTitle">2) 回撤测试 + 恢复联动</p>
+          <p class="snippetText" id="snippet-zh-2">先在回撤测试里设定你的承受度，再用回撤恢复工具算出需要的收益。两步入口：https://riskmeter.app/zh/drawdown-test/</p>
+          <div class="snippetActions">
+            <button class="btn" data-copy-target="snippet-zh-2" data-hint-id="hint-zh-2">复制片段</button>
+            <a class="pill" href="https://riskmeter.app/zh/drawdown-test/">固定链接</a>
+          </div>
+          <div class="hint" id="hint-zh-2">可复制。</div>
+        </div>
+
+        <div class="snippetCard">
+          <p class="snippetTitle">3) 恢复后的再平衡</p>
+          <p class="snippetText" id="snippet-zh-3">把恢复预期转成护栏：用再平衡计划器设置漂移区间和交易提示，反馈仅存本地。工具：https://riskmeter.app/zh/rebalancing-planner/</p>
+          <div class="snippetActions">
+            <button class="btn" data-copy-target="snippet-zh-3" data-hint-id="hint-zh-3">复制片段</button>
+            <a class="pill" href="https://riskmeter.app/zh/rebalancing-planner/">固定链接</a>
+          </div>
+          <div class="hint" id="hint-zh-3">可复制。</div>
+        </div>
+      </div>
+    </div>
+
         <div class="footer-slot" data-footer></div>
   </div>
 
   <script>
-    document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
+    const toEn = document.getElementById('toEn');
+    if(toEn){
+      toEn.addEventListener('click', () => localStorage.setItem('rm_lang','en'));
+    }
+
+    const copyText = async (text) => {
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
+      }
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try{ document.execCommand('copy'); }catch(_){ }
+      document.body.removeChild(ta);
+      return true;
+    };
+
+    document.querySelectorAll('[data-copy-target]').forEach((btn) => {
+      const targetId = btn.getAttribute('data-copy-target');
+      const hintId = btn.getAttribute('data-hint-id');
+      const hintEl = hintId ? document.getElementById(hintId) : null;
+      btn.addEventListener('click', async () => {
+        const target = targetId ? document.getElementById(targetId) : null;
+        if(!target) return;
+        await copyText(target.textContent.trim());
+        if(hintEl){
+          hintEl.textContent = '已复制。';
+          setTimeout(() => { hintEl.textContent = '可复制。'; }, 1400);
+        }
+      });
+    });
   </script>
   <script src="/assets/footer-common.js"></script>
 </body>
