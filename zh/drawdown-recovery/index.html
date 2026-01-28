@@ -198,6 +198,14 @@
     .metric{margin-top:8px}
     .metric .k{color:var(--mut);font-size:12px}
     .metric .v{font-size:14px;margin-top:4px}
+    .metricList{
+      margin:6px 0 0 16px;
+      padding-left:14px;
+      color:var(--fg);
+      font-size:13px;
+      line-height:1.6;
+    }
+    .metricList li{margin:6px 0}
 
     .note{
       margin-top:12px;
@@ -282,6 +290,18 @@
         <a class="chip" href="/zh/drawdown-capacity/">回撤承受空间</a>
         <a class="chip" href="/zh/drawdown-explained/">回撤风险指南</a>
         <a class="chip" href="/zh/pendulum/">市场钟摆</a>
+      </div>
+
+      <div class="clusterNav" aria-label="Glossary to support path">
+        <span>术语表 → 工具 → 支持：</span>
+        <a class="chip" href="/zh/risk-glossary/">风险术语表</a>
+        <span class="chip active">回撤恢复</span>
+        <a class="chip" href="/zh/support/">支持与使用说明</a>
+      </div>
+
+      <div class="note">
+        本地存储：输入和反馈使用 localStorage 的 rm_* 键保存。
+        仅教育用途，忽略现金流、费用、税收与路径差异。
       </div>
     </section>
 
@@ -374,6 +394,56 @@
       <div class="toolCard">
         <div class="toolHead">
           <div>
+            <h2>示例情景</h2>
+            <p class="meta">复利口径，忽略现金流、费用与税收。</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="scenarioGrid">
+            <div class="scenarioCard">
+              <h3>20% 回撤 · $250k</h3>
+              <ul class="metricList">
+                <li>回撤损失：$50,000 → 回撤后净值：$200,000</li>
+                <li>恢复所需收益：+25.0%</li>
+                <li>快（1 年）：年化 +25.0%，月度 +1.9%</li>
+                <li>稳（3 年）：年化 +7.7%，月度 +0.6%</li>
+                <li>慢（5 年）：年化 +4.6%，月度 +0.4%</li>
+              </ul>
+            </div>
+            <div class="scenarioCard">
+              <h3>35% 回撤 · $120k</h3>
+              <ul class="metricList">
+                <li>回撤损失：$42,000 → 回撤后净值：$78,000</li>
+                <li>恢复所需收益：+53.8%</li>
+                <li>快（1 年）：年化 +53.8%，月度 +3.7%</li>
+                <li>稳（3 年）：年化 +15.4%，月度 +1.2%</li>
+                <li>慢（5 年）：年化 +9.0%，月度 +0.7%</li>
+              </ul>
+            </div>
+            <div class="scenarioCard">
+              <h3>50% 回撤 · $80k</h3>
+              <ul class="metricList">
+                <li>回撤损失：$40,000 → 回撤后净值：$40,000</li>
+                <li>恢复所需收益：+100.0%</li>
+                <li>快（1 年）：年化 +100.0%，月度 +5.9%</li>
+                <li>稳（3 年）：年化 +26.0%，月度 +1.9%</li>
+                <li>慢（5 年）：年化 +14.9%，月度 +1.2%</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="note">
+            <strong>边界情境：</strong>组合规模可留空或填 0，金额输出显示“—”但收益率仍会计算。
+            极端回撤（≥99%）将隐藏恢复输出，规划时可视为不可恢复。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
             <h2>恢复测算与情景对比</h2>
             <p class="meta">选择回撤水平，对比不同恢复时间窗口。</p>
           </div>
@@ -444,7 +514,8 @@
           </div>
 
           <div class="note">
-            <strong>限制条件：</strong>仅展示复利收益，忽略现金流、费用、税收、波动拖累与路径差异；极端回撤（≥99%）不展示结果。<br/>
+            <strong>限制条件：</strong>仅展示复利收益，忽略现金流、费用、税收、波动拖累与路径差异；
+            组合规模留空或为 0 时金额输出隐藏。
             如果回撤意味着需要翻倍才能回本，通常说明风险过高或仓位过大。
           </div>
         </div>

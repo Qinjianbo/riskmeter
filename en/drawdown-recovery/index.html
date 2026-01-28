@@ -198,6 +198,14 @@
     .metric{margin-top:8px}
     .metric .k{color:var(--mut);font-size:12px}
     .metric .v{font-size:14px;margin-top:4px}
+    .metricList{
+      margin:6px 0 0 16px;
+      padding-left:14px;
+      color:var(--fg);
+      font-size:13px;
+      line-height:1.6;
+    }
+    .metricList li{margin:6px 0}
 
     .note{
       margin-top:12px;
@@ -282,6 +290,18 @@
         <a class="chip" href="/en/drawdown-capacity/">Drawdown Capacity</a>
         <a class="chip" href="/en/drawdown-risk/">Drawdown Risk Guide</a>
         <a class="chip" href="/en/pendulum/">Market Pendulum</a>
+      </div>
+
+      <div class="clusterNav" aria-label="Glossary to support path">
+        <span>Glossary → Tool → Support:</span>
+        <a class="chip" href="/en/risk-glossary/">Risk Glossary</a>
+        <span class="chip active">Drawdown Recovery</span>
+        <a class="chip" href="/en/support/">Support & Education</a>
+      </div>
+
+      <div class="note">
+        Local-only: inputs and feedback are saved with rm_* keys in localStorage.
+        Educational only; ignores cash flows, fees, taxes, and path dependence.
       </div>
     </section>
 
@@ -374,6 +394,56 @@
       <div class="toolCard">
         <div class="toolHead">
           <div>
+            <h2>Example scenarios</h2>
+            <p class="meta">Compounded returns only; ignores cash flows, fees, and taxes.</p>
+          </div>
+        </div>
+        <div class="toolBody">
+          <div class="scenarioGrid">
+            <div class="scenarioCard">
+              <h3>20% drawdown · $250k</h3>
+              <ul class="metricList">
+                <li>Loss from peak: $50,000 → after drawdown: $200,000</li>
+                <li>Gain needed to break even: +25.0%</li>
+                <li>Fast (1y): +25.0% annualized · +1.9% monthly</li>
+                <li>Steady (3y): +7.7% annualized · +0.6% monthly</li>
+                <li>Patient (5y): +4.6% annualized · +0.4% monthly</li>
+              </ul>
+            </div>
+            <div class="scenarioCard">
+              <h3>35% drawdown · $120k</h3>
+              <ul class="metricList">
+                <li>Loss from peak: $42,000 → after drawdown: $78,000</li>
+                <li>Gain needed to break even: +53.8%</li>
+                <li>Fast (1y): +53.8% annualized · +3.7% monthly</li>
+                <li>Steady (3y): +15.4% annualized · +1.2% monthly</li>
+                <li>Patient (5y): +9.0% annualized · +0.7% monthly</li>
+              </ul>
+            </div>
+            <div class="scenarioCard">
+              <h3>50% drawdown · $80k</h3>
+              <ul class="metricList">
+                <li>Loss from peak: $40,000 → after drawdown: $40,000</li>
+                <li>Gain needed to break even: +100.0%</li>
+                <li>Fast (1y): +100.0% annualized · +5.9% monthly</li>
+                <li>Steady (3y): +26.0% annualized · +1.9% monthly</li>
+                <li>Patient (5y): +14.9% annualized · +1.2% monthly</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="note">
+            <strong>Edge cases:</strong> Portfolio size is optional — set it to 0 to hide dollar gaps while rates still calculate.
+            Extreme drawdowns (≥99%) hide recovery outputs; treat them as effectively non-recoverable when planning.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="toolCard">
+        <div class="toolHead">
+          <div>
             <h2>Recovery math, scaled</h2>
             <p class="meta">Pick a drawdown, then compare recovery horizons.</p>
           </div>
@@ -444,8 +514,9 @@
           </div>
 
           <div class="note">
-            <strong>Limitations:</strong> Compounded returns only, no cash flows, fees, taxes, volatility drag, or path effects. Outputs are hidden at extreme drawdowns (≥99%).<br/>
-            If a drawdown requires you to double just to break even, consider tightening risk or position size.
+            <strong>Limitations:</strong> Compounded returns only; ignores cash flows, fees, taxes, volatility drag, and path effects.
+            Dollar gaps hide when portfolio size is blank or 0.
+            If recovery math implies doubling just to break even, tighten risk or position size.
           </div>
         </div>
       </div>

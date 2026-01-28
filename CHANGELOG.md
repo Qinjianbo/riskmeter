@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-01-28
+- Embedded drawdown recovery example/boundary scenarios with aligned terminology and refreshed limitation notes (EN/ZH).
+- Added “Glossary → Tool → Support” navigation plus local-only risk notices (rm_* keys) across home, glossary, and core tools: drawdown test/recovery/capacity and rebalancing planner (EN/ZH).
+- Standardized tool-level localStorage/risk copy and highlighted optional portfolio handling and extreme-drawdown behavior (EN/ZH).
+- Added canonical + hreflang tags to the root pendulum entry page and logged SEO audit results.
+- Published release governance checklist (owner, cadence, checkboxes) in README/README.zh and updated PLAN status.
+
 ## 2026-01-26
 - Added “next step” CTAs from the Pendulum tool and Rebalancing Planner to the Market Pendulum guide and Risk Glossary (EN/ZH).
 - Expanded Drawdown Recovery Scenarios with how-to-use and guardrails blocks plus glossary-linked definitions (EN/ZH).

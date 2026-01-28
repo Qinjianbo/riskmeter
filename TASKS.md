@@ -1,7 +1,8 @@
 # Tasks (Auto-generated)
-## 2026-01-26
-- [x] Draft EN interpretation guidance for Drawdown Recovery Scenarios: add 3 concrete examples + 2 edge cases to a scratch note
-- [x] Draft ZH interpretation guidance matching the EN examples and edge cases; flag any terminology mismatches
-- [x] Outline bilingual learning path map (glossary → tools → support) with page list + CTA targets
-- [x] Create bilingual release checklist v1 (terminology, numbers, links, QA) as a simple markdown draft
-- [x] List current entry-point URLs to audit for canonical/hreflang/sitemap consistency (EN/ZH)
+## 2026-01-28
+- [x] 将回撤恢复示例与边界情境嵌入对应 EN/ZH 页面，校对术语和数值一致
+- [x] 落地“术语表→工具→支持”导航：主页与工具页互链并补齐 hreflang/canonical
+- [x] 跑新增/改名页面的 sitemap+hfeedbackreflang+canonical 巡检，输出差异清单与修复项
+- [x] 将治理清单写入发布流程，标注责任人和频率并添加可勾选条目
+- [x] 统一各工具本地存储与风险提示文案（含 rm_ 前缀检查），验证移动端显示
+- [x] 核查核心工具移动端交互（输入/滑块/tooltip），记录问题与截图

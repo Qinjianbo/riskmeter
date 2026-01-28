@@ -128,3 +128,10 @@ Primary ZH pages:
 - https://riskmeter.app/zh/pendulum/
 - https://riskmeter.app/zh/market-pendulum-theory/
 - https://riskmeter.app/zh/rebalancing-planner/
+
+## 2026-01-28 · SEO 巡检与移动端回归尝试
+
+- 巡检范围：home/about/support、drawdown-test/recovery/capacity、rebalancing-planner、pendulum/market-pendulum-theory、risk-glossary（EN/ZH）。
+- 差异：发现 pendulum 根页缺少 canonical/hreflang，已补齐；其余页面均含 canonical + en/zh/x-default，sitemap.xml 覆盖完整。
+- 移动端尝试：Playwright 安装多次因网络超时未完成；Safari AppleScript 截图被 macOS AppleEvent 权限拒绝，未生成最新截图，需获授权或换用可联网的 headless 浏览器后重跑。
+- 观察：新增导航与提示提高了首屏高度，移动端建议后续增加“跳至工具”锚点或折叠导航，并再次实机验证滑杆/输入/tooltip 触达性。

@@ -218,6 +218,15 @@
     }
     .kv .k{color:var(--mut); font-size:12px}
     .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
+    .note{
+      margin-top:12px;
+      border:1px dashed rgba(255,255,255,.18);
+      border-radius:14px;
+      color:var(--mut);
+      font-size:12.5px;
+      background: rgba(255,255,255,.03);
+      padding:10px 12px;
+    }
 
     .statusTag{
       display:inline-block;
@@ -394,6 +403,17 @@
         <a class="chip" href="/zh/drawdown-capacity/">回撤容量</a>
         <a class="chip" href="/zh/drawdown-explained/">回撤风险</a>
         <a class="chip" href="/zh/pendulum/">市场钟摆</a>
+      </div>
+
+      <div class="clusterNav" aria-label="Glossary to support path">
+        <span>术语表 → 工具 → 支持：</span>
+        <a class="chip" href="/zh/risk-glossary/">风险术语表</a>
+        <span class="chip active">再平衡计划器</span>
+        <a class="chip" href="/zh/support/">支持与使用说明</a>
+      </div>
+
+      <div class="note">
+        本地存储：计划输入和反馈使用 localStorage 的 rm_* 键保存；仅教育用途，忽略税费、流动性与路径差异。
       </div>
     </section>
 

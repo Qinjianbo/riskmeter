@@ -92,6 +92,15 @@ Users are solely responsible for their own investment decisions.
 
 See [`PLAN.md`](./PLAN.md) for upcoming milestones.
 
+## Release Process & Governance
+
+Owner: Content/SEO (EN & ZH). Frequency: before every release (at least monthly).
+
+- [ ] Terminology: glossary terms match tool labels; EN/ZH wording aligned.
+- [ ] Numbers: rounding, currency format, thresholds (≥99% handling), and example math verified.
+- [ ] Links & SEO: CTA targets, hreflang/canonical pairs, sitemap.xml updated for new/renamed pages.
+- [ ] QA: desktop/mobile layouts (inputs, sliders, tooltips), localStorage persistence with `rm_*` keys, copy/clear/feedback flows.
+
 ---
 
 ## Automation Scripts
