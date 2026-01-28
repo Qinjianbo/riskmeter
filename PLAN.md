@@ -1,27 +1,26 @@
 # Plan
+RiskMeter 的高层路线图，聚焦结果而非任务清单。
 
-High-level roadmap for RiskMeter. Focus on outcomes, not task lists.
-
-## 2026-01-26
-- Publish a bilingual drawdown-recovery knowledge hub that sets expectations, interprets outputs, and clarifies edge-case behavior across tools.
-- Deliver a coherent bilingual learning journey that connects glossary → tools → support with clear CTAs and reduced navigation friction.
-- Operationalize a repeatable bilingual release governance workflow (terminology, numbers, links, QA) with clear ownership and cadence.
-- Sustain technical SEO and entry-point integrity across languages (canonical/hreflang/sitemap/redirects) to preserve discoverability.
-- Reinforce privacy-first, local-only data handling and disclaimer consistency across all tools and pages.
+## 2026-01-28
+- 上线双语回撤恢复知识中心，融入示例、边界情境与工具交互解释，形成可链接的常青内容。
+- 将“术语表 → 工具 → 支持”的学习旅程固化为站点信息架构与 CTA 路径，确保 EN/ZH 入口对齐、导航低摩擦。
+- 将发布治理流程（术语、数值、链接、QA）产品化：形成可复用检查清单、责任分工与节奏，并嵌入日常发布。
+- 强化技术 SEO 与入口资产：维持 canonical/hreflang/sitemap/redirect 一致性，新增页面能被及时收录且双语互指。
+- 巩固隐私与免责声明基线：统一工具内的本地存储声明、数据范围说明与风险提示，避免功能分叉带来的偏差。
 
 ## Vision
-RiskMeter should be a trusted reference for investment risk, drawdowns, and behavioral cycles, supported by simple, intuitive tools.
+RiskMeter 希望成为有关投资风险、回撤与行为周期的可信参考，并通过简单直观的工具支撑学习与决策。
 
 ## Guardrails
-- Not a trading platform, signal service, or prediction engine.
-- Evergreen utility and clarity come before growth and complexity.
+- 不提供交易信号、预测或投资建议。
+- 永久优先保持清晰、常青的实用性，而非功能堆叠或增长幻觉。
 
 ## Governance Checklist / 治理清单
 
 ### English
-- Terminology: treat the Risk Glossary as the source of truth; sync tool labels and translations before release.
-- Cadence: review core copy + glossary monthly or per release; run a quarterly hreflang/sitemap check.
-- Reviewer: require one EN reviewer and one ZH reviewer to confirm links, numbers, and tone alignment.
+- 术语：以风险词汇表为唯一基准，上线前同步校对工具标签与翻译。
+- 节奏：每次发布前或每月复核核心文案与词汇表；每季度检查 hreflang/sitemap。
+- 审核人：至少 1 名英文 + 1 名中文审校，确认链接、数值与语气一致。
 
 ### 中文
 - 术语：以风险术语表为唯一依据，上线前同步校对工具标题与翻译。

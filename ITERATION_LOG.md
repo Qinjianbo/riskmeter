@@ -111,3 +111,5 @@
 - Generated TASKS.md via Codex.
 ## 2026-01-26
 - Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
+## 2026-01-28
+- Generated PLAN.md via Codex.
