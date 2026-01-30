@@ -157,3 +157,16 @@
 - 核对入口页与 sitemap：`/`, `/en/`, `/zh/` 各自有内嵌 canonical/hreflang 组合，script 也确认它们已收录；暂未发现遗漏页面。
 ## 2026-01-30
 - [2026-01-30T15:04:33+08:00] Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
+## 2026-01-30
+- [2026-01-30T15:00:00+08:00] Ran auto-run (allow-dirty: true, dry-run: false, full-auto: true, skip-commit: false, force-lock: false).
+## 2026-01-30
+- [2026-01-30T15:30:01+08:00] Generated TASKS.md via Codex.
+
+## 2026-01-30
+- iOS Safari 实机回归（Drawdown Test/Recovery/Rebalancing Planner）在当前环境依然无法访问真机；已跟进 HTML/JS/inline CSS 里的滑杆/输入命中区、tooltip/焦点轮廓与锚点跳转逻辑，并把预期复现步骤写入日志，留待设备上线后验证。
+- Android Chrome 实机回归同三页的误触、滚动穿透与键盘遮挡目前也无法操作；通过代码审查确认触控面积、focus-visible 样式与滚动行为保持一致，并备注后续需实测。
+- 运行 `scripts/seo-governance.py`：扫描 27 个页面、issue_count=0、所有 canonical 已入 sitemap，将 JSON 输出存档在 `reports/seo-governance-20260130.json` 以备审查。
+- 抽查 `/`、`/en/`、`/zh/` 入口及 `en/drawdown-test/`、`zh/rebalancing-planner/` 等工具页的 canonical/hreflang/sitemap 覆盖，确认 metadata 在各自语言里都互指并在 sitemap 中，未发现问题。
+- 发布前收尾：`.auto-run.lock` 已删、工作区只剩计划/任务/日志与新报告文件，符合当天“清理 + 勾选巡检”要求。
+## 2026-01-30
+- [2026-01-30T15:33:07+08:00] Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
