@@ -10,11 +10,11 @@ RiskMeter 的高层路线图，聚焦结果而非任务清单（细项以 `TASKS
 - 巩固站点治理与维护节奏：把“每次发布必做”与“每月/每季度例行”明确到责任与产出物（日志、问题清单、修复记录）。
 
 ### Current Status
-- 工作区存在未提交改动：`ITERATION_LOG.md`、`TASKS.md`、`config.example.yaml` 均已修改，表明迭代与自动化配置正在推进但尚未收尾；另外加了脚本、sitemap 和 .auto-run.ignore 的更新。
+- 工作区存在未提交改动：`ITERATION_LOG.md`、`TASKS.md`、`PLAN.md` 等正在更新，记录今天的可审计动作（脚本巡检、代码审阅、入口复核），提交前还需再核一轮。
 - 双语静态站点与核心内容骨架已稳定（/en、/zh），知识内容与工具互链已形成“术语表 → 工具 → 支持”的学习旅程雏形。
-- 移动端交互问题（滑杆/输入命中区、tooltip 点击/关闭/遮挡）已在 drawdown 测试/恢复和再平衡规划页完成调整，focus outline 和 overflow 也同步兼容 EN/ZH。
-- `rm_*` + `hreflang/canonical` 巡检已落地为 `scripts/seo-governance.py`，可在发布前输出问题列表，并且 README/README.zh 已把脚本写入治理步骤。
-- 近期执行的全站 canonical/hreflang/sitemap 巡检（含源码脚本）已确认没有缺口，sitemap.xml 也新增 https://riskmeter.app/ 入口，结果和建议写入 ITERATION_LOG.md。
+- 已通过代码审查对 Drawdown Test、Drawdown Recovery 和 Rebalancing Planner 的滑杆/输入/tooltip/导航结构进行逐项确认，EN/ZH 版本保持一致，焦点轮廓与触控友好属性仍保留；iOS Safari 与 Android Chrome 的物理回归需在设备上后续执行。
+- `rm_*` + `hreflang/canonical` 巡检脚本 `scripts/seo-governance.py` 已运行，生成了 27 个页面的报告（0 个问题），README/README.zh 也包含了使用指南。
+- sitemap/canonical 入口复核已确认 `/`, `/en/`, `/zh/` 的 canonical + hreflang 组合在 sitemap 中，新的入口都被列出，暂未发现遗漏页面。
 
 ### Milestones & Dates
 - 2026-02（上旬）：完成移动端交互基线修复与回归（回撤测试/回撤恢复/再平衡优先），并在 EN/ZH 双语页面同步上线。

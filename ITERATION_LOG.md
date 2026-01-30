@@ -146,3 +146,14 @@
 - [2026-01-30T14:30:00+08:00] Generated TASKS.md via Codex.
 ## 2026-01-30
 - [2026-01-30T14:30:21+08:00] Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
+## 2026-01-30
+- [2026-01-30T14:30:00+08:00] Ran auto-run (allow-dirty: true, dry-run: false, full-auto: true, skip-commit: false, force-lock: false).
+## 2026-01-30
+- [2026-01-30T15:00:00+08:00] Generated TASKS.md via Codex.
+
+## 2026-01-30
+- Ran `scripts/seo-governance.py` → 27 HTML files scanned, 0 issues, sitemap covers every expected canonical (root/EN/ZH entries included) so the rm_*/canonical/hreflang guardrails stay green.
+- Reviewed EN/ZH Drawdown Test、Drawdown Recovery、Rebalancing Planner HTML/CSS/inline JS for slider/control hit areas、numeric inputs、tooltip toggle logic 与导航按钮/互链；结构与文案一致，触控友好属性 (touch-action、focus-visible outlines) 都已对齐，移动端设备 (iOS Safari & Android Chrome) 手工回归暂无法在当前环境执行，需后续真实设备复核。
+- 核对入口页与 sitemap：`/`, `/en/`, `/zh/` 各自有内嵌 canonical/hreflang 组合，script 也确认它们已收录；暂未发现遗漏页面。
+## 2026-01-30
+- [2026-01-30T15:04:33+08:00] Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
