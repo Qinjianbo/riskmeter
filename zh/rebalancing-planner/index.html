@@ -119,7 +119,7 @@
       background:var(--panel);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      overflow:hidden;
+      overflow:visible;
     }
     .toolHead{
       padding:16px 18px;
@@ -142,6 +142,11 @@
     @media (max-width: 720px){
       .controls{grid-template-columns:1fr}
       h1{font-size:30px}
+      .ctrl input[type="number"],
+      .ctrl select{
+        min-height:60px;
+        padding:12px 14px;
+      }
     }
 
     .ctrl{
@@ -168,7 +173,13 @@
       color:var(--fg);
       font-size:14px;
       appearance:none;
-      min-height:44px;
+      min-height:52px;
+      touch-action: manipulation;
+    }
+    .ctrl input[type="number"]:focus-visible,
+    .ctrl select:focus-visible{
+      outline:2px solid var(--accent);
+      outline-offset:3px;
     }
     .ctrl input.invalid,
     .ctrl select.invalid{

@@ -123,3 +123,22 @@
 - Generated TASKS.md via Codex.
 ## 2026-01-28
 - Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
+## 2026-01-30
+- [2026-01-30T13:34:00+08:00] Generated TASKS.md via Codex.
+## 2026-01-30
+- [2026-01-30T13:35:00+08:00] Generated TASKS.md via Codex.
+## 2026-01-30
+- [2026-01-30T14:00:00+08:00] Generated TASKS.md via Codex.
+## 2026-01-30
+- [2026-01-30T14:03:46+08:00] Generated PLAN.md via Codex.
+## 2026-01-30
+- [2026-01-30T14:07:16+08:00] Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
+## 2026-01-30
+- [2026-01-30T14:07:29+08:00] Generated TASKS.md via Codex.
+
+## 2026-01-30
+- Expanded drawdown test/recovery and rebalancing planner touch targets (sliders, inputs, tooltip buttons) in EN/ZH, added focus outlines, and made tool cards overflow visible so tooltips avoid clipping.
+- Added `scripts/seo-governance.py`, reran it after ensuring the sitemap now lists https://riskmeter.app/, and documented the command in both READMEs and the release checklist.
+- Cleaned the workspace by removing `.auto-run.lock`, adding it to `.gitignore`, and reviewing `config.example.yaml`'s new model defaults (no further edits needed).
+## 2026-01-30
+- [2026-01-30T14:24:49+08:00] Ran auto-exec via Codex (dry-run: false, allow-dirty: true).

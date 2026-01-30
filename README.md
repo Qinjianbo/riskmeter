@@ -99,6 +99,7 @@ Owner: Content/SEO (EN & ZH). Frequency: before every release (at least monthly)
 - [ ] Terminology: glossary terms match tool labels; EN/ZH wording aligned.
 - [ ] Numbers: rounding, currency format, thresholds (≥99% handling), and example math verified.
 - [ ] Links & SEO: CTA targets, hreflang/canonical pairs, sitemap.xml updated for new/renamed pages.
+- [ ] Run `python scripts/seo-governance.py` to flag rm_* / canonical / hreflang / sitemap coverage issues before every release.
 - [ ] QA: desktop/mobile layouts (inputs, sliders, tooltips), localStorage persistence with `rm_*` keys, copy/clear/feedback flows.
 
 ---
@@ -122,6 +123,8 @@ These helpers are provided via the `tools/codex-scripts` submodule.
   - Optional: `-m "feat: your message"`
 - `tools/codex-scripts/auto-run.sh` — End‑to‑end: generate tasks → execute → commit/push.
   - Optional: `--dry-run`, `--skip-commit`, `--full-auto`
+
+For release governance there is also `scripts/seo-governance.py`, which emits a JSON report on rm_* keys, canonical/hreflang metadata, and sitemap coverage and supports the checklist step above.
 
 Note: `--full-auto` uses Codex bypass mode; use with caution.
 

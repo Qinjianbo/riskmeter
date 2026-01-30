@@ -1,5 +1,6 @@
 auto-run.err
 auto-run.log
+.auto-run.lock
 .auto-exec.lock
 # OS files
 .DS_Store

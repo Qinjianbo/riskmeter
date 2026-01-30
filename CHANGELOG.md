@@ -1,5 +1,9 @@
 # Changelog
 
+# 2026-01-30
+- Improved mobile slider/input hit areas and tooltip layering on the Drawdown Test, Drawdown Recovery, and Rebalancing Planner tools (EN/ZH) so taps and focus rings behave consistently on touch devices.
+- Added `scripts/seo-governance.py` to flag rm_* state usage plus canonical/hreflang/sitemap coverage and wired it into the pre-release checklist; also ensured the sitemap lists the root URL.
+
 ## 2026-01-28
 - Embedded drawdown recovery example/boundary scenarios with aligned terminology and refreshed limitation notes (EN/ZH).
 - Added “Glossary → Tool → Support” navigation plus local-only risk notices (rm_* keys) across home, glossary, and core tools: drawdown test/recovery/capacity and rebalancing planner (EN/ZH).

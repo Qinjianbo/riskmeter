@@ -16,6 +16,7 @@ English version: [README.md](README.md)
 - [ ] 术语：按风险术语表校对工具标签与译文。
 - [ ] 数值：四舍五入、货币格式、阈值（≥99% 处理）、示例计算一致。
 - [ ] 链接与 SEO：CTA 目标、hreflang/canonical 配对，新/改名页面写入 sitemap.xml。
+- [ ] 运行 `python scripts/seo-governance.py`，输出 rm_*、canonical/hreflang 与 sitemap 覆盖的巡检报告。
 - [ ] 质检：桌面/移动端（输入、滑杆、tooltip），localStorage 持久化使用 `rm_*` 键，复制/清空/反馈流程可用。
 
 ## 自动化脚本（子模块）
@@ -27,6 +28,8 @@ English version: [README.md](README.md)
   - `git submodule update --remote tools/codex-scripts`
   - `git add tools/codex-scripts .gitmodules && git commit -m "chore: bump codex-scripts submodule"`
 - 配置文件：在仓库根目录创建 `config.yaml`，模板见 `tools/codex-scripts/config.example.yaml`
+
+此外，预发布治理还可以运行 `python scripts/seo-governance.py`，该脚本会输出 rm_*、canonical/hreflang 与 sitemap 覆盖情况，配合上面的发布核查清单使用。
 
 ---
 
