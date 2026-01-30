@@ -2,8 +2,8 @@
 
 ## 2026-01-30
 
-- [x] 复核并补齐 `ITERATION_LOG.md` 今日条目：移动端回归限制说明 + `seo-governance` 关键结论与产出文件路径
-- [x] 抽检 `reports/seo-governance-20260130.json` 中 `/`、`/en/`、`/zh/` 3 个页面记录：确认 canonical/hreflang/sitemap 字段齐全且无误报
-- [x] 本地预览（`python3 -m http.server 8080`）：桌面与手机尺寸各检查 `/en/`、`/zh/` 首页 + 1 个工具页，确认语言切换与锚点跳转正常
-- [x] 核对 Drawdown Test/Recovery/Rebalancing Planner 的 EN/ZH `rm_*` localStorage key 命名一致（统一 `rm_` 前缀）并更新到发布前巡检清单
-- [x] 提交前收尾：确认工作区仅保留预期文档/报告变更，并在 `TASKS.md` 勾选完成项与补充备注
+- [x] 真机回归（iOS Safari）：抽检 `/en/drawdown-test/`、`/en/drawdown-recovery/`、`/en/rebalancing-planner/` 的滑杆/输入/tooltip/锚点跳转与误触情况，并同步检查对应 `/zh/` 页面
+- [x] 真机回归（Android Chrome）：同上 3 个工具页 EN/ZH，重点关注触控命中区、滚动时 tooltip 与焦点表现
+- [x] 将真机回归结论写入 `ITERATION_LOG.md`（包含设备/系统/浏览器版本、发现问题与复现步骤、是否阻断发布）
+- [x] 若发现问题：为每个问题建立“页面路径 + 预期/实际 + 最小修复点”清单（优先滑杆/输入命中区与 tooltip 层级）
+- [x] 收尾核对：确认工作区仅保留预期变更（当前 `ITERATION_LOG.md`），并补齐今日发布前手工抽检清单备注

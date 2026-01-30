@@ -16,6 +16,7 @@ RiskMeter 的高层路线图，聚焦结果而非任务清单（细项以 `TASKS
 - `rm_*` + `hreflang/canonical` 巡检脚本 `scripts/seo-governance.py` 已运行，生成了 27 个页面的 JSON 报告（0 个问题），相关摘要也记入日志并附带文件路径。
 - sitemap/canonical 入口复核已确认 `/`, `/en/`, `/zh/` 的 canonical + hreflang 组合在 sitemap 中，新的入口都被列出，暂未发现遗漏页面。
 - 通过 `python3 -m http.server 8080` 配合桌面/移动 UA 的 `curl` 请求访问 `/en/`、`/zh/` 主页和 `/en/drawdown-test/` 工具页，确认语言切换链接和锚点相关 CTA 所在的 HTML 均返回 200（完整交互仍需真机），把手工步骤记录为后续验收清单。
+- 2026-01-30：真机回归（iOS Safari/Android Chrome）目前受限于无真实设备，已通过 HTML/CSS/inline JS 审查滑杆/输入/tooltip 触控区域、focus-visible 样式与锚点跳转，并把结论写入 `ITERATION_LOG.md` 供日后实测；代码和 DOM 结构 EN/ZH 版本保持一致，未发现须优先修复的差异。
 - 发布治理清单已新增 “Drawdown Test/Recovery/Rebalancing Planner EN/ZH `rm_*` localStorage 键命名一致” 项，这项与 `reports/seo-governance-20260130.json` 中的 canonical/hreflang/sitemap 校验一并确保 metadata 与本地存储规则同步上线。
 
 ### Milestones & Dates
