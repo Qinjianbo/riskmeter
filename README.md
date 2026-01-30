@@ -100,6 +100,7 @@ Owner: Content/SEO (EN & ZH). Frequency: before every release (at least monthly)
 - [ ] Numbers: rounding, currency format, thresholds (≥99% handling), and example math verified.
 - [ ] Links & SEO: CTA targets, hreflang/canonical pairs, sitemap.xml updated for new/renamed pages.
 - [ ] Run `python scripts/seo-governance.py` to flag rm_* / canonical / hreflang / sitemap coverage issues before every release.
+- [ ] Storage parity: confirm Drawdown Test / Drawdown Recovery / Rebalancing Planner EN and ZH builds share the same `rm_*` localStorage key names (with the `rm_` prefix).
 - [ ] QA: desktop/mobile layouts (inputs, sliders, tooltips), localStorage persistence with `rm_*` keys, copy/clear/feedback flows.
 
 ---

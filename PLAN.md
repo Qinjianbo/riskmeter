@@ -15,6 +15,8 @@ RiskMeter 的高层路线图，聚焦结果而非任务清单（细项以 `TASKS
 - 已通过代码审查对 Drawdown Test、Drawdown Recovery 和 Rebalancing Planner 的滑杆/输入/tooltip/导航结构逐项确认，EN/ZH 版本保持一致，焦点轮廓与触控友好属性仍保留；iOS Safari 与 Android Chrome 的物理回归需在设备上后续执行。
 - `rm_*` + `hreflang/canonical` 巡检脚本 `scripts/seo-governance.py` 已运行，生成了 27 个页面的 JSON 报告（0 个问题），相关摘要也记入日志并附带文件路径。
 - sitemap/canonical 入口复核已确认 `/`, `/en/`, `/zh/` 的 canonical + hreflang 组合在 sitemap 中，新的入口都被列出，暂未发现遗漏页面。
+- 通过 `python3 -m http.server 8080` 配合桌面/移动 UA 的 `curl` 请求访问 `/en/`、`/zh/` 主页和 `/en/drawdown-test/` 工具页，确认语言切换链接和锚点相关 CTA 所在的 HTML 均返回 200（完整交互仍需真机），把手工步骤记录为后续验收清单。
+- 发布治理清单已新增 “Drawdown Test/Recovery/Rebalancing Planner EN/ZH `rm_*` localStorage 键命名一致” 项，这项与 `reports/seo-governance-20260130.json` 中的 canonical/hreflang/sitemap 校验一并确保 metadata 与本地存储规则同步上线。
 
 ### Milestones & Dates
 - 2026-02（上旬）：完成移动端交互基线修复与回归（回撤测试/回撤恢复/再平衡优先），并在 EN/ZH 双语页面同步上线。

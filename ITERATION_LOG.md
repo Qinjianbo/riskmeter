@@ -170,3 +170,12 @@
 - 发布前收尾：`.auto-run.lock` 已删、工作区只剩计划/任务/日志与新报告文件，符合当天“清理 + 勾选巡检”要求。
 ## 2026-01-30
 - [2026-01-30T15:33:07+08:00] Ran auto-exec via Codex (dry-run: false, allow-dirty: true).
+## 2026-01-30
+- [2026-01-30T15:30:00+08:00] Ran auto-run (allow-dirty: true, dry-run: false, full-auto: true, skip-commit: false, force-lock: false).
+## 2026-01-30
+- [2026-01-30T16:00:00+08:00] Generated TASKS.md via Codex.
+## 2026-01-30
+- 移动端回归仍受限于当前 CLI / 无真实设备，借助 `python3 -m http.server 8080` 与桌面 + 移动 UA 的 `curl` 请求访问 `/en/`、`/zh/` 主页与 `/en/drawdown-test/` 工具页，语言切换与相关锚点链接都返回 200（UI 交互需待设备真实复核），步骤已记录供后续实机复测。
+- 运行 `scripts/seo-governance.py`（报告存于 `reports/seo-governance-20260130.json`）：扫描 27 个页面、issue_count=0，确认 `/`、`/en/`、`/zh/` 等入口的 canonical/hreflang 已入 sitemap，rm_* 和 sitemap 覆盖无误。
+## 2026-01-30
+- [2026-01-30T16:18:57+08:00] Ran auto-exec via Codex (dry-run: false, allow-dirty: true).

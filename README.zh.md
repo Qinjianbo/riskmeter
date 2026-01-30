@@ -17,6 +17,7 @@ English version: [README.md](README.md)
 - [ ] 数值：四舍五入、货币格式、阈值（≥99% 处理）、示例计算一致。
 - [ ] 链接与 SEO：CTA 目标、hreflang/canonical 配对，新/改名页面写入 sitemap.xml。
 - [ ] 运行 `python scripts/seo-governance.py`，输出 rm_*、canonical/hreflang 与 sitemap 覆盖的巡检报告。
+- [ ] 数据持久化：确认回撤测试 / 回撤恢复 / 再平衡规划 EN/ZH 页面使用相同的 `rm_*` localStorage 键（并统一以 `rm_` 前缀）。
 - [ ] 质检：桌面/移动端（输入、滑杆、tooltip），localStorage 持久化使用 `rm_*` 键，复制/清空/反馈流程可用。
 
 ## 自动化脚本（子模块）
