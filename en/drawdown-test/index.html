@@ -70,6 +70,7 @@
       border-radius:20px;
       padding:34px 32px;
       box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
     }
     .pill{
       display:inline-block;
@@ -109,6 +110,7 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow:visible;
+      backdrop-filter: blur(6px);
     }
     .toolHead{
       padding:16px 18px;
@@ -138,6 +140,12 @@
       background: rgba(255,255,255,.04);
       border-radius: 16px;
       padding:14px;
+      transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+    .ctrl:focus-within{
+      border-color: rgba(118,228,255,.42);
+      box-shadow: 0 0 0 3px rgba(118,228,255,.12);
+      transform: translateY(-1px);
     }
     .ctrl label{
       display:flex;
@@ -190,6 +198,11 @@
       border:1px solid var(--line);
       border-radius: 14px;
       background: rgba(0,0,0,.12);
+      transition: border-color .18s ease, transform .18s ease;
+    }
+    .kv:hover{
+      border-color: rgba(118,228,255,.35);
+      transform: translateY(-1px);
     }
     .kv .k{color:var(--mut); font-size:12px}
     .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
@@ -388,6 +401,7 @@
       border-radius:18px;
       padding:20px;
       box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
     }
     .card h3{margin:0 0 8px;font-size:16px}
     .card p{margin:0;color:var(--mut);font-size:14px}
@@ -440,10 +454,16 @@
         padding:12px 14px;
       }
     }
+    .hero{animation: rise .42s ease both}
+    .section{animation: rise .42s ease both}
+    @keyframes rise{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
   </style>
 </head>
 
-<body>
+<body x-data="createDrawdownTestApp(window.rmDrawdownTestConfig)" x-init="init()">
   <div class="wrap">
     <section class="hero">
       <span class="pill">Key Tool · Drawdown Tolerance</span>
@@ -456,7 +476,7 @@
       <div class="langBar">
         <span class="tag">Language:</span>
         <span class="pill">EN</span>
-        <a class="pill" href="/zh/drawdown-test/" id="toZh">中文</a>
+        <a class="pill" href="/zh/drawdown-test/" @click="setLang('zh')">中文</a>
       </div>
 
       <div class="cta">
@@ -509,13 +529,13 @@
         <div class="toolBody">
           <div class="controls">
             <div class="ctrl">
-              <label for="ddRange">Maximum tolerable drawdown <span id="ddValue">20%</span></label>
-              <input type="range" min="5" max="60" step="1" value="20" id="ddRange" />
+              <label for="ddRange">Maximum tolerable drawdown <span x-text="`${drawdown}%`">20%</span></label>
+              <input type="range" min="5" max="60" step="1" id="ddRange" x-model.number="drawdown" @input="update" />
               <div class="hint">Most long-term investors underestimate how they feel past 25–30%.</div>
             </div>
             <div class="ctrl">
               <label for="portfolio">Portfolio size (optional)</label>
-              <input type="number" id="portfolio" value="100000" min="0" step="1000" inputmode="decimal" />
+              <input type="number" id="portfolio" min="0" step="1000" inputmode="decimal" x-model.number="portfolio" @input="update" />
               <div class="hint">Use your current portfolio or the amount you plan to invest.</div>
             </div>
           </div>
@@ -523,7 +543,7 @@
           <div class="summary">
             <div class="kv">
               <div class="k">Loss at selected drawdown</div>
-              <div class="v" id="lossValue">-$20,000</div>
+              <div class="v" x-text="lossText">-$20,000</div>
             </div>
             <div class="kv">
               <div class="k">Gain needed to recover
@@ -537,28 +557,26 @@
                   </span>
                 </span>
               </div>
-              <div class="v" id="recoveryValue">+25.0%</div>
+              <div class="v" x-text="recoveryText">+25.0%</div>
             </div>
             <div class="kv">
               <div class="k">Tolerance band</div>
-              <div class="v" id="bandValue">Moderate</div>
+              <div class="v" x-text="currentBand.label">Moderate</div>
             </div>
           </div>
 
-          <div class="insight" id="insightBox">
-            <strong>Moderate tolerance:</strong> Normal equity drawdowns are tolerable, but discipline still matters.
-          </div>
+          <div class="insight"><strong x-text="`${currentBand.label} tolerance:`">Moderate tolerance:</strong> <span x-text="currentBand.text">Normal equity drawdowns are tolerable, but discipline still matters.</span></div>
 
         <div class="actions">
-          <input class="noteInput" id="noteInput" type="text" maxlength="40" placeholder="Note (optional, 40 chars max)" />
-          <span class="noteCount" id="noteCount">0/40</span>
-          <button class="miniBtn primary" id="saveScenario">Save scenario</button>
-          <button class="miniBtn" id="copySummary">Copy summary</button>
+          <input class="noteInput" type="text" maxlength="40" placeholder="Note (optional, 40 chars max)" x-model="note" />
+          <span class="noteCount" x-text="`${note.length}/${NOTE_LIMIT}`">0/40</span>
+          <button class="miniBtn primary" @click="saveScenario">Save scenario</button>
+          <button class="miniBtn" @click="copySummary">Copy summary</button>
         </div>
 
           <div class="summaryBox">
             <div class="k">Shareable summary</div>
-            <div class="v" id="summaryText">—</div>
+            <div class="v" x-text="summaryText">—</div>
           </div>
         </div>
       </div>
@@ -596,9 +614,28 @@
         <h3>Saved scenarios</h3>
         <p style="color:var(--mut);font-size:13px;margin-top:6px">Save up to 3 drawdown profiles to compare.</p>
         <div class="actions">
-          <button class="miniBtn" id="clearScenarios">Clear all</button>
+          <button class="miniBtn" @click="clearScenarios">Clear all</button>
         </div>
-        <div class="scenarioList" id="scenariosList"></div>
+        <div class="scenarioList">
+          <template x-if="!scenarios.length">
+            <div class="scenarioMeta">No saved scenarios yet.</div>
+          </template>
+          <template x-for="item in scenarios" :key="item.id">
+            <div class="scenarioCard">
+              <div class="scenarioTop">
+                <div class="scenarioTitle" x-text="scenarioTitle(item)"></div>
+                <div class="scenarioActions">
+                  <button class="ghostBtn" @click="applyScenario(item.id)">Apply</button>
+                  <button class="ghostBtn" @click="copyScenario(item.id)">Copy</button>
+                  <button class="ghostBtn" @click="removeScenario(item.id)">Remove</button>
+                </div>
+              </div>
+              <div class="scenarioMeta" x-text="scenarioMeta(item)"></div>
+              <div class="scenarioMeta" x-show="scenarioTime(item)" x-text="scenarioTime(item)"></div>
+              <div class="scenarioMeta" x-show="item.note" x-text="`Note: ${item.note}`"></div>
+            </div>
+          </template>
+        </div>
       </div>
     </section>
 
@@ -615,22 +652,22 @@
           <div class="controls">
             <div class="ctrl">
               <label for="capTotal">Total portfolio value</label>
-              <input type="number" id="capTotal" value="100000" min="0" step="1000" inputmode="decimal" />
+              <input type="number" id="capTotal" min="0" step="1000" inputmode="decimal" x-model.number="capTotal" @input="updateCapacity" />
               <div class="hint">Your current total account value.</div>
             </div>
             <div class="ctrl">
               <label for="capPosition">Position value (current)</label>
-              <input type="number" id="capPosition" value="30000" min="0" step="1000" inputmode="decimal" />
+              <input type="number" id="capPosition" min="0" step="1000" inputmode="decimal" x-model.number="capPosition" @input="updateCapacity" />
               <div class="hint">Current market value of the position.</div>
             </div>
             <div class="ctrl">
               <label for="capMaxDd">Max account drawdown you can accept (%)</label>
-              <input type="number" id="capMaxDd" value="20" min="0" max="90" step="0.5" inputmode="decimal" />
+              <input type="number" id="capMaxDd" min="0" max="90" step="0.5" inputmode="decimal" x-model.number="capMaxDd" @input="updateCapacity" />
               <div class="hint">Your overall limit from peak to trough.</div>
             </div>
             <div class="ctrl">
               <label for="capCurrentDd">Current account drawdown (%)</label>
-              <input type="number" id="capCurrentDd" value="0" min="0" max="90" step="0.5" inputmode="decimal" />
+              <input type="number" id="capCurrentDd" min="0" max="90" step="0.5" inputmode="decimal" x-model.number="capCurrentDd" @input="updateCapacity" />
               <div class="hint">How far you are already below your peak.</div>
             </div>
           </div>
@@ -638,15 +675,15 @@
           <div class="summary">
             <div class="kv">
               <div class="k">Remaining account drawdown</div>
-              <div class="v" id="capRemaining">—</div>
+              <div class="v" x-text="capRemainingText">—</div>
             </div>
             <div class="kv">
               <div class="k">Position weight</div>
-              <div class="v" id="capWeight">—</div>
+              <div class="v" x-text="capWeightText">—</div>
             </div>
             <div class="kv">
               <div class="k">Max additional position drop</div>
-              <div class="v" id="capPosDrop">—</div>
+              <div class="v" x-text="capPosDropText">—</div>
             </div>
           </div>
 
@@ -713,10 +750,10 @@
         </div>
         <div class="toolBody">
           <div class="actions">
-            <button class="miniBtn primary" data-feedback="helpful">Helpful</button>
-            <button class="miniBtn" data-feedback="needsWork">Needs work</button>
-            <button class="miniBtn" id="copyFeedback">Copy feedback summary</button>
-            <span class="copyHint" id="feedbackHint">Local only · You choose if you share.</span>
+            <button class="miniBtn primary" @click="recordFeedback('helpful')">Helpful</button>
+            <button class="miniBtn" @click="recordFeedback('needsWork')">Needs work</button>
+            <button class="miniBtn" @click="copyFeedbackSummary">Copy feedback summary</button>
+            <span class="copyHint" x-text="feedbackHint">Local only · You choose if you share.</span>
           </div>
         </div>
       </div>
@@ -727,401 +764,43 @@
   </div>
 
   <script>
-    const ddRange = document.getElementById('ddRange');
-    const ddValue = document.getElementById('ddValue');
-    const portfolioInput = document.getElementById('portfolio');
-    const lossValue = document.getElementById('lossValue');
-    const recoveryValue = document.getElementById('recoveryValue');
-    const bandValue = document.getElementById('bandValue');
-    const insightBox = document.getElementById('insightBox');
-    const summaryText = document.getElementById('summaryText');
-    const noteInput = document.getElementById('noteInput');
-    const noteCount = document.getElementById('noteCount');
-    const saveScenarioBtn = document.getElementById('saveScenario');
-    const copySummaryBtn = document.getElementById('copySummary');
-    const scenariosList = document.getElementById('scenariosList');
-    const clearScenariosBtn = document.getElementById('clearScenarios');
-    const capTotal = document.getElementById('capTotal');
-    const capPosition = document.getElementById('capPosition');
-    const capMaxDd = document.getElementById('capMaxDd');
-    const capCurrentDd = document.getElementById('capCurrentDd');
-    const capRemaining = document.getElementById('capRemaining');
-    const capWeight = document.getElementById('capWeight');
-    const capPosDrop = document.getElementById('capPosDrop');
-    const copyFeedback = document.getElementById('copyFeedback');
-    const feedbackHint = document.getElementById('feedbackHint');
-
-    const bands = [
-      {
-        max: 10,
-        label: 'Very low',
-        text: 'Prioritize stability, strong diversification, and larger cash buffers.'
-      },
-      {
-        max: 15,
-        label: 'Low',
-        text: 'Keep risk modest, avoid leverage, and set rules before volatility hits.'
-      },
-      {
-        max: 25,
-        label: 'Moderate',
-        text: 'Normal equity drawdowns are tolerable, but discipline still matters.'
-      },
-      {
-        max: 35,
-        label: 'High',
-        text: 'Can handle deeper drawdowns if horizon and liquidity are strong.'
-      },
-      {
-        max: 60,
-        label: 'Very high',
-        text: 'Only suitable with long horizons and strong conviction; recovery can be long.'
-      }
-    ];
-
-    const STORAGE_KEY = 'rm_drawdown_state';
-    const SCENARIOS_KEY = 'rm_drawdown_scenarios';
-    const SIGNAL_KEY = 'rm_signal_log';
-    const RM_PAGE = 'en/drawdown-test';
-    const NOTE_LIMIT = 40;
-
-    const toast = (() => {
-      const el = document.createElement('div');
-      el.className = 'toast';
-      document.body.appendChild(el);
-      let t = null;
-      return (msg) => {
-        el.textContent = msg;
-        el.classList.add('show');
-        if(t) clearTimeout(t);
-        t = setTimeout(() => el.classList.remove('show'), 1400);
-      };
-    })();
-
-    const tooltipButtons = Array.from(document.querySelectorAll('.tooltip'));
-    tooltipButtons.forEach((btn) => {
-      btn.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const wrap = btn.closest('.tooltipWrap');
-        if(!wrap) return;
-        const open = wrap.classList.toggle('open');
-        tooltipButtons.forEach((other) => {
-          if(other !== btn){
-            const otherWrap = other.closest('.tooltipWrap');
-            if(otherWrap) otherWrap.classList.remove('open');
-          }
-        });
-        if(!open) wrap.classList.remove('open');
-      });
-    });
-    document.addEventListener('click', () => {
-      tooltipButtons.forEach((btn) => {
-        const wrap = btn.closest('.tooltipWrap');
-        if(wrap) wrap.classList.remove('open');
-      });
-    });
-
-    const formatCurrency = (value) => {
-      const formatter = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'USD',
-        maximumFractionDigits: 0
-      });
-      return formatter.format(value);
-    };
-
-    const formatPercent = (value) => `${value.toFixed(1)}%`;
-
-    const updateCapacity = () => {
-      const total = Number(capTotal.value) || 0;
-      const position = Number(capPosition.value) || 0;
-      const maxDd = Math.max(0, Number(capMaxDd.value) || 0);
-      const currentDd = Math.max(0, Number(capCurrentDd.value) || 0);
-      const remaining = Math.max(0, maxDd - currentDd);
-
-      capRemaining.textContent = total > 0 ? `${formatPercent(remaining)} · ${formatCurrency(total * remaining / 100)}` : '—';
-
-      if(total <= 0 || position <= 0){
-        capWeight.textContent = '—';
-        capPosDrop.textContent = '—';
-        return;
-      }
-
-      const weight = position / total;
-      capWeight.textContent = formatPercent(weight * 100);
-
-      const posDrop = remaining / weight;
-      if(!isFinite(posDrop)){
-        capPosDrop.textContent = '—';
-        return;
-      }
-      capPosDrop.textContent = posDrop >= 100 ? '≥100%' : formatPercent(posDrop);
-    };
-
-    const getBand = (drawdown) =>
-      bands.find((item) => drawdown <= item.max) || bands[bands.length - 1];
-
-    const buildSummary = (drawdown, portfolio) => {
-      const loss = portfolio * (drawdown / 100);
-      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
-      const band = getBand(drawdown);
-      const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
-      const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
-      return `Drawdown tolerance: ${band.label} (${drawdown}%). Loss: ${lossText}. Recovery: +${recovery.toFixed(1)}%. Portfolio: ${portfolioText}.`;
-    };
-
-    const buildScenarioSummary = (item) => {
-      const drawdown = Number(item.drawdown);
-      const portfolio = Number(item.portfolio) || 0;
-      const loss = portfolio * (drawdown / 100);
-      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
-      const band = getBand(drawdown);
-      const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
-      const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
-      const note = item.note ? ` Note: ${item.note}.` : '';
-      return `Drawdown tolerance: ${band.label} (${drawdown}%). Loss: ${lossText}. Recovery: +${recovery.toFixed(1)}%. Portfolio: ${portfolioText}.${note}`;
-    };
-
-    const normalizeNote = (raw) => {
-      const cleaned = raw.replace(/\s+/g, ' ').trim();
-      const truncated = cleaned.length > NOTE_LIMIT;
-      const note = truncated ? cleaned.slice(0, NOTE_LIMIT) : cleaned;
-      const empty = !note && raw.trim().length > 0;
-      return { note, truncated, empty };
-    };
-
-    const syncNoteCount = () => {
-      const len = noteInput.value.length;
-      noteCount.textContent = `${len}/${NOTE_LIMIT}`;
-    };
-
-    const saveState = (drawdown, portfolio) => {
-      const payload = { drawdown, portfolio };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    };
-
-    const loadState = () => {
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return;
-        const state = JSON.parse(raw);
-        if(typeof state.drawdown === 'number') ddRange.value = String(state.drawdown);
-        if(typeof state.portfolio === 'number') portfolioInput.value = String(state.portfolio);
-      }catch(_){ }
-    };
-
-    const loadScenarios = () => {
-      try{
-        const raw = localStorage.getItem(SCENARIOS_KEY);
-        const list = raw ? JSON.parse(raw) : [];
-        return Array.isArray(list) ? list : [];
-      }catch(_){
-        return [];
+    window.rmDrawdownTestConfig = {
+      lang: 'en',
+      locale: 'en-US',
+      currency: 'USD',
+      page: 'en/drawdown-test',
+      defaultState: { drawdown: 20, portfolio: 100000 },
+      defaultCapacity: { total: 100000, position: 30000, maxDd: 20, currentDd: 0 },
+      bands: [
+        { max: 10, label: 'Very low', text: 'Prioritize stability, strong diversification, and larger cash buffers.' },
+        { max: 15, label: 'Low', text: 'Keep risk modest, avoid leverage, and set rules before volatility hits.' },
+        { max: 25, label: 'Moderate', text: 'Normal equity drawdowns are tolerable, but discipline still matters.' },
+        { max: 35, label: 'High', text: 'Can handle deeper drawdowns if horizon and liquidity are strong.' },
+        { max: 60, label: 'Very high', text: 'Only suitable with long horizons and strong conviction; recovery can be long.' }
+      ],
+      text: {
+        summary: (band, drawdown, loss, recovery, portfolio) => `Drawdown tolerance: ${band} (${drawdown}%). Loss: ${loss}. Recovery: +${recovery}%. Portfolio: ${portfolio}.`,
+        scenarioSummary: (band, drawdown, loss, recovery, portfolio, note) => `Drawdown tolerance: ${band} (${drawdown}%). Loss: ${loss}. Recovery: +${recovery}%. Portfolio: ${portfolio}.${note ? ` Note: ${note}.` : ''}`,
+        scenarioTitle: (band, drawdown) => `${band} tolerance · ${drawdown}%`,
+        scenarioMeta: (loss, recovery, portfolio) => `Loss: ${loss} · Recovery: +${recovery}% · Portfolio: ${portfolio}`,
+        scenarioTime: (time) => `Saved: ${time}`,
+        scenarioNote: (note) => `Note: ${note}`,
+        toastSaved: 'Saved',
+        toastSavedTrimmed: 'Saved (note trimmed)',
+        toastSavedEmpty: 'Saved (note ignored)',
+        toastCopied: 'Copied',
+        toastApplied: 'Applied',
+        toastRemoved: 'Removed',
+        toastCleared: 'Cleared',
+        feedbackSaved: 'Thanks - saved locally.',
+        feedbackCopied: 'Feedback copied.',
+        feedbackLocalOnly: 'Local only · You choose if you share.',
+        feedbackSummary: (page, payload) => `RiskMeter feedback (${page}): ${payload}`
       }
     };
-
-    const saveScenarios = (list) => {
-      localStorage.setItem(SCENARIOS_KEY, JSON.stringify(list));
-    };
-
-    const renderScenarios = () => {
-      const list = loadScenarios();
-      if(!list.length){
-        scenariosList.innerHTML = '<div class="scenarioMeta">No saved scenarios yet.</div>';
-        return;
-      }
-      scenariosList.innerHTML = list.map((item) => {
-        const drawdown = Number(item.drawdown);
-        const portfolio = Number(item.portfolio) || 0;
-        const loss = portfolio * (drawdown / 100);
-        const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
-        const band = getBand(drawdown);
-        const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
-        const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
-        const note = item.note ? `<div class="scenarioMeta">Note: ${item.note}</div>` : '';
-        const time = item.ts ? new Date(item.ts).toLocaleString('en-US', { dateStyle: 'medium' }) : '';
-        const timeRow = time ? `<div class="scenarioMeta">Saved: ${time}</div>` : '';
-        return `
-          <div class="scenarioCard">
-            <div class="scenarioTop">
-              <div class="scenarioTitle">${band.label} tolerance · ${drawdown}%</div>
-              <div class="scenarioActions">
-                <button class="ghostBtn" data-apply="${item.id}">Apply</button>
-                <button class="ghostBtn" data-copy="${item.id}">Copy</button>
-                <button class="ghostBtn" data-remove="${item.id}">Remove</button>
-              </div>
-            </div>
-            <div class="scenarioMeta">Loss: ${lossText} · Recovery: +${recovery.toFixed(1)}% · Portfolio: ${portfolioText}</div>
-            ${timeRow}
-            ${note}
-          </div>
-        `;
-      }).join('');
-    };
-
-    const copyText = async (text) => {
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
-      }
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try{ document.execCommand('copy'); }catch(_){ }
-      document.body.removeChild(ta);
-      return true;
-    };
-
-    const loadSignals = () => {
-      try{
-        const raw = localStorage.getItem(SIGNAL_KEY);
-        const parsed = raw ? JSON.parse(raw) : {};
-        return parsed && typeof parsed === 'object' ? parsed : {};
-      }catch(_){
-        return {};
-      }
-    };
-
-    const saveSignals = (signals) => {
-      localStorage.setItem(SIGNAL_KEY, JSON.stringify(signals));
-    };
-
-    const bumpSignal = (kind) => {
-      const signals = loadSignals();
-      const page = signals[RM_PAGE] || { views:0, helpful:0, needsWork:0, summaryCopy:0, scenarioCopy:0, feedbackCopy:0 };
-      page[kind] = (page[kind] || 0) + 1;
-      signals[RM_PAGE] = page;
-      saveSignals(signals);
-      return page;
-    };
-
-    bumpSignal('views');
-
-    const update = () => {
-      const drawdown = Number(ddRange.value);
-      const portfolio = Number(portfolioInput.value) || 0;
-      ddValue.textContent = `${drawdown}%`;
-
-      const loss = portfolio * (drawdown / 100);
-      lossValue.textContent = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
-
-      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
-      recoveryValue.textContent = `${recovery.toFixed(1)}%`;
-
-      const band = getBand(drawdown);
-      bandValue.textContent = band.label;
-      insightBox.innerHTML = `<strong>${band.label} tolerance:</strong> ${band.text}`;
-      summaryText.textContent = buildSummary(drawdown, portfolio);
-      saveState(drawdown, portfolio);
-    };
-
-    ddRange.addEventListener('input', update);
-    portfolioInput.addEventListener('input', update);
-    saveScenarioBtn.addEventListener('click', () => {
-      const drawdown = Number(ddRange.value);
-      const portfolio = Number(portfolioInput.value) || 0;
-      const rawNote = noteInput.value || '';
-      const { note, truncated, empty } = normalizeNote(rawNote);
-      const list = loadScenarios();
-      const next = [
-        ...list,
-        { id: String(Date.now()), drawdown, portfolio, note, ts: Date.now() }
-      ];
-      const trimmed = next.slice(-3);
-      saveScenarios(trimmed);
-      renderScenarios();
-      noteInput.value = '';
-      syncNoteCount();
-      if(truncated) toast('Saved (note trimmed)');
-      else if(empty) toast('Saved (note ignored)');
-      else toast('Saved');
-    });
-    noteInput.addEventListener('input', syncNoteCount);
-    [capTotal, capPosition, capMaxDd, capCurrentDd].forEach((el) => {
-      el.addEventListener('input', updateCapacity);
-    });
-    copySummaryBtn.addEventListener('click', async () => {
-      const drawdown = Number(ddRange.value);
-      const portfolio = Number(portfolioInput.value) || 0;
-      const text = buildSummary(drawdown, portfolio);
-      await copyText(text);
-      bumpSignal('summaryCopy');
-      toast('Copied');
-    });
-    clearScenariosBtn.addEventListener('click', () => {
-      saveScenarios([]);
-      renderScenarios();
-      toast('Cleared');
-    });
-    scenariosList.addEventListener('click', (event) => {
-      const target = event.target;
-      if(!(target instanceof HTMLElement)) return;
-      const applyId = target.getAttribute('data-apply');
-      if(applyId){
-        const item = loadScenarios().find((entry) => entry.id === applyId);
-        if(item){
-          ddRange.value = String(item.drawdown);
-          portfolioInput.value = String(item.portfolio || 0);
-          update();
-          toast('Applied');
-          noteInput.focus();
-          noteInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        return;
-      }
-      const copyId = target.getAttribute('data-copy');
-      if(copyId){
-        const item = loadScenarios().find((entry) => entry.id === copyId);
-        if(item){
-          copyText(buildScenarioSummary(item)).then(() => {
-            bumpSignal('scenarioCopy');
-            toast('Copied');
-          });
-        }
-        return;
-      }
-      const id = target.getAttribute('data-remove');
-      if(!id) return;
-      const list = loadScenarios().filter((item) => item.id !== id);
-      saveScenarios(list);
-      renderScenarios();
-      toast('Removed');
-    });
-
-    if(copyFeedback && feedbackHint){
-      document.querySelectorAll('[data-feedback]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const kind = btn.dataset.feedback;
-          if(kind) bumpSignal(kind);
-          feedbackHint.textContent = 'Thanks — saved locally.';
-          setTimeout(() => {
-            feedbackHint.textContent = 'Local only · You choose if you share.';
-          }, 1400);
-        });
-      });
-
-      copyFeedback.addEventListener('click', async () => {
-        const signals = loadSignals();
-        const summary = `RiskMeter feedback (${RM_PAGE}): ${JSON.stringify(signals[RM_PAGE] || {})}`;
-        await copyText(summary);
-        bumpSignal('feedbackCopy');
-        feedbackHint.textContent = 'Feedback copied.';
-        setTimeout(() => {
-          feedbackHint.textContent = 'Local only · You choose if you share.';
-        }, 1400);
-      });
-    }
-
-    loadState();
-    update();
-    renderScenarios();
-    syncNoteCount();
-    updateCapacity();
-
-    document.getElementById('toZh').addEventListener('click', () => localStorage.setItem('rm_lang','zh'));
   </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="/assets/drawdown-test-app.js"></script>
   <script src="/assets/footer-common.js"></script>
 </body>
 </html>

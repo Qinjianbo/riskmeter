@@ -70,6 +70,7 @@
       border-radius:20px;
       padding:34px 32px;
       box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
     }
     .pill{
       display:inline-block;
@@ -109,6 +110,7 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow);
       overflow:visible;
+      backdrop-filter: blur(6px);
     }
     .toolHead{
       padding:16px 18px;
@@ -138,6 +140,12 @@
       background: rgba(255,255,255,.04);
       border-radius: 16px;
       padding:14px;
+      transition: border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+    }
+    .ctrl:focus-within{
+      border-color: rgba(118,228,255,.42);
+      box-shadow: 0 0 0 3px rgba(118,228,255,.12);
+      transform: translateY(-1px);
     }
     .ctrl label{
       display:flex;
@@ -190,6 +198,11 @@
       border:1px solid var(--line);
       border-radius: 14px;
       background: rgba(0,0,0,.12);
+      transition: border-color .18s ease, transform .18s ease;
+    }
+    .kv:hover{
+      border-color: rgba(118,228,255,.35);
+      transform: translateY(-1px);
     }
     .kv .k{color:var(--mut); font-size:12px}
     .kv .v{font-size:14px; margin-top:6px; color: var(--fg)}
@@ -388,6 +401,7 @@
       border-radius:18px;
       padding:20px;
       box-shadow: var(--shadow);
+      backdrop-filter: blur(6px);
     }
     .card h3{margin:0 0 8px;font-size:16px}
     .card p{margin:0;color:var(--mut);font-size:14px}
@@ -440,10 +454,16 @@
         padding:12px 14px;
       }
     }
+    .hero{animation: rise .42s ease both}
+    .section{animation: rise .42s ease both}
+    @keyframes rise{
+      from{opacity:0;transform:translateY(8px)}
+      to{opacity:1;transform:translateY(0)}
+    }
   </style>
 </head>
 
-<body>
+<body x-data="createDrawdownTestApp(window.rmDrawdownTestConfig)" x-init="init()">
   <div class="wrap">
     <section class="hero">
       <span class="pill">关键工具 · 回撤承受度</span>
@@ -456,7 +476,7 @@
       <div class="langBar">
         <span class="tag">语言：</span>
         <span class="pill">中文</span>
-        <a class="pill" href="/en/drawdown-test/" id="toEn">EN</a>
+        <a class="pill" href="/en/drawdown-test/" @click="setLang('en')">EN</a>
       </div>
 
       <div class="cta">
@@ -508,13 +528,13 @@
         <div class="toolBody">
           <div class="controls">
             <div class="ctrl">
-              <label for="ddRange">可承受最大回撤 <span id="ddValue">20%</span></label>
-              <input type="range" min="5" max="60" step="1" value="20" id="ddRange" />
+              <label for="ddRange">可承受最大回撤 <span x-text="`${drawdown}%`">20%</span></label>
+              <input type="range" min="5" max="60" step="1" id="ddRange" x-model.number="drawdown" @input="update" />
               <div class="hint">多数投资者低估了超过 25–30% 时的心理压力。</div>
             </div>
             <div class="ctrl">
               <label for="portfolio">资产规模（可选）</label>
-              <input type="number" id="portfolio" value="100000" min="0" step="1000" inputmode="decimal" />
+              <input type="number" id="portfolio" min="0" step="1000" inputmode="decimal" x-model.number="portfolio" @input="update" />
               <div class="hint">可填写当前资产或计划投入的金额。</div>
             </div>
           </div>
@@ -522,7 +542,7 @@
           <div class="summary">
             <div class="kv">
               <div class="k">对应亏损金额</div>
-              <div class="v" id="lossValue">-¥20,000</div>
+              <div class="v" x-text="lossText">-¥20,000</div>
             </div>
             <div class="kv">
               <div class="k">回本所需涨幅
@@ -536,28 +556,26 @@
                   </span>
                 </span>
               </div>
-              <div class="v" id="recoveryValue">+25.0%</div>
+              <div class="v" x-text="recoveryText">+25.0%</div>
             </div>
             <div class="kv">
               <div class="k">承受度区间</div>
-              <div class="v" id="bandValue">中等</div>
+              <div class="v" x-text="currentBand.label">中等</div>
             </div>
           </div>
 
-          <div class="insight" id="insightBox">
-            <strong>中等承受度：</strong>可承受常见回撤，但仍需要纪律与计划。
-          </div>
+          <div class="insight"><strong x-text="`${currentBand.label}承受度：`">中等承受度：</strong><span x-text="currentBand.text">可承受常见回撤，但仍需要纪律与计划。</span></div>
 
         <div class="actions">
-          <input class="noteInput" id="noteInput" type="text" maxlength="40" placeholder="备注（可选，最多40字）" />
-          <span class="noteCount" id="noteCount">0/40</span>
-          <button class="miniBtn primary" id="saveScenario">保存场景</button>
-          <button class="miniBtn" id="copySummary">复制摘要</button>
+          <input class="noteInput" type="text" maxlength="40" placeholder="备注（可选，最多40字）" x-model="note" />
+          <span class="noteCount" x-text="`${note.length}/${NOTE_LIMIT}`">0/40</span>
+          <button class="miniBtn primary" @click="saveScenario">保存场景</button>
+          <button class="miniBtn" @click="copySummary">复制摘要</button>
         </div>
 
           <div class="summaryBox">
             <div class="k">可分享摘要</div>
-            <div class="v" id="summaryText">—</div>
+            <div class="v" x-text="summaryText">—</div>
           </div>
         </div>
       </div>
@@ -595,9 +613,28 @@
         <h3>已保存的对比场景</h3>
         <p style="color:var(--mut);font-size:13px;margin-top:6px">最多保存 3 组回撤承受度。</p>
         <div class="actions">
-          <button class="miniBtn" id="clearScenarios">清空全部</button>
+          <button class="miniBtn" @click="clearScenarios">清空全部</button>
         </div>
-        <div class="scenarioList" id="scenariosList"></div>
+        <div class="scenarioList">
+          <template x-if="!scenarios.length">
+            <div class="scenarioMeta">暂无已保存场景。</div>
+          </template>
+          <template x-for="item in scenarios" :key="item.id">
+            <div class="scenarioCard">
+              <div class="scenarioTop">
+                <div class="scenarioTitle" x-text="scenarioTitle(item)"></div>
+                <div class="scenarioActions">
+                  <button class="ghostBtn" @click="applyScenario(item.id)">应用</button>
+                  <button class="ghostBtn" @click="copyScenario(item.id)">复制</button>
+                  <button class="ghostBtn" @click="removeScenario(item.id)">删除</button>
+                </div>
+              </div>
+              <div class="scenarioMeta" x-text="scenarioMeta(item)"></div>
+              <div class="scenarioMeta" x-show="scenarioTime(item)" x-text="scenarioTime(item)"></div>
+              <div class="scenarioMeta" x-show="item.note" x-text="`备注：${item.note}`"></div>
+            </div>
+          </template>
+        </div>
       </div>
     </section>
 
@@ -614,22 +651,22 @@
           <div class="controls">
             <div class="ctrl">
               <label for="capTotal">总资产当前市值</label>
-              <input type="number" id="capTotal" value="100000" min="0" step="1000" inputmode="decimal" />
+              <input type="number" id="capTotal" min="0" step="1000" inputmode="decimal" x-model.number="capTotal" @input="updateCapacity" />
               <div class="hint">你当前账户的总市值。</div>
             </div>
             <div class="ctrl">
               <label for="capPosition">该仓位当前市值</label>
-              <input type="number" id="capPosition" value="30000" min="0" step="1000" inputmode="decimal" />
+              <input type="number" id="capPosition" min="0" step="1000" inputmode="decimal" x-model.number="capPosition" @input="updateCapacity" />
               <div class="hint">该标的当前市值。</div>
             </div>
             <div class="ctrl">
               <label for="capMaxDd">可接受的最大账户回撤（%）</label>
-              <input type="number" id="capMaxDd" value="20" min="0" max="90" step="0.5" inputmode="decimal" />
+              <input type="number" id="capMaxDd" min="0" max="90" step="0.5" inputmode="decimal" x-model.number="capMaxDd" @input="updateCapacity" />
               <div class="hint">你的总体回撤上限（从峰值到谷值）。</div>
             </div>
             <div class="ctrl">
               <label for="capCurrentDd">当前账户回撤（%）</label>
-              <input type="number" id="capCurrentDd" value="0" min="0" max="90" step="0.5" inputmode="decimal" />
+              <input type="number" id="capCurrentDd" min="0" max="90" step="0.5" inputmode="decimal" x-model.number="capCurrentDd" @input="updateCapacity" />
               <div class="hint">你当前距离峰值还差多少。</div>
             </div>
           </div>
@@ -637,15 +674,15 @@
           <div class="summary">
             <div class="kv">
               <div class="k">剩余可承受账户回撤</div>
-              <div class="v" id="capRemaining">—</div>
+              <div class="v" x-text="capRemainingText">—</div>
             </div>
             <div class="kv">
               <div class="k">该仓位占比</div>
-              <div class="v" id="capWeight">—</div>
+              <div class="v" x-text="capWeightText">—</div>
             </div>
             <div class="kv">
               <div class="k">该仓位还能下跌</div>
-              <div class="v" id="capPosDrop">—</div>
+              <div class="v" x-text="capPosDropText">—</div>
             </div>
           </div>
 
@@ -712,10 +749,10 @@
         </div>
         <div class="toolBody">
           <div class="actions">
-            <button class="miniBtn primary" data-feedback="helpful">有帮助</button>
-            <button class="miniBtn" data-feedback="needsWork">还需改进</button>
-            <button class="miniBtn" id="copyFeedback">复制反馈摘要</button>
-            <span class="copyHint" id="feedbackHint">仅本地 · 由你决定是否分享</span>
+            <button class="miniBtn primary" @click="recordFeedback('helpful')">有帮助</button>
+            <button class="miniBtn" @click="recordFeedback('needsWork')">还需改进</button>
+            <button class="miniBtn" @click="copyFeedbackSummary">复制反馈摘要</button>
+            <span class="copyHint" x-text="feedbackHint">仅本地 · 由你决定是否分享</span>
           </div>
         </div>
       </div>
@@ -726,401 +763,43 @@
   </div>
 
   <script>
-    const ddRange = document.getElementById('ddRange');
-    const ddValue = document.getElementById('ddValue');
-    const portfolioInput = document.getElementById('portfolio');
-    const lossValue = document.getElementById('lossValue');
-    const recoveryValue = document.getElementById('recoveryValue');
-    const bandValue = document.getElementById('bandValue');
-    const insightBox = document.getElementById('insightBox');
-    const summaryText = document.getElementById('summaryText');
-    const noteInput = document.getElementById('noteInput');
-    const noteCount = document.getElementById('noteCount');
-    const saveScenarioBtn = document.getElementById('saveScenario');
-    const copySummaryBtn = document.getElementById('copySummary');
-    const scenariosList = document.getElementById('scenariosList');
-    const clearScenariosBtn = document.getElementById('clearScenarios');
-    const capTotal = document.getElementById('capTotal');
-    const capPosition = document.getElementById('capPosition');
-    const capMaxDd = document.getElementById('capMaxDd');
-    const capCurrentDd = document.getElementById('capCurrentDd');
-    const capRemaining = document.getElementById('capRemaining');
-    const capWeight = document.getElementById('capWeight');
-    const capPosDrop = document.getElementById('capPosDrop');
-    const copyFeedback = document.getElementById('copyFeedback');
-    const feedbackHint = document.getElementById('feedbackHint');
-
-    const bands = [
-      {
-        max: 10,
-        label: '很低',
-        text: '优先保本与稳健分散，保持较高现金缓冲。'
-      },
-      {
-        max: 15,
-        label: '低',
-        text: '控制风险、避免杠杆，提前设定规则与退出条件。'
-      },
-      {
-        max: 25,
-        label: '中等',
-        text: '可承受常见回撤，但仍需要纪律与计划。'
-      },
-      {
-        max: 35,
-        label: '高',
-        text: '可承受更深回撤，但需足够期限与流动性。'
-      },
-      {
-        max: 60,
-        label: '很高',
-        text: '仅适合长期视角与强信念，恢复周期可能很长。'
-      }
-    ];
-
-    const STORAGE_KEY = 'rm_drawdown_state';
-    const SCENARIOS_KEY = 'rm_drawdown_scenarios';
-    const SIGNAL_KEY = 'rm_signal_log';
-    const RM_PAGE = 'zh/drawdown-test';
-    const NOTE_LIMIT = 40;
-
-    const toast = (() => {
-      const el = document.createElement('div');
-      el.className = 'toast';
-      document.body.appendChild(el);
-      let t = null;
-      return (msg) => {
-        el.textContent = msg;
-        el.classList.add('show');
-        if(t) clearTimeout(t);
-        t = setTimeout(() => el.classList.remove('show'), 1400);
-      };
-    })();
-
-    const tooltipButtons = Array.from(document.querySelectorAll('.tooltip'));
-    tooltipButtons.forEach((btn) => {
-      btn.addEventListener('click', (event) => {
-        event.stopPropagation();
-        const wrap = btn.closest('.tooltipWrap');
-        if(!wrap) return;
-        const open = wrap.classList.toggle('open');
-        tooltipButtons.forEach((other) => {
-          if(other !== btn){
-            const otherWrap = other.closest('.tooltipWrap');
-            if(otherWrap) otherWrap.classList.remove('open');
-          }
-        });
-        if(!open) wrap.classList.remove('open');
-      });
-    });
-    document.addEventListener('click', () => {
-      tooltipButtons.forEach((btn) => {
-        const wrap = btn.closest('.tooltipWrap');
-        if(wrap) wrap.classList.remove('open');
-      });
-    });
-
-    const formatCurrency = (value) => {
-      const formatter = new Intl.NumberFormat('zh-CN', {
-        style: 'currency',
-        currency: 'CNY',
-        maximumFractionDigits: 0
-      });
-      return formatter.format(value);
-    };
-
-    const formatPercent = (value) => `${value.toFixed(1)}%`;
-
-    const updateCapacity = () => {
-      const total = Number(capTotal.value) || 0;
-      const position = Number(capPosition.value) || 0;
-      const maxDd = Math.max(0, Number(capMaxDd.value) || 0);
-      const currentDd = Math.max(0, Number(capCurrentDd.value) || 0);
-      const remaining = Math.max(0, maxDd - currentDd);
-
-      capRemaining.textContent = total > 0 ? `${formatPercent(remaining)} · ${formatCurrency(total * remaining / 100)}` : '—';
-
-      if(total <= 0 || position <= 0){
-        capWeight.textContent = '—';
-        capPosDrop.textContent = '—';
-        return;
-      }
-
-      const weight = position / total;
-      capWeight.textContent = formatPercent(weight * 100);
-
-      const posDrop = remaining / weight;
-      if(!isFinite(posDrop)){
-        capPosDrop.textContent = '—';
-        return;
-      }
-      capPosDrop.textContent = posDrop >= 100 ? '≥100%' : formatPercent(posDrop);
-    };
-
-    const getBand = (drawdown) =>
-      bands.find((item) => drawdown <= item.max) || bands[bands.length - 1];
-
-    const buildSummary = (drawdown, portfolio) => {
-      const loss = portfolio * (drawdown / 100);
-      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
-      const band = getBand(drawdown);
-      const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
-      const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
-      return `回撤承受度：${band.label}（${drawdown}%）。亏损：${lossText}。回本所需涨幅：+${recovery.toFixed(1)}%。资产规模：${portfolioText}。`;
-    };
-
-    const buildScenarioSummary = (item) => {
-      const drawdown = Number(item.drawdown);
-      const portfolio = Number(item.portfolio) || 0;
-      const loss = portfolio * (drawdown / 100);
-      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
-      const band = getBand(drawdown);
-      const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
-      const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
-      const note = item.note ? ` 备注：${item.note}。` : '';
-      return `回撤承受度：${band.label}（${drawdown}%）。亏损：${lossText}。回本所需涨幅：+${recovery.toFixed(1)}%。资产规模：${portfolioText}。${note}`;
-    };
-
-    const normalizeNote = (raw) => {
-      const cleaned = raw.replace(/\s+/g, ' ').trim();
-      const truncated = cleaned.length > NOTE_LIMIT;
-      const note = truncated ? cleaned.slice(0, NOTE_LIMIT) : cleaned;
-      const empty = !note && raw.trim().length > 0;
-      return { note, truncated, empty };
-    };
-
-    const syncNoteCount = () => {
-      const len = noteInput.value.length;
-      noteCount.textContent = `${len}/${NOTE_LIMIT}`;
-    };
-
-    const saveState = (drawdown, portfolio) => {
-      const payload = { drawdown, portfolio };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
-    };
-
-    const loadState = () => {
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(!raw) return;
-        const state = JSON.parse(raw);
-        if(typeof state.drawdown === 'number') ddRange.value = String(state.drawdown);
-        if(typeof state.portfolio === 'number') portfolioInput.value = String(state.portfolio);
-      }catch(_){ }
-    };
-
-    const loadScenarios = () => {
-      try{
-        const raw = localStorage.getItem(SCENARIOS_KEY);
-        const list = raw ? JSON.parse(raw) : [];
-        return Array.isArray(list) ? list : [];
-      }catch(_){
-        return [];
+    window.rmDrawdownTestConfig = {
+      lang: 'zh',
+      locale: 'zh-CN',
+      currency: 'CNY',
+      page: 'zh/drawdown-test',
+      defaultState: { drawdown: 20, portfolio: 100000 },
+      defaultCapacity: { total: 100000, position: 30000, maxDd: 20, currentDd: 0 },
+      bands: [
+        { max: 10, label: '很低', text: '优先保本与稳健分散，保持较高现金缓冲。' },
+        { max: 15, label: '低', text: '控制风险、避免杠杆，提前设定规则与退出条件。' },
+        { max: 25, label: '中等', text: '可承受常见回撤，但仍需要纪律与计划。' },
+        { max: 35, label: '高', text: '可承受更深回撤，但需足够期限与流动性。' },
+        { max: 60, label: '很高', text: '仅适合长期视角与强信念，恢复周期可能很长。' }
+      ],
+      text: {
+        summary: (band, drawdown, loss, recovery, portfolio) => `回撤承受度：${band}（${drawdown}%）。亏损：${loss}。回本所需涨幅：+${recovery}%。资产规模：${portfolio}。`,
+        scenarioSummary: (band, drawdown, loss, recovery, portfolio, note) => `回撤承受度：${band}（${drawdown}%）。亏损：${loss}。回本所需涨幅：+${recovery}%。资产规模：${portfolio}。${note ? `备注：${note}。` : ''}`,
+        scenarioTitle: (band, drawdown) => `${band}承受度 · ${drawdown}%`,
+        scenarioMeta: (loss, recovery, portfolio) => `亏损：${loss} · 回本所需涨幅：+${recovery}% · 资产规模：${portfolio}`,
+        scenarioTime: (time) => `保存于：${time}`,
+        scenarioNote: (note) => `备注：${note}`,
+        toastSaved: '已保存',
+        toastSavedTrimmed: '已保存（备注已截断）',
+        toastSavedEmpty: '已保存（备注为空）',
+        toastCopied: '已复制',
+        toastApplied: '已应用',
+        toastRemoved: '已删除',
+        toastCleared: '已清空',
+        feedbackSaved: '已保存到本地。',
+        feedbackCopied: '已复制反馈摘要。',
+        feedbackLocalOnly: '仅本地 · 由你决定是否分享',
+        feedbackSummary: (page, payload) => `RiskMeter 反馈（${page}）：${payload}`
       }
     };
-
-    const saveScenarios = (list) => {
-      localStorage.setItem(SCENARIOS_KEY, JSON.stringify(list));
-    };
-
-    const renderScenarios = () => {
-      const list = loadScenarios();
-      if(!list.length){
-        scenariosList.innerHTML = '<div class="scenarioMeta">暂无已保存场景。</div>';
-        return;
-      }
-      scenariosList.innerHTML = list.map((item) => {
-        const drawdown = Number(item.drawdown);
-        const portfolio = Number(item.portfolio) || 0;
-        const loss = portfolio * (drawdown / 100);
-        const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
-        const band = getBand(drawdown);
-        const lossText = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
-        const portfolioText = portfolio > 0 ? formatCurrency(portfolio) : '—';
-        const note = item.note ? `<div class="scenarioMeta">备注：${item.note}</div>` : '';
-        const time = item.ts ? new Date(item.ts).toLocaleString('zh-CN', { dateStyle: 'medium' }) : '';
-        const timeRow = time ? `<div class="scenarioMeta">保存于：${time}</div>` : '';
-        return `
-          <div class="scenarioCard">
-            <div class="scenarioTop">
-              <div class="scenarioTitle">${band.label}承受度 · ${drawdown}%</div>
-              <div class="scenarioActions">
-                <button class="ghostBtn" data-apply="${item.id}">应用</button>
-                <button class="ghostBtn" data-copy="${item.id}">复制</button>
-                <button class="ghostBtn" data-remove="${item.id}">删除</button>
-              </div>
-            </div>
-            <div class="scenarioMeta">亏损：${lossText} · 回本所需涨幅：+${recovery.toFixed(1)}% · 资产规模：${portfolioText}</div>
-            ${timeRow}
-            ${note}
-          </div>
-        `;
-      }).join('');
-    };
-
-    const copyText = async (text) => {
-      if(navigator.clipboard && navigator.clipboard.writeText){
-        try{ await navigator.clipboard.writeText(text); return true; }catch(_){ }
-      }
-      const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed';
-      ta.style.opacity = '0';
-      document.body.appendChild(ta);
-      ta.select();
-      try{ document.execCommand('copy'); }catch(_){ }
-      document.body.removeChild(ta);
-      return true;
-    };
-
-    const loadSignals = () => {
-      try{
-        const raw = localStorage.getItem(SIGNAL_KEY);
-        const parsed = raw ? JSON.parse(raw) : {};
-        return parsed && typeof parsed === 'object' ? parsed : {};
-      }catch(_){
-        return {};
-      }
-    };
-
-    const saveSignals = (signals) => {
-      localStorage.setItem(SIGNAL_KEY, JSON.stringify(signals));
-    };
-
-    const bumpSignal = (kind) => {
-      const signals = loadSignals();
-      const page = signals[RM_PAGE] || { views:0, helpful:0, needsWork:0, summaryCopy:0, scenarioCopy:0, feedbackCopy:0 };
-      page[kind] = (page[kind] || 0) + 1;
-      signals[RM_PAGE] = page;
-      saveSignals(signals);
-      return page;
-    };
-
-    bumpSignal('views');
-
-    const update = () => {
-      const drawdown = Number(ddRange.value);
-      const portfolio = Number(portfolioInput.value) || 0;
-      ddValue.textContent = `${drawdown}%`;
-
-      const loss = portfolio * (drawdown / 100);
-      lossValue.textContent = portfolio > 0 ? `-${formatCurrency(loss)}` : '—';
-
-      const recovery = drawdown >= 99 ? 0 : ((1 / (1 - drawdown / 100)) - 1) * 100;
-      recoveryValue.textContent = `${recovery.toFixed(1)}%`;
-
-      const band = getBand(drawdown);
-      bandValue.textContent = band.label;
-      insightBox.innerHTML = `<strong>${band.label}承受度：</strong>${band.text}`;
-      summaryText.textContent = buildSummary(drawdown, portfolio);
-      saveState(drawdown, portfolio);
-    };
-
-    ddRange.addEventListener('input', update);
-    portfolioInput.addEventListener('input', update);
-    saveScenarioBtn.addEventListener('click', () => {
-      const drawdown = Number(ddRange.value);
-      const portfolio = Number(portfolioInput.value) || 0;
-      const rawNote = noteInput.value || '';
-      const { note, truncated, empty } = normalizeNote(rawNote);
-      const list = loadScenarios();
-      const next = [
-        ...list,
-        { id: String(Date.now()), drawdown, portfolio, note, ts: Date.now() }
-      ];
-      const trimmed = next.slice(-3);
-      saveScenarios(trimmed);
-      renderScenarios();
-      noteInput.value = '';
-      syncNoteCount();
-      if(truncated) toast('已保存（备注已截断）');
-      else if(empty) toast('已保存（备注为空）');
-      else toast('已保存');
-    });
-    noteInput.addEventListener('input', syncNoteCount);
-    [capTotal, capPosition, capMaxDd, capCurrentDd].forEach((el) => {
-      el.addEventListener('input', updateCapacity);
-    });
-    copySummaryBtn.addEventListener('click', async () => {
-      const drawdown = Number(ddRange.value);
-      const portfolio = Number(portfolioInput.value) || 0;
-      const text = buildSummary(drawdown, portfolio);
-      await copyText(text);
-      bumpSignal('summaryCopy');
-      toast('已复制');
-    });
-    clearScenariosBtn.addEventListener('click', () => {
-      saveScenarios([]);
-      renderScenarios();
-      toast('已清空');
-    });
-    scenariosList.addEventListener('click', (event) => {
-      const target = event.target;
-      if(!(target instanceof HTMLElement)) return;
-      const applyId = target.getAttribute('data-apply');
-      if(applyId){
-        const item = loadScenarios().find((entry) => entry.id === applyId);
-        if(item){
-          ddRange.value = String(item.drawdown);
-          portfolioInput.value = String(item.portfolio || 0);
-          update();
-          toast('已应用');
-          noteInput.focus();
-          noteInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        return;
-      }
-      const copyId = target.getAttribute('data-copy');
-      if(copyId){
-        const item = loadScenarios().find((entry) => entry.id === copyId);
-        if(item){
-          copyText(buildScenarioSummary(item)).then(() => {
-            bumpSignal('scenarioCopy');
-            toast('已复制');
-          });
-        }
-        return;
-      }
-      const id = target.getAttribute('data-remove');
-      if(!id) return;
-      const list = loadScenarios().filter((item) => item.id !== id);
-      saveScenarios(list);
-      renderScenarios();
-      toast('已删除');
-    });
-
-    if(copyFeedback && feedbackHint){
-      document.querySelectorAll('[data-feedback]').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const kind = btn.dataset.feedback;
-          if(kind) bumpSignal(kind);
-          feedbackHint.textContent = '已保存到本地。';
-          setTimeout(() => {
-            feedbackHint.textContent = '仅本地 · 由你决定是否分享';
-          }, 1400);
-        });
-      });
-
-      copyFeedback.addEventListener('click', async () => {
-        const signals = loadSignals();
-        const summary = `RiskMeter 反馈（${RM_PAGE}）：${JSON.stringify(signals[RM_PAGE] || {})}`;
-        await copyText(summary);
-        bumpSignal('feedbackCopy');
-        feedbackHint.textContent = '已复制反馈摘要。';
-        setTimeout(() => {
-          feedbackHint.textContent = '仅本地 · 由你决定是否分享';
-        }, 1400);
-      });
-    }
-
-    loadState();
-    update();
-    renderScenarios();
-    syncNoteCount();
-    updateCapacity();
-
-    document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
   </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="/assets/drawdown-test-app.js"></script>
   <script src="/assets/footer-common.js"></script>
 </body>
 </html>
