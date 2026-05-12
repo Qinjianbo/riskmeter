@@ -1,124 +1,248 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-  <script src="/assets/head-common.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>RiskMeter — 衡量风险，保持理性</title>
-  <meta name="description" content="RiskMeter 是一个面向投资者的风险工具箱：理解情绪、控制回撤、减少情绪化决策。不荐股，不预测。" />
-
+  <title>RiskMeter — 在投资之前，先衡量风险</title>
+  <meta name="description" content="RiskMeter 通过市场数据、投资者情绪、估值信号和经典投资框架，帮助投资者理解市场风险，而不是被市场情绪牵着走。" />
   <link rel="alternate" hreflang="en" href="https://riskmeter.app/en/" />
   <link rel="alternate" hreflang="zh" href="https://riskmeter.app/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://riskmeter.app/" />
   <link rel="canonical" href="https://riskmeter.app/zh/" />
   <link rel="sitemap" href="https://riskmeter.app/sitemap.xml" />
-
-  <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebPage",
-      "name": "RiskMeter — 衡量风险，保持理性",
-      "description": "RiskMeter 是一个面向投资者的风险工具箱：理解情绪、控制回撤、减少情绪化决策。不荐股，不预测。",
-      "url": "https://riskmeter.app/zh/",
-      "inLanguage": "zh-CN",
-      "isPartOf": {
-        "@type": "WebSite",
-        "name": "RiskMeter",
-        "url": "https://riskmeter.app/"
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "RiskMeter"
-      }
-    }
-  </script>
-
   <style>
+    /* 深色金融雷达配色 */
     :root{
-      --bg:#0b1020;--panel:rgba(255,255,255,.06);--line:rgba(255,255,255,.12);
-      --fg:rgba(255,255,255,.9);--mut:rgba(255,255,255,.62);--accent:#76e4ff;--shadow:0 12px 40px rgba(0,0,0,.35);
+      --bg:#070B12;
+      --panel:rgba(255,255,255,0.04);
+      --line:rgba(255,255,255,0.08);
+      --fg:#F8FAFC;
+      --mut:#94A3B8;
+      --accent:#00D084;
+      --risk-yellow:#F59E0B;
+      --risk-red:#EF4444;
+      --shadow:0 12px 40px rgba(0,0,0,0.35);
     }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);
-      background:radial-gradient(900px 500px at 15% 10%, rgba(118,228,255,.18), transparent 55%),
-                 radial-gradient(900px 500px at 80% 20%, rgba(181,255,125,.14), transparent 55%),
-                 var(--bg);line-height:1.7}
-    a{color:var(--accent);text-decoration:none}
-    a:hover{text-decoration:underline}
-    .wrap{max-width:1080px;margin:0 auto;padding:44px 20px 80px}
-    .hero{border:1px solid var(--line);background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
-      border-radius:20px;padding:38px 34px;box-shadow:var(--shadow)}
-    h1{margin:0 0 10px;font-size:38px;letter-spacing:.3px}
-    .sub{color:var(--mut);max-width:780px;font-size:18px}
-    .cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:22px}
-    .btn{padding:12px 18px;border-radius:14px;border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--fg);font-size:15px}
-    .btn.primary{background:rgba(118,228,255,.16);border-color:rgba(118,228,255,.45)}
-    .btn:hover{background:rgba(255,255,255,.12);text-decoration:none}
-    .lang{margin-top:12px;color:var(--mut);font-size:12px}
-    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
-    @media (max-width:900px){.grid{grid-template-columns:1fr}h1{font-size:32px}}
-    .card{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:22px;box-shadow:var(--shadow)}
-    .card h3{margin:0 0 6px;font-size:17px}
-    .card p{margin:0;color:var(--mut);font-size:14px}
-    .divider{height:1px;background:var(--line);margin:44px 0 18px}
-    footer{color:var(--mut);font-size:12px;margin-top:34px}
-    .pill{display:inline-block;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);font-size:12px;color:var(--mut)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      color:var(--fg);
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(0,208,132,0.15), transparent 55%),
+        radial-gradient(900px 500px at 75% 20%, rgba(245,158,11,0.12), transparent 55%),
+        var(--bg);
+      line-height:1.6;
+    }
+    a{
+      color:var(--accent);
+      text-decoration:none;
+    }
+    a:hover{text-decoration:underline;}
+    .wrap{
+      max-width:1100px;
+      margin:0 auto;
+      padding:40px 24px 80px;
+    }
+    .hero{
+      border:1px solid var(--line);
+      background:linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03));
+      border-radius:22px;
+      padding:48px 40px;
+      box-shadow:var(--shadow);
+    }
+    h1{
+      font-size:42px;
+      font-weight:600;
+      margin-bottom:16px;
+      letter-spacing:0.3px;
+    }
+    .sub{
+      color:var(--mut);
+      font-size:18px;
+      max-width:760px;
+    }
+    .cta{
+      margin-top:24px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+    }
+    .btn{
+      padding:14px 20px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,0.08);
+      color:var(--fg);
+      font-size:15px;
+      transition:background 0.2s;
+    }
+    .btn.primary{
+      background:rgba(0,208,132,0.16);
+      border-color:rgba(0,208,132,0.4);
+    }
+    .btn:hover{
+      background:rgba(255,255,255,0.12);
+      text-decoration:none;
+    }
+    .risk-section{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      gap:24px;
+      margin-top:40px;
+    }
+    .gauge{
+      width:200px;
+      height:200px;
+      border-radius:50%;
+      background:conic-gradient(var(--accent) 0% 72%, var(--panel) 72% 100%);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      box-shadow:var(--shadow);
+      border:1px solid var(--line);
+    }
+    .gauge .value{
+      font-size:40px;
+      font-weight:600;
+      line-height:1;
+    }
+    .gauge .status{
+      margin-top:4px;
+      font-size:14px;
+      color:var(--mut);
+    }
+    .risk-cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:20px;
+      flex:1;
+    }
+    .risk-card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    .risk-card h3{
+      margin:0 0 8px;
+      font-size:18px;
+    }
+    .risk-card .score{
+      font-size:28px;
+      font-weight:600;
+    }
+    .risk-card .desc{
+      margin-top:4px;
+      font-size:14px;
+      color:var(--mut);
+    }
+    .section-title{
+      margin-top:60px;
+      font-size:28px;
+      font-weight:600;
+    }
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:20px;
+      margin-top:24px;
+    }
+    .card{
+      border:1px solid var(--line);
+      background:var(--panel);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:var(--shadow);
+    }
+    .card h3{
+      margin:0 0 10px;
+      font-size:20px;
+    }
+    .card p{
+      margin:0;
+      font-size:14px;
+      color:var(--mut);
+    }
+    @media(max-width:900px){
+      h1{font-size:32px;}
+      .gauge{margin:0 auto;}
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <section class="hero">
-      <span class="pill">旗舰工具 · 再平衡计划器</span>
-      <h1>衡量风险，<br/>保持理性。</h1>
+      <h1>在投资之前，先衡量风险</h1>
       <p class="sub">
-        RiskMeter 是一个“内容 + 工具”的风险认知平台：帮助你理解市场情绪与风险不对称，
-        更重视<strong>避免大错</strong>而不是预测涨跌。
-        <br/>从再平衡计划器开始，设定漂移区间、交易规模与复核节奏。
+        RiskMeter 通过市场数据、投资者情绪、估值信号和经典投资框架，帮助投资者理解市场风险，而不是被市场情绪牵着走。
+        关注避免大错，而不是追逐下一轮上涨。
       </p>
-
-      <div class="lang">
-        语言：<span class="pill">中文</span> <a class="pill" href="/en/" id="toEn">EN</a>
-      </div>
-
       <div class="cta">
-        <a class="btn primary" href="/zh/rebalancing-planner/" id="startBtn">从「再平衡计划器」开始 →</a>
-        <a class="btn" href="/zh/about/">关于 / 免责声明</a>
-        <a class="btn" href="/zh/ethics/">伦理与守则</a>
-        <a class="btn" href="/zh/support/">支持与使用说明</a>
+        <a class="btn primary" href="/zh/pendulum/">查看今日风险指数 →</a>
+        <a class="btn" href="/zh/risk-glossary/">学习风险框架 →</a>
       </div>
     </section>
 
-    <section style="margin-top:18px">
-      <div class="card">
-        <h3>术语表 → 工具 → 支持</h3>
-        <p>先统一关键术语，再跑核心工具，最后在支持页查看限制与本地存储说明。</p>
-        <div class="cta">
-          <a class="btn primary" href="/zh/risk-glossary/">风险术语表</a>
-          <a class="btn" href="/zh/drawdown-test/">回撤承受度测试</a>
-          <a class="btn" href="/zh/support/">支持与使用说明</a>
+    <!-- 风险总览 -->
+    <section class="risk-section">
+      <div class="gauge">
+        <div class="value">72</div>
+        <div class="status">偏高</div>
+      </div>
+      <div class="risk-cards">
+        <div class="risk-card">
+          <h3>估值风险</h3>
+          <div class="score">82</div>
+          <div class="desc">估值偏高</div>
+        </div>
+        <div class="risk-card">
+          <h3>情绪风险</h3>
+          <div class="score">76</div>
+          <div class="desc">情绪贪婪</div>
+        </div>
+        <div class="risk-card">
+          <h3>波动风险</h3>
+          <div class="score">58</div>
+          <div class="desc">波动上升</div>
+        </div>
+        <div class="risk-card">
+          <h3>流动性风险</h3>
+          <div class="score">61</div>
+          <div class="desc">流动性中性</div>
         </div>
       </div>
     </section>
 
-    <section class="grid">
+    <!-- 框架学习 -->
+    <h2 class="section-title">学习更好的投资框架</h2>
+    <section class="cards">
       <div class="card">
-        <h3>先谈风险，再谈收益</h3>
-        <p>关注回撤、脆弱性与不确定性，而不是只盯上涨故事。</p>
+        <h3>霍华德·马克斯钟摆理论</h3>
+        <p>市场总是在恐惧与贪婪之间摆动。风险最高的时候，往往是人们以为风险已经消失的时候。<a href="/zh/pendulum/">阅读 →</a></p>
       </div>
       <div class="card">
-        <h3>用工具替代观点</h3>
-        <p>我们不告诉你买什么，而是帮助你识别风险上升的时刻。</p>
+        <h3>安全边际</h3>
+        <p>好的投资从承受坏结果开始。<a href="/zh/drawdown-test/">阅读 →</a></p>
       </div>
       <div class="card">
-        <h3>行为胜过预测</h3>
-        <p>纪律、仓位与流程，往往比择时更重要。</p>
+        <h3>幸存者偏差</h3>
+        <p>你看到的成功故事往往只是留下来的那一部分。<a href="/zh/drawdown-recovery/">阅读 →</a></p>
+      </div>
+      <div class="card">
+        <h3>随机漫步</h3>
+        <p>短期价格波动中的噪音，远比大多数人想象得多。<a href="/zh/market-pendulum-theory/">阅读 →</a></p>
       </div>
     </section>
 
-    <section class="grid" style="margin-top:18px">
+    <!-- 工具区 -->
+    <h2 class="section-title">让投资决策更冷静的工具</h2>
+    <section class="cards">
       <div class="card">
         <h3>再平衡计划器</h3>
-        <p>旗舰：基于漂移做再平衡，而不是基于新闻。<a href="/zh/rebalancing-planner/">打开 →</a></p>
+        <p>基于漂移做再平衡，而不是基于新闻。<a href="/zh/rebalancing-planner/">打开 →</a></p>
       </div>
       <div class="card">
         <h3>回撤承受度测试</h3>
@@ -133,29 +257,6 @@
         <p>理解情绪极端与风险不对称。<a href="/zh/pendulum/">打开 →</a></p>
       </div>
     </section>
-
-    <section class="grid" style="margin-top:18px">
-      <div class="card">
-        <h3>什么是市场钟摆？</h3>
-        <p>理解情绪周期与风险不对称。<a href="/zh/market-pendulum-theory/">阅读 →</a></p>
-      </div>
-      <div class="card">
-        <h3>回撤风险是什么？</h3>
-        <p>解释回撤为何比上涨更重要。<a href="/zh/drawdown-explained/">阅读 →</a></p>
-      </div>
-      <div class="card">
-        <h3>风险术语表</h3>
-        <p>关键风险概念释义。<a href="/zh/risk-glossary/">打开 →</a></p>
-      </div>
-    </section>
-
-    <div class="divider"></div>
-        <div class="footer-slot" data-footer></div>
   </div>
-
-  <script>
-    document.getElementById('toEn').addEventListener('click', () => localStorage.setItem('rm_lang','en'));
-  </script>
-  <script src="/assets/footer-common.js"></script>
 </body>
 </html>
