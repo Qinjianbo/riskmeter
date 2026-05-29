@@ -15,26 +15,44 @@ const secondary = page.kind === 'home'
   : contextualLinks(page).filter((cta) => cta.href !== page.primaryCta?.href).slice(0, 1);
 ---
 
-<section class="relative overflow-hidden border-b border-black/10 bg-ink text-white">
-  <div class="absolute inset-0">
-    <img src="/assets/risk-dashboard-hero.png" alt="" class="h-full w-full object-cover opacity-55" />
-    <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/82 to-ink/28"></div>
-  </div>
-  <div class="relative mx-auto grid min-h-[520px] max-w-7xl items-end px-4 pb-12 pt-20 sm:px-6 lg:pb-16">
-    <div class="w-full max-w-[calc(100vw-2rem)] sm:max-w-none">
-      <p class="mb-5 inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-black uppercase tracking-[0.22em] text-aqua">
-        {page.eyebrow}
-      </p>
-      <h1 class="max-w-[11ch] break-words text-4xl font-black leading-[1.02] tracking-normal sm:max-w-4xl sm:text-6xl lg:text-7xl">{page.headline}</h1>
-      <p class="mt-6 max-w-full text-lg leading-8 text-white/78 sm:max-w-2xl">{page.summary}</p>
-      {showCtas && <div class="mt-8 flex flex-wrap gap-3">
+{page.kind === 'home' ? (
+  <section class="relative overflow-hidden border-b border-black/10 bg-ink text-white">
+    <div class="absolute inset-0">
+      <img src="/assets/risk-dashboard-hero.png" alt="" class="h-full w-full object-cover opacity-55" />
+      <div class="absolute inset-0 bg-gradient-to-r from-ink via-ink/82 to-ink/28"></div>
+    </div>
+    <div class="relative mx-auto grid min-h-[520px] max-w-7xl items-end px-4 pb-12 pt-20 sm:px-6 lg:pb-16">
+      <div class="w-full max-w-[calc(100vw-2rem)] sm:max-w-none">
+        <p class="mb-5 inline-flex rounded-full border border-white/15 bg-white/10 px-3 py-1 text-xs font-black uppercase tracking-[0.22em] text-aqua">
+          {page.eyebrow}
+        </p>
+        <h1 class="max-w-[11ch] break-words text-4xl font-black leading-[1.02] tracking-normal sm:max-w-4xl sm:text-6xl lg:text-7xl">{page.headline}</h1>
+        <p class="mt-6 max-w-full text-lg leading-8 text-white/78 sm:max-w-2xl">{page.summary}</p>
+        {showCtas && <div class="mt-8 flex flex-wrap gap-3">
+          {page.primaryCta && (
+            <a class="focus-ring w-full rounded-2xl bg-aqua px-5 py-3 text-center text-sm font-black text-ink shadow-lg shadow-aqua/20 hover:bg-white sm:w-auto" href={page.primaryCta.href}>{page.primaryCta.label}</a>
+          )}
+          {secondary.map((cta) => (
+            <a class="focus-ring w-full rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-center text-sm font-black text-white hover:bg-white/18 sm:w-auto" href={cta.href}>{cta.label}</a>
+          ))}
+        </div>}
+      </div>
+    </div>
+  </section>
+) : (
+  <section class="border-b border-black/10 bg-white">
+    <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-10">
+      <p class="text-xs font-black uppercase tracking-[0.22em] text-aqua">{page.eyebrow}</p>
+      <h1 class="mt-3 max-w-4xl break-words text-3xl font-black leading-tight text-ink sm:text-4xl">{page.headline}</h1>
+      <p class="mt-3 max-w-3xl text-base leading-7 text-muted sm:text-lg">{page.summary}</p>
+      {showCtas && <div class="mt-5 flex flex-wrap gap-3">
         {page.primaryCta && (
-          <a class="focus-ring w-full rounded-2xl bg-aqua px-5 py-3 text-center text-sm font-black text-ink shadow-lg shadow-aqua/20 hover:bg-white sm:w-auto" href={page.primaryCta.href}>{page.primaryCta.label}</a>
+          <a class="focus-ring w-full rounded-2xl bg-ink px-5 py-3 text-center text-sm font-black text-white hover:bg-steel sm:w-auto" href={page.primaryCta.href}>{page.primaryCta.label}</a>
         )}
         {secondary.map((cta) => (
-          <a class="focus-ring w-full rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-center text-sm font-black text-white hover:bg-white/18 sm:w-auto" href={cta.href}>{cta.label}</a>
+          <a class="focus-ring w-full rounded-2xl border border-black/10 bg-white px-5 py-3 text-center text-sm font-black text-steel shadow-sm hover:bg-mist sm:w-auto" href={cta.href}>{cta.label}</a>
         ))}
       </div>}
     </div>
-  </div>
-</section>
+  </section>
+)}
