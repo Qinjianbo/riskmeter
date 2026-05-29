@@ -1,0 +1,29 @@
+---
+import { localizedText, type RiskPage } from '../data/site';
+
+interface Props {
+  page: RiskPage;
+}
+
+const { page } = Astro.props;
+const t = localizedText(page.lang);
+const items = page.secondaryCtas ?? [];
+---
+
+{items.length ? (
+  <section class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
+    <div class="rounded-3xl bg-ink p-6 text-white sm:p-8">
+      <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
+        <div>
+          <p class="text-xs font-black uppercase tracking-[0.22em] text-aqua">{t.related}</p>
+          <h2 class="mt-2 text-2xl font-black">{page.lang === 'en' ? 'Next steps that keep the same risk language.' : '继续使用同一套风险语言。'}</h2>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          {items.map((item) => (
+            <a class="focus-ring rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-sm font-black hover:bg-white/20" href={item.href}>{item.label}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+) : null}

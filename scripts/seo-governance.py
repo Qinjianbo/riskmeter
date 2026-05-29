@@ -141,8 +141,14 @@ def analyze_file(path: pathlib.Path, root: pathlib.Path) -> dict:
 def main() -> int:
   parser = argparse.ArgumentParser(description="RiskMeter SEO & localStorage inspection")
   parser.add_argument("--lang", choices=("en", "zh", "all"), default="all", help="Which language tree to scan")
+  parser.add_argument(
+    "--root",
+    default=None,
+    help="Directory to scan. Defaults to dist/ when present, otherwise the repository root.",
+  )
   args = parser.parse_args()
-  root = pathlib.Path(__file__).resolve().parents[1]
+  repo_root = pathlib.Path(__file__).resolve().parents[1]
+  root = pathlib.Path(args.root).resolve() if args.root else (repo_root / "dist" if (repo_root / "dist").is_dir() else repo_root)
   html_files = gather_html(root, args.lang)
   if not html_files:
     print("No HTML files found for the selected language.", file=sys.stderr)

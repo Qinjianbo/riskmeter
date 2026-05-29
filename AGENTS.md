@@ -1,39 +1,33 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-- Static site with bilingual content.
-- Language roots: `en/` and `zh/`, each page lives at `/<lang>/<slug>/index.html`.
-- Language entry points: `index.html` (root), `about/index.html`, and other top-level redirects.
-- Tools and content are implemented as plain HTML with inline CSS/JS.
+- Astro static site with bilingual content.
+- Source pages live under `src/pages`; shared layouts/components live in `src/layouts` and `src/components`.
+- Page metadata, route inventory, bilingual pairs, and most structured content live in `src/data/site.ts`.
+- Public static assets live in `public/`; generated output goes to `dist/`.
 
 ## Build, Test, and Development Commands
-- No build system or package manager.
-- Local preview (simple static server):
-  - `python3 -m http.server 8080`
-  - Visit `http://localhost:8080/en/` or `/zh/`.
-- You can also open `index.html` directly in a browser for quick checks.
-- Automation scripts live in `tools/codex-scripts` (submodule).
-- Configure defaults in `config.yaml` (ignored in git); copy `tools/codex-scripts/config.example.yaml`.
-- Update submodule:
-  - `git submodule update --remote tools/codex-scripts`
-  - `git add tools/codex-scripts .gitmodules && git commit -m "chore: bump codex-scripts submodule"`
-- Automation helpers (Codex CLI):
-  - `tools/codex-scripts/codex-run.sh exec "Summarize repo status"`
-  - `tools/codex-scripts/auto-iterate.sh --codex` (generate `TASKS.md`)
-  - `tools/codex-scripts/auto-exec.sh` (implement tasks; updates `TASKS.md`)
-  - `tools/codex-scripts/auto-commit.sh` (commit + push via Codex)
-  - `tools/codex-scripts/auto-run.sh` (end‑to‑end orchestration)
+- Install dependencies: `npm install`.
+- Local dev server: `npm run dev`.
+- Production build: `npm run build`.
+- Preview production build: `npm run preview`.
+- Release governance after build: `python3 scripts/seo-governance.py --root dist`.
+- Cloudflare Pages:
+  - Build command: `npm run build`
+  - Output directory: `dist`
 
 ## Coding Style & Naming Conventions
-- Indentation: 2 spaces for HTML/CSS/JS.
-- Keep scripts inline at the bottom of each HTML file.
+- Indentation: 2 spaces for Astro/CSS/JS/TS.
+- Prefer shared Astro components and data-driven page definitions over one-off HTML pages.
 - Use kebab-case slugs (`drawdown-risk`, `market-pendulum-theory`).
 - Keep localStorage keys prefixed with `rm_` (e.g., `rm_drawdown_state`).
-- Preserve visual consistency: shared colors, spacing, and card styles.
+- Preserve visual consistency through Tailwind utilities and `src/styles/global.css`.
 
 ## Testing Guidelines
-- No automated tests in this repo.
-- Manual checks to perform after changes:
+- Required checks after changes:
+  - `npm run build`
+  - `python3 scripts/seo-governance.py --root dist`
+- Manual checks to perform after UI changes:
   - Desktop + mobile layout (cards, tooltips, inputs).
   - Language switchers and `hreflang` links.
   - Tool interactions (sliders, persistence, copy/clear buttons).

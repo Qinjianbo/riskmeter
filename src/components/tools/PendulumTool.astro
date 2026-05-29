@@ -1,0 +1,66 @@
+---
+import type { RiskPage } from '../../data/site';
+interface Props { page: RiskPage }
+const { page } = Astro.props;
+const zh = page.lang === 'zh';
+---
+
+<section class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
+  <div class="grid gap-6 lg:grid-cols-[.9fr_1.1fr]" data-pendulum-tool>
+    <div class="risk-surface rounded-3xl p-6">
+      <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '情绪位置' : 'Sentiment position'}</p>
+      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '放置钟摆' : 'Place the pendulum'}</h2>
+      <div class="mt-6 grid gap-5">
+        <label class="grid gap-2">
+          <span class="tool-label"><span>{zh ? '恐惧 ← → 亢奋' : 'Fear ← → Euphoria'}</span><strong data-pendulum-label>0</strong></span>
+          <input class="w-full" data-pendulum-pos type="range" min="-100" max="100" value="0" />
+        </label>
+        <label class="grid gap-2">
+          <span class="tool-label"><span>{zh ? '纪律强度' : 'Process discipline'}</span><strong data-pendulum-spring-label>120</strong></span>
+          <input class="w-full" data-pendulum-spring type="range" min="40" max="200" value="120" />
+        </label>
+      </div>
+    </div>
+    <div class="rounded-3xl bg-ink p-6 text-white shadow-soft">
+      <div class="relative h-64 overflow-hidden rounded-3xl border border-white/10 bg-white/5">
+        <div class="absolute left-8 right-8 top-1/2 h-1 bg-gradient-to-r from-leaf via-aqua to-ember"></div>
+        <div class="absolute top-[18%] h-40 w-40 -translate-x-1/2 rounded-full border border-white/20 bg-aqua/20 shadow-[0_0_60px_rgba(25,199,194,.35)] transition-all" data-pendulum-orb></div>
+      </div>
+      <div class="mt-6 grid gap-4 sm:grid-cols-3">
+        <div><div class="text-sm text-white/60">{zh ? '状态' : 'State'}</div><div class="mt-1 text-2xl font-black" data-pendulum-state></div></div>
+        <div><div class="text-sm text-white/60">{zh ? '风险姿态' : 'Risk posture'}</div><div class="mt-1 text-2xl font-black text-aqua" data-pendulum-posture></div></div>
+        <div><div class="text-sm text-white/60">{zh ? '动作' : 'Action'}</div><div class="mt-1 text-2xl font-black text-amber" data-pendulum-action></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ zh }}>
+  (() => {
+    const root = document.querySelector('[data-pendulum-tool]');
+    if (!root) return;
+    const key = 'rm_pendulum_state';
+    const pos = root.querySelector('[data-pendulum-pos]');
+    const spring = root.querySelector('[data-pendulum-spring]');
+    const render = () => {
+      const value = Number(pos.value) || 0;
+      const discipline = Number(spring.value) || 120;
+      root.querySelector('[data-pendulum-label]').textContent = value;
+      root.querySelector('[data-pendulum-spring-label]').textContent = discipline;
+      root.querySelector('[data-pendulum-orb]').style.left = `${50 + value * 0.38}%`;
+      const euphoric = value > 35;
+      const fearful = value < -35;
+      root.querySelector('[data-pendulum-state]').textContent = euphoric ? (zh ? '偏亢奋' : 'Euphoric') : fearful ? (zh ? '偏恐惧' : 'Fearful') : (zh ? '接近平衡' : 'Balanced');
+      root.querySelector('[data-pendulum-posture]').textContent = euphoric ? (zh ? '降低脆弱性' : 'Reduce fragility') : fearful ? (zh ? '寻找安全边际' : 'Seek margin') : (zh ? '维持流程' : 'Stay process-led');
+      root.querySelector('[data-pendulum-action]').textContent = discipline > 130 ? (zh ? '按区间执行' : 'Use bands') : (zh ? '先写计划' : 'Write the plan');
+      localStorage.setItem(key, JSON.stringify({ pos: value, spring: discipline }));
+    };
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || '{}');
+      if (typeof saved.pos === 'number') pos.value = saved.pos;
+      if (typeof saved.spring === 'number') spring.value = saved.spring;
+    } catch (_) {}
+    [pos, spring].forEach((node) => node.addEventListener('input', render));
+    render();
+  })();
+</script>

@@ -1,0 +1,28 @@
+---
+import type { RiskPage } from '../data/site';
+import Feedback from './Feedback.astro';
+import SectionRenderer from './SectionRenderer.astro';
+import SitemapList from './SitemapList.astro';
+import Workflow from './Workflow.astro';
+import DrawdownCapacity from './tools/DrawdownCapacity.astro';
+import DrawdownRecovery from './tools/DrawdownRecovery.astro';
+import DrawdownTest from './tools/DrawdownTest.astro';
+import PendulumTool from './tools/PendulumTool.astro';
+import RebalancingPlanner from './tools/RebalancingPlanner.astro';
+
+interface Props {
+  page: RiskPage;
+}
+
+const { page } = Astro.props;
+---
+
+{page.kind === 'drawdown-test' && <DrawdownTest page={page} />}
+{page.kind === 'drawdown-recovery' && <DrawdownRecovery page={page} />}
+{page.kind === 'drawdown-capacity' && <DrawdownCapacity page={page} />}
+{page.kind === 'rebalancing-planner' && <RebalancingPlanner page={page} />}
+{page.kind === 'pendulum' && <PendulumTool page={page} />}
+{page.kind === 'sitemap' && <SitemapList page={page} />}
+{page.kind !== 'sitemap' && <SectionRenderer page={page} />}
+<Workflow page={page} />
+{page.kind !== 'home' && <Feedback page={page} />}

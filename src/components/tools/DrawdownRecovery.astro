@@ -1,0 +1,64 @@
+---
+import type { RiskPage } from '../../data/site';
+interface Props { page: RiskPage }
+const { page } = Astro.props;
+const zh = page.lang === 'zh';
+---
+
+<section class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
+  <div class="grid gap-6 lg:grid-cols-[420px_1fr]">
+    <div class="risk-surface rounded-3xl p-6" data-recovery-tool>
+      <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '测算' : 'Calculator'}</p>
+      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '恢复路径' : 'Recovery path'}</h2>
+      <div class="mt-6 grid gap-5">
+        <label class="grid gap-2">
+          <span class="tool-label"><span>{zh ? '回撤幅度' : 'Drawdown'}</span><strong data-rec-dd-label>35%</strong></span>
+          <input class="w-full" data-rec-dd type="range" min="1" max="80" value="35" />
+          <input class="tool-input" data-rec-dd-input type="number" min="1" max="99" value="35" />
+        </label>
+        <label class="grid gap-2">
+          <span class="tool-label"><span>{zh ? '组合规模' : 'Portfolio value'}</span></span>
+          <input class="tool-input" data-rec-portfolio type="number" min="0" step="1000" value="100000" />
+        </label>
+      </div>
+    </div>
+    <div class="grid gap-4 sm:grid-cols-3" data-rec-results></div>
+  </div>
+</section>
+
+<script define:vars={{ zh }}>
+  (() => {
+    const dd = document.querySelector('[data-rec-dd]');
+    if (!dd) return;
+    const key = 'rm_drawdown_recovery_state';
+    const input = document.querySelector('[data-rec-dd-input]');
+    const portfolio = document.querySelector('[data-rec-portfolio]');
+    const label = document.querySelector('[data-rec-dd-label]');
+    const results = document.querySelector('[data-rec-results]');
+    const fmtCurrency = (value) => new Intl.NumberFormat(zh ? 'zh-CN' : 'en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0);
+    const clamp = (value) => Math.min(99, Math.max(1, Number(value) || 1));
+    const render = () => {
+      const drawdown = clamp(input.value);
+      input.value = dd.value = drawdown;
+      label.textContent = `${drawdown}%`;
+      const gain = ((1 / (1 - drawdown / 100)) - 1) * 100;
+      const loss = (Number(portfolio.value) || 0) * drawdown / 100;
+      localStorage.setItem(key, JSON.stringify({ drawdown, portfolio: Number(portfolio.value) || 0 }));
+      results.innerHTML = [1, 3, 5].map((years) => {
+        const annual = (Math.pow(1 + gain / 100, 1 / years) - 1) * 100;
+        return `<article class="rounded-3xl border border-black/10 bg-white p-6 shadow-soft">
+          <div class="text-xs font-black uppercase tracking-[0.18em] text-muted">${years} ${zh ? '年' : years === 1 ? 'year' : 'years'}</div>
+          <div class="mt-4 text-4xl font-black text-aqua">${annual.toFixed(1)}%</div>
+          <p class="mt-3 text-sm leading-7 text-muted">${zh ? `年化恢复需求；账面亏损约 ${fmtCurrency(loss)}。` : `Annualized recovery needed; paper loss about ${fmtCurrency(loss)}.`}</p>
+        </article>`;
+      }).join('');
+    };
+    try {
+      const saved = JSON.parse(localStorage.getItem(key) || '{}');
+      if (typeof saved.drawdown === 'number') input.value = dd.value = saved.drawdown;
+      if (typeof saved.portfolio === 'number') portfolio.value = saved.portfolio;
+    } catch (_) {}
+    [dd, input, portfolio].forEach((node) => node.addEventListener('input', render));
+    render();
+  })();
+</script>

@@ -19,6 +19,8 @@ tools/codex-scripts/
 node_modules/
 .pnp/
 .pnp.js
+.astro/
+tmp/
 
 # Build outputs
 /dist/

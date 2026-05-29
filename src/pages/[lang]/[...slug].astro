@@ -1,0 +1,26 @@
+---
+import Hero from '../../components/Hero.astro';
+import PageRouter from '../../components/PageRouter.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { allPages, getPage } from '../../data/site';
+
+export function getStaticPaths() {
+  return allPages.map((page) => ({
+    params: {
+      lang: page.lang,
+      slug: page.slug || undefined
+    }
+  }));
+}
+
+const page = getPage(Astro.params.lang, Astro.params.slug ? String(Astro.params.slug).split('/') : undefined);
+
+if (!page) {
+  return Astro.redirect('/en/');
+}
+---
+
+<BaseLayout page={page}>
+  <Hero page={page} />
+  <PageRouter page={page} />
+</BaseLayout>

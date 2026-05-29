@@ -1,0 +1,20 @@
+---
+import Hero from '../components/Hero.astro';
+import PageRouter from '../components/PageRouter.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { allPages } from '../data/site';
+
+const page = allPages.find((item) => item.lang === 'en' && item.slug === '')!;
+---
+
+<BaseLayout page={page} rootLanding>
+  <script is:inline>
+    try {
+      const saved = localStorage.getItem('rm_lang');
+      const lang = saved || ((navigator.language || '').toLowerCase().startsWith('zh') ? 'zh' : 'en');
+      if (location.pathname === '/' && lang === 'zh') location.replace('/zh/');
+    } catch (_) {}
+  </script>
+  <Hero page={page} />
+  <PageRouter page={page} />
+</BaseLayout>

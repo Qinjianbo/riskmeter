@@ -1,0 +1,51 @@
+---
+import type { RiskPage } from '../../data/site';
+interface Props { page: RiskPage }
+const { page } = Astro.props;
+const zh = page.lang === 'zh';
+---
+
+<section class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
+  <div class="grid gap-6 lg:grid-cols-[1fr_1fr]" data-capacity-tool>
+    <div class="risk-surface rounded-3xl p-6">
+      <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '输入' : 'Inputs'}</p>
+      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '剩余回撤空间' : 'Remaining drawdown room'}</h2>
+      <div class="mt-6 grid gap-4 sm:grid-cols-2">
+        <label class="grid gap-2"><span class="tool-label">{zh ? '账户规模' : 'Account value'}</span><input class="tool-input" data-cap-total type="number" value="100000" /></label>
+        <label class="grid gap-2"><span class="tool-label">{zh ? '仓位规模' : 'Position value'}</span><input class="tool-input" data-cap-position type="number" value="25000" /></label>
+        <label class="grid gap-2"><span class="tool-label">{zh ? '最大回撤' : 'Max drawdown'}</span><input class="tool-input" data-cap-max type="number" value="25" /></label>
+        <label class="grid gap-2"><span class="tool-label">{zh ? '当前回撤' : 'Current drawdown'}</span><input class="tool-input" data-cap-current type="number" value="10" /></label>
+      </div>
+    </div>
+    <div class="rounded-3xl bg-ink p-6 text-white shadow-soft">
+      <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '结果' : 'Result'}</p>
+      <div class="mt-6 grid gap-5">
+        <div><div class="text-sm text-white/60">{zh ? '账户剩余空间' : 'Account room'}</div><div class="mt-1 text-4xl font-black text-aqua" data-cap-room></div></div>
+        <div><div class="text-sm text-white/60">{zh ? '仓位权重' : 'Position weight'}</div><div class="mt-1 text-3xl font-black" data-cap-weight></div></div>
+        <div><div class="text-sm text-white/60">{zh ? '该仓位还能下跌' : 'Position can fall'}</div><div class="mt-1 text-3xl font-black text-amber" data-cap-drop></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.querySelector('[data-capacity-tool]');
+    if (!root) return;
+    const n = (sel) => Math.max(0, Number(root.querySelector(sel).value) || 0);
+    const pct = (v) => `${v.toFixed(1)}%`;
+    const render = () => {
+      const total = n('[data-cap-total]');
+      const pos = n('[data-cap-position]');
+      const max = n('[data-cap-max]');
+      const current = n('[data-cap-current]');
+      const remaining = Math.max(0, max - current);
+      const weight = total > 0 ? pos / total : 0;
+      root.querySelector('[data-cap-room]').textContent = pct(remaining);
+      root.querySelector('[data-cap-weight]').textContent = weight > 0 ? pct(weight * 100) : '—';
+      root.querySelector('[data-cap-drop]').textContent = weight > 0 ? (remaining / weight >= 100 ? '≥100%' : pct(remaining / weight)) : '—';
+    };
+    root.querySelectorAll('input').forEach((input) => input.addEventListener('input', render));
+    render();
+  })();
+</script>
