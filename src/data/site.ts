@@ -140,7 +140,7 @@ export const pages: RiskPage[] = [
     metrics: [
       { label: 'Bands', value: '5', tone: 'aqua' },
       { label: 'Saved scenarios', value: '3', tone: 'leaf' },
-      { label: 'Storage', value: 'rm_*', tone: 'amber' }
+      { label: 'Saved data', value: 'Browser only', tone: 'amber' }
     ]
   },
   {
@@ -157,7 +157,7 @@ export const pages: RiskPage[] = [
     metrics: [
       { label: '风险档位', value: '5', tone: 'aqua' },
       { label: '保存情景', value: '3', tone: 'leaf' },
-      { label: '本地键', value: 'rm_*', tone: 'amber' }
+      { label: '保存位置', value: '仅浏览器', tone: 'amber' }
     ]
   },
   {
@@ -397,7 +397,7 @@ const supportPages: RiskPage[] = [
     sections: [
       { title: 'What we do', body: 'We explain risk concepts, provide calculators, and make assumptions visible.' },
       { title: 'What we will not do', body: 'We will not publish price targets, trading signals, or guaranteed return claims.' },
-      { title: 'Data & privacy', body: 'Tool inputs are stored locally in your browser under rm_* keys unless you intentionally copy and share them.' },
+      { title: 'Data & privacy', body: 'Tool inputs are stored locally in your browser unless you intentionally copy and share them.' },
       { title: 'Feedback & accountability', body: 'Corrections, translation improvements, and clarity suggestions are welcome.' }
     ]
   },
@@ -414,7 +414,7 @@ const supportPages: RiskPage[] = [
     sections: [
       { title: '我们做什么', body: '解释风险概念、提供计算工具，并让假设可见。' },
       { title: '我们不会做什么', body: '不发布价格目标、交易信号或收益保证。' },
-      { title: '数据与隐私', body: '工具输入默认只保存在浏览器本地的 rm_* 键下，除非你主动复制分享。' },
+      { title: '数据与隐私', body: '工具输入默认只保存在浏览器本地，除非你主动复制分享。' },
       { title: '反馈与责任', body: '欢迎提出修正、翻译和表达清晰度建议。' }
     ]
   },
@@ -547,8 +547,8 @@ export function localizedText(lang: Lang) {
     home: lang === 'en' ? 'Home' : '首页',
     switchLanguage: lang === 'en' ? '中文' : 'EN',
     localOnly: lang === 'en'
-      ? 'Educational only. Tool inputs stay in your browser under rm_* localStorage keys.'
-      : '仅作教育用途。工具输入保存在浏览器本地 rm_* localStorage 键下。',
+      ? 'Educational only. Tool inputs stay in your browser.'
+      : '仅作教育用途。工具输入保存在浏览器本地。',
     related: lang === 'en' ? 'Continue the workflow' : '继续这个流程',
     allPages: lang === 'en' ? 'All pages' : '所有页面',
     useful: lang === 'en' ? 'Was this useful?' : '这页有帮助吗？',
