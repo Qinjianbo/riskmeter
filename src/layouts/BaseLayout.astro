@@ -16,7 +16,7 @@ const currentPath = pagePath(page);
 const inWorkflow = currentWorkflowIndex(page) >= 0;
 const isNavActive = (href: string) => {
   if (href === `/${page.lang}/`) return currentPath === href;
-  if (href.endsWith('/drawdown-test/')) return inWorkflow;
+  if (href.endsWith('/drawdown-test/')) return inWorkflow && !currentPath.endsWith('/pendulum/');
   return currentPath === href || currentPath.startsWith(href);
 };
 const jsonLd = {
