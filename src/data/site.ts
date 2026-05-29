@@ -44,15 +44,15 @@ export const nav: Record<Lang, { label: string; href: string }[]> = {
     { label: 'Home', href: '/en/' },
     { label: 'Tools', href: '/en/drawdown-test/' },
     { label: 'Pendulum', href: '/en/pendulum/' },
-    { label: 'Glossary', href: '/en/risk-glossary/' },
-    { label: 'Support', href: '/en/support/' }
+    { label: 'Explain', href: '/en/risk-glossary/' },
+    { label: 'Help', href: '/en/support/' }
   ],
   zh: [
     { label: '首页', href: '/zh/' },
     { label: '工具', href: '/zh/drawdown-test/' },
     { label: '钟摆', href: '/zh/pendulum/' },
-    { label: '术语表', href: '/zh/risk-glossary/' },
-    { label: '支持', href: '/zh/support/' }
+    { label: '看解释', href: '/zh/risk-glossary/' },
+    { label: '帮助', href: '/zh/support/' }
   ]
 };
 
@@ -83,151 +83,151 @@ export const pages: RiskPage[] = [
   {
     lang: 'en',
     slug: '',
-    title: 'RiskMeter - Measure Market Risk Before You Invest',
-    description: 'RiskMeter helps investors understand drawdowns, sentiment, and rebalancing discipline through practical bilingual tools.',
-    eyebrow: 'Risk tools without predictions',
-    headline: 'Measure risk before the market tests your discipline.',
-    summary: 'A bilingual workspace for drawdown tolerance, recovery math, market sentiment, and rebalancing decisions. No stock tips, no price forecasts, just clearer risk boundaries.',
+    title: 'RiskMeter - Check Investment Risk Before You Buy',
+    description: 'RiskMeter helps new investors see possible losses, recovery needs, and simple portfolio adjustments before making decisions.',
+    eyebrow: 'Risk checks without predictions',
+    headline: 'Before you invest, see how much loss you could handle.',
+    summary: 'Simple tools for beginners: estimate a possible loss, see how hard it is to recover, and plan what to adjust. No stock picks, no price predictions.',
     kind: 'home',
-    primaryCta: { label: 'Start with Drawdown Test', href: '/en/drawdown-test/' },
+    primaryCta: { label: 'Start with the loss test', href: '/en/drawdown-test/' },
     secondaryCtas: [
-      { label: 'Explore Market Pendulum', href: '/en/pendulum/' },
-      { label: 'Open Risk Glossary', href: '/en/risk-glossary/' }
+      { label: 'Check market mood', href: '/en/pendulum/' },
+      { label: 'Explain the terms', href: '/en/risk-glossary/' }
     ]
   },
   {
     lang: 'zh',
     slug: '',
-    title: 'RiskMeter - 投资前先衡量风险',
-    description: 'RiskMeter 通过双语工具帮助投资者理解回撤、市场情绪与再平衡纪律。',
-    eyebrow: '不做预测的风险工具',
-    headline: '在市场考验纪律之前，先量清风险边界。',
-    summary: '一个双语风险工作台，用来评估回撤承受度、恢复数学、市场情绪和再平衡动作。不荐股、不预测价格，只帮助你把风险说清楚。',
+    title: 'RiskMeter - 买之前先看看风险',
+    description: 'RiskMeter 帮助理财小白看懂可能亏多少、回本有多难，以及什么时候该调整仓位。',
+    eyebrow: '不预测，只做风险检查',
+    headline: '买之前，先看看自己能不能承受下跌。',
+    summary: '给理财小白用的简单工具：估算可能亏多少、回本要涨多少、仓位要不要调整。不荐股、不预测涨跌，只帮你把风险看清楚。',
     kind: 'home',
-    primaryCta: { label: '从回撤测试开始', href: '/zh/drawdown-test/' },
+    primaryCta: { label: '先看能亏多少', href: '/zh/drawdown-test/' },
     secondaryCtas: [
-      { label: '探索市场钟摆', href: '/zh/pendulum/' },
-      { label: '查看风险术语表', href: '/zh/risk-glossary/' }
+      { label: '看看市场情绪', href: '/zh/pendulum/' },
+      { label: '看通俗解释', href: '/zh/risk-glossary/' }
     ]
   },
   {
     lang: 'en',
     slug: 'drawdown-test',
-    title: 'Drawdown Tolerance Test - RiskMeter',
-    description: 'Estimate the level of loss you can realistically endure and recover from.',
-    eyebrow: 'Core tool',
-    headline: 'Find the drawdown band your plan can actually survive.',
-    summary: 'Move from abstract risk appetite to visible loss, recovery percentage, notes, and saved local scenarios.',
+    title: 'Loss Tolerance Test - RiskMeter',
+    description: 'Estimate how much portfolio loss you may be able to handle before you panic.',
+    eyebrow: 'Start here',
+    headline: 'If your money drops, how much can you really handle?',
+    summary: 'Move the slider to see the dollar loss and how much gain is needed to get back to even.',
     kind: 'drawdown-test',
-    primaryCta: { label: 'Open recovery scenarios', href: '/en/drawdown-recovery/' },
+    primaryCta: { label: 'See how hard recovery is', href: '/en/drawdown-recovery/' },
     secondaryCtas: toolCtas('en', 'drawdown-test')
   },
   {
     lang: 'zh',
     slug: 'drawdown-test',
-    title: '回撤承受度测试 - RiskMeter',
-    description: '估算你现实中能承受并恢复的亏损区间。',
-    eyebrow: '核心工具',
-    headline: '找到你的计划真正扛得住的回撤区间。',
-    summary: '把抽象的风险偏好转换成可见亏损、恢复涨幅、本地笔记和可复用情景。',
+    title: '亏损承受测试 - RiskMeter',
+    description: '估算账户下跌多少时，你可能会开始慌。',
+    eyebrow: '从这里开始',
+    headline: '如果账户下跌，你到底能扛住多少？',
+    summary: '拖动滑杆，看会亏多少钱，以及要涨多少才能回本。',
     kind: 'drawdown-test',
-    primaryCta: { label: '打开恢复情景', href: '/zh/drawdown-recovery/' },
+    primaryCta: { label: '看看回本有多难', href: '/zh/drawdown-recovery/' },
     secondaryCtas: toolCtas('zh', 'drawdown-test')
   },
   {
     lang: 'en',
     slug: 'drawdown-recovery',
-    title: 'Drawdown Recovery Scenarios - RiskMeter',
-    description: 'Compare the returns needed to recover from drawdowns over 1, 3, and 5 years.',
-    eyebrow: 'Recovery math',
-    headline: 'See how long the climb back can be.',
-    summary: 'Drawdowns are nonlinear. This tool turns a loss percentage into breakeven return and annualized recovery paths.',
+    title: 'Recovery After Loss - RiskMeter',
+    description: 'See how much return is needed to recover after a portfolio loss.',
+    eyebrow: 'Can you get back?',
+    headline: 'After a loss, how much does it need to rise to recover?',
+    summary: 'A 20% loss does not need 20% to recover. This page shows the real return needed over 1, 3, or 5 years.',
     kind: 'drawdown-recovery',
-    primaryCta: { label: 'Check drawdown capacity', href: '/en/drawdown-capacity/' },
+    primaryCta: { label: 'Check room for more loss', href: '/en/drawdown-capacity/' },
     secondaryCtas: toolCtas('en', 'drawdown-recovery')
   },
   {
     lang: 'zh',
     slug: 'drawdown-recovery',
-    title: '回撤恢复情景 - RiskMeter',
-    description: '对比 1、3、5 年恢复回撤所需的复利收益。',
-    eyebrow: '恢复数学',
-    headline: '看清爬出回撤需要多长的路。',
-    summary: '回撤不是线性的。这个工具会把亏损比例转换成回本涨幅和不同年限下的年化恢复路径。',
+    title: '亏损后多久回本 - RiskMeter',
+    description: '看看亏损后，要涨多少、多久才可能回本。',
+    eyebrow: '能不能回本',
+    headline: '亏了以后，要涨多少才能回本？',
+    summary: '亏 20% 不是涨 20% 就能回本。这里会告诉你 1 年、3 年、5 年分别需要多高的收益。',
     kind: 'drawdown-recovery',
-    primaryCta: { label: '检查回撤容量', href: '/zh/drawdown-capacity/' },
+    primaryCta: { label: '看看还能承受多少下跌', href: '/zh/drawdown-capacity/' },
     secondaryCtas: toolCtas('zh', 'drawdown-recovery')
   },
   {
     lang: 'en',
     slug: 'drawdown-capacity',
-    title: 'Drawdown Capacity Calculator - RiskMeter',
-    description: 'Estimate how much further a position could drop before the account reaches max drawdown.',
-    eyebrow: 'Position risk',
-    headline: 'Translate account limits into position-level room.',
-    summary: 'Combine account size, position size, current drawdown, and max drawdown to estimate remaining capacity.',
+    title: 'More Loss Room Calculator - RiskMeter',
+    description: 'Estimate how much more one investment can fall before your account hits your loss limit.',
+    eyebrow: 'One holding risk',
+    headline: 'How much more can this holding fall before it hurts too much?',
+    summary: 'Enter your account size and one holding size. The tool estimates how much more that holding could drop before you hit your loss limit.',
     kind: 'drawdown-capacity',
-    primaryCta: { label: 'Plan rebalancing', href: '/en/rebalancing-planner/' },
+    primaryCta: { label: 'Plan what to adjust', href: '/en/rebalancing-planner/' },
     secondaryCtas: toolCtas('en', 'drawdown-capacity')
   },
   {
     lang: 'zh',
     slug: 'drawdown-capacity',
-    title: '回撤承受空间计算器 - RiskMeter',
-    description: '估算在不超过最大回撤的前提下，该仓位还能下跌多少。',
-    eyebrow: '仓位风险',
-    headline: '把账户限制转换成单个仓位的余量。',
-    summary: '结合账户规模、仓位规模、当前回撤与最大回撤，估算剩余承受空间。',
+    title: '还能跌多少计算器 - RiskMeter',
+    description: '估算某个持仓继续下跌多少，会触碰你的亏损上限。',
+    eyebrow: '单个持仓风险',
+    headline: '这个持仓再跌多少，你会比较难受？',
+    summary: '输入账户总金额和某个持仓金额，看看它继续下跌多少会接近你的亏损上限。',
     kind: 'drawdown-capacity',
-    primaryCta: { label: '规划再平衡', href: '/zh/rebalancing-planner/' },
+    primaryCta: { label: '看看要不要调整仓位', href: '/zh/rebalancing-planner/' },
     secondaryCtas: toolCtas('zh', 'drawdown-capacity')
   },
   {
     lang: 'en',
     slug: 'rebalancing-planner',
-    title: 'Rebalancing Planner - RiskMeter',
-    description: 'Plan when to rebalance using drift bands and suggested trade sizes.',
-    eyebrow: 'Portfolio process',
-    headline: 'Turn drift into a concrete rebalancing action.',
-    summary: 'Enter target weight, current weight, portfolio value, and band width to get a suggested trade and process note.',
+    title: 'Portfolio Adjustment Planner - RiskMeter',
+    description: 'Check whether one holding is too high or too low compared with your target.',
+    eyebrow: 'Adjust holdings',
+    headline: 'Is one holding taking up too much of your account?',
+    summary: 'Enter your target percentage and current percentage. The tool tells you whether you may need to buy, sell, or leave it alone.',
     kind: 'rebalancing-planner',
-    primaryCta: { label: 'Sense cycle risk', href: '/en/pendulum/' },
+    primaryCta: { label: 'Check market mood', href: '/en/pendulum/' },
     secondaryCtas: toolCtas('en', 'rebalancing-planner')
   },
   {
     lang: 'zh',
     slug: 'rebalancing-planner',
-    title: '再平衡计划器 - RiskMeter',
-    description: '用偏离区间与建议交易金额规划何时再平衡。',
-    eyebrow: '组合流程',
-    headline: '把仓位偏离转换成明确的再平衡动作。',
-    summary: '输入目标权重、当前权重、组合规模和区间宽度，得到建议交易金额与流程提示。',
+    title: '仓位调整计划器 - RiskMeter',
+    description: '看看某个持仓是不是太多或太少，是否需要调整。',
+    eyebrow: '调整仓位',
+    headline: '某个持仓是不是占比太高了？',
+    summary: '输入你想要的比例和现在的比例，工具会提示大概该买、该卖，还是先不动。',
     kind: 'rebalancing-planner',
-    primaryCta: { label: '感知周期风险', href: '/zh/pendulum/' },
+    primaryCta: { label: '看看市场情绪', href: '/zh/pendulum/' },
     secondaryCtas: toolCtas('zh', 'rebalancing-planner')
   },
   {
     lang: 'en',
     slug: 'pendulum',
-    title: 'Market Pendulum - RiskMeter',
-    description: 'Use the Market Pendulum to understand sentiment extremes and risk asymmetry without predicting prices.',
-    eyebrow: 'Sentiment framework',
-    headline: 'Map market mood without turning it into a forecast.',
-    summary: 'Place the pendulum between fear and euphoria, then translate that reading into risk posture and rebalancing discipline.',
+    title: 'Market Mood Pendulum - RiskMeter',
+    description: 'Use a simple pendulum to think about whether the market feels fearful, calm, or too excited.',
+    eyebrow: 'Market mood',
+    headline: 'Is the market calm, fearful, or too excited?',
+    summary: 'This is not a prediction. It helps you notice whether people are taking too much risk or becoming too scared.',
     kind: 'pendulum',
-    primaryCta: { label: 'Read the theory', href: '/en/what-is-market-pendulum/' },
+    primaryCta: { label: 'Read the plain explanation', href: '/en/what-is-market-pendulum/' },
     secondaryCtas: toolCtas('en', 'pendulum')
   },
   {
     lang: 'zh',
     slug: 'pendulum',
-    title: '市场钟摆 - RiskMeter',
-    description: '用市场钟摆理解情绪极端与风险不对称，而不是预测价格。',
-    eyebrow: '情绪框架',
-    headline: '观察市场情绪，但不把它误当成预测。',
-    summary: '把钟摆放在恐惧与亢奋之间，再把读数转换成风险姿态与再平衡纪律。',
+    title: '市场情绪钟摆 - RiskMeter',
+    description: '用一个简单钟摆看看市场是害怕、平静，还是过度兴奋。',
+    eyebrow: '市场情绪',
+    headline: '现在的市场，是害怕、平静，还是太兴奋？',
+    summary: '这不是预测涨跌，只是提醒你：大家太兴奋时别冲动，大家太害怕时也别慌。',
     kind: 'pendulum',
-    primaryCta: { label: '阅读理论说明', href: '/zh/market-pendulum-theory/' },
+    primaryCta: { label: '看通俗解释', href: '/zh/market-pendulum-theory/' },
     secondaryCtas: toolCtas('zh', 'pendulum')
   }
 ];
@@ -236,90 +236,90 @@ const guidePages: RiskPage[] = [
   {
     lang: 'en',
     slug: 'drawdown-risk',
-    title: 'Drawdown Risk Explained - RiskMeter',
-    description: 'Understand drawdown risk, why it matters more than upside, and how recovery time changes decisions.',
-    eyebrow: 'Risk guide',
-    headline: 'Drawdown is where portfolio math meets behavior.',
-    summary: 'A 25% loss needs 33.3% to recover. A 50% loss needs 100%. The bigger issue is whether the investor can stay rational long enough for recovery to happen.',
+    title: 'Why Losses Feel Hard - RiskMeter',
+    description: 'A beginner-friendly explanation of why losses are hard to recover from.',
+    eyebrow: 'Plain guide',
+    headline: 'Why a loss hurts more than it first looks.',
+    summary: 'If your account loses 25%, it needs to rise 33.3% to get back. This page explains that simple idea without heavy finance jargon.',
     kind: 'guide',
-    primaryCta: { label: 'Take the drawdown test', href: '/en/drawdown-test/' },
-    secondaryCtas: [{ label: 'Recovery scenarios', href: '/en/drawdown-recovery/' }, { label: 'Risk glossary', href: '/en/risk-glossary/' }],
+    primaryCta: { label: 'Try the loss test', href: '/en/drawdown-test/' },
+    secondaryCtas: [{ label: 'See recovery examples', href: '/en/drawdown-recovery/' }, { label: 'Explain the terms', href: '/en/risk-glossary/' }],
     sections: [
-      { title: 'Three things to remember', items: [
-        { title: 'Drawdown compounds fast', body: 'Losses are asymmetric: the required gain grows faster than the loss itself.' },
-        { title: 'Recovery time matters', body: 'A tolerable loss on paper can become intolerable when recovery takes years.' },
-        { title: 'Psychology is the real cost', body: 'Panic decisions often happen after the math has already become uncomfortable.' }
+      { title: 'Three simple ideas', items: [
+        { title: 'Losing 20% is not fixed by gaining 20%', body: 'After a loss, your money starts from a smaller base, so it needs a bigger rise to recover.' },
+        { title: 'Time matters', body: 'A loss may look okay on paper, but waiting years to recover can feel very different.' },
+        { title: 'Panic is the real danger', body: 'Many people make bad decisions after the loss already feels uncomfortable.' }
       ] },
-      { title: 'Five drawdown bands', items: [
-        { title: 'Very low: up to 10%', body: 'Usually noise for long-term portfolios, but still useful for testing expectations.' },
-        { title: 'Low: 11-15%', body: 'Requires discipline and a prewritten plan.' },
-        { title: 'Moderate: 16-25%', body: 'Often where investors start changing strategy under pressure.' },
-        { title: 'High: 26-35%', body: 'Needs strong liquidity, conviction, and position sizing.' },
-        { title: 'Very high: 36%+', body: 'A survival question, not a performance question.' }
+      { title: 'A simple loss scale', items: [
+        { title: '0-10%: small pullback', body: 'Common in investing, but still useful for checking your feelings.' },
+        { title: '11-15%: uncomfortable', body: 'You may start watching the account more often.' },
+        { title: '16-25%: stressful', body: 'Many beginners start wanting to change everything here.' },
+        { title: '26-35%: serious loss', body: 'You need a clear plan and enough cash for daily life.' },
+        { title: '36%+: danger zone', body: 'At this point the question is often survival, not return.' }
       ] }
     ]
   },
   {
     lang: 'zh',
     slug: 'drawdown-explained',
-    title: '回撤风险是什么？- RiskMeter',
-    description: '理解回撤风险为何比上涨更重要，以及恢复时间与心理压力如何影响投资决策。',
-    eyebrow: '风险指南',
-    headline: '回撤是组合数学与投资行为相遇的地方。',
-    summary: '亏损 25% 需要上涨 33.3% 才能回本；亏损 50% 需要上涨 100%。更关键的是，投资者能否在恢复发生前保持理性。',
+    title: '为什么亏损很难受？- RiskMeter',
+    description: '用适合理财小白的方式解释：为什么亏损后回本更难。',
+    eyebrow: '通俗指南',
+    headline: '亏损为什么比看上去更难受？',
+    summary: '账户亏 25%，不是涨 25% 就能回本，而是要涨 33.3%。这页用大白话解释这个逻辑。',
     kind: 'guide',
-    primaryCta: { label: '进行回撤测试', href: '/zh/drawdown-test/' },
-    secondaryCtas: [{ label: '恢复情景', href: '/zh/drawdown-recovery/' }, { label: '风险术语表', href: '/zh/risk-glossary/' }],
+    primaryCta: { label: '先看能亏多少', href: '/zh/drawdown-test/' },
+    secondaryCtas: [{ label: '看回本例子', href: '/zh/drawdown-recovery/' }, { label: '看通俗解释', href: '/zh/risk-glossary/' }],
     sections: [
-      { title: '三个重点', items: [
-        { title: '回撤会快速放大', body: '亏损具有不对称性：所需涨幅会比亏损本身更快变大。' },
-        { title: '恢复时间很关键', body: '纸面上能承受的亏损，如果恢复要几年，现实中可能完全不同。' },
-        { title: '心理成本最高', body: '很多错误决策发生在数学已经让人难受之后。' }
+      { title: '三个简单重点', items: [
+        { title: '亏 20% 不是涨 20% 就回本', body: '亏损后本金变少了，所以需要更大的涨幅才能回到原点。' },
+        { title: '多久回本很重要', body: '纸面上能接受的亏损，如果要等几年才回本，实际感受会很不同。' },
+        { title: '最怕的是慌了乱操作', body: '很多错误不是因为亏损本身，而是亏了之后临时冲动做决定。' }
       ] },
-      { title: '五档回撤', items: [
-        { title: '极低：10% 以内', body: '对长期组合通常是噪音，但适合校准预期。' },
-        { title: '低：11-15%', body: '需要纪律和提前写好的计划。' },
-        { title: '中等：16-25%', body: '很多投资者会在这里开始动摇策略。' },
-        { title: '高：26-35%', body: '需要流动性、信念和仓位控制共同支撑。' },
-        { title: '极高：36%+', body: '这已经是生存问题，而不只是收益问题。' }
+      { title: '亏损大概分几档', items: [
+        { title: '0-10%：小幅下跌', body: '投资里比较常见，但也可以用来观察自己会不会紧张。' },
+        { title: '11-15%：开始不舒服', body: '你可能会更频繁地打开账户看。' },
+        { title: '16-25%：明显有压力', body: '很多新手会在这里开始想全部改变策略。' },
+        { title: '26-35%：比较严重', body: '这时候需要提前想好的计划，也需要生活资金不受影响。' },
+        { title: '36% 以上：危险区', body: '这时更像是能不能扛住的问题，而不是赚多少的问题。' }
       ] }
     ]
   },
   {
     lang: 'en',
     slug: 'what-is-market-pendulum',
-    title: 'What Is the Market Pendulum? - RiskMeter',
-    description: 'Learn how the Market Pendulum explains sentiment extremes, risk asymmetry, and rational decision making.',
-    eyebrow: 'Theory',
-    headline: 'Markets swing between fear and euphoria.',
-    summary: 'The pendulum is not a timing signal. It is a reminder that risk often feels lowest when it is building, and opportunity often feels worst when it is improving.',
+    title: 'What Is the Market Mood Pendulum? - RiskMeter',
+    description: 'A beginner-friendly explanation of market mood: fear, calm, and excitement.',
+    eyebrow: 'Plain explanation',
+    headline: 'Markets often swing between fear and excitement.',
+    summary: 'This idea does not tell you what to buy. It helps you notice when people may be too confident or too scared.',
     kind: 'guide',
-    primaryCta: { label: 'Open the pendulum tool', href: '/en/pendulum/' },
-    secondaryCtas: [{ label: 'Drawdown risk', href: '/en/drawdown-risk/' }, { label: 'Rebalancing planner', href: '/en/rebalancing-planner/' }],
+    primaryCta: { label: 'Open the mood tool', href: '/en/pendulum/' },
+    secondaryCtas: [{ label: 'Why losses hurt', href: '/en/drawdown-risk/' }, { label: 'Adjust holdings', href: '/en/rebalancing-planner/' }],
     sections: [
-      { title: 'Core principles', items: [
-        { title: 'Sentiment moves in cycles', body: 'Crowds rarely stay balanced for long. Optimism and pessimism tend to overshoot.' },
-        { title: 'Risk rises quietly', body: 'The most comfortable moments can contain the least margin of safety.' },
-        { title: 'Opportunity hides in discomfort', body: 'Pessimism can create better future conditions, but only for investors with a process.' }
+      { title: 'What to notice', items: [
+        { title: 'People get excited together', body: 'When everyone thinks things can only go up, risk may be higher than it feels.' },
+        { title: 'People get scared together', body: 'When everyone is afraid, prices may already include a lot of bad news.' },
+        { title: 'Use it as a reminder', body: 'The pendulum is not a signal. It is a reminder to slow down before acting.' }
       ] }
     ]
   },
   {
     lang: 'zh',
     slug: 'market-pendulum-theory',
-    title: '市场钟摆理论 - RiskMeter',
-    description: '理解市场钟摆如何解释情绪极端、风险不对称和理性决策。',
-    eyebrow: '理论说明',
-    headline: '市场会在恐惧与亢奋之间摆动。',
-    summary: '钟摆不是择时信号。它提醒我们：风险常常在最舒服的时候积累，机会也常常在最难受的时候改善。',
+    title: '市场情绪钟摆是什么？- RiskMeter',
+    description: '用适合理财小白的方式解释市场情绪：害怕、平静、过度兴奋。',
+    eyebrow: '通俗解释',
+    headline: '市场常常在害怕和兴奋之间摆动。',
+    summary: '它不会告诉你买什么，只是提醒你：大家太自信或太害怕时，都要慢一点做决定。',
     kind: 'guide',
-    primaryCta: { label: '打开市场钟摆工具', href: '/zh/pendulum/' },
-    secondaryCtas: [{ label: '回撤风险', href: '/zh/drawdown-explained/' }, { label: '再平衡计划器', href: '/zh/rebalancing-planner/' }],
+    primaryCta: { label: '打开情绪工具', href: '/zh/pendulum/' },
+    secondaryCtas: [{ label: '为什么亏损难受', href: '/zh/drawdown-explained/' }, { label: '调整仓位', href: '/zh/rebalancing-planner/' }],
     sections: [
-      { title: '核心原则', items: [
-        { title: '情绪是周期性的', body: '群体很少长期保持平衡，乐观和悲观都会过度。' },
-        { title: '风险悄悄升高', body: '最舒服的时候，安全边际可能最少。' },
-        { title: '机会藏在不适感里', body: '悲观可能改善未来条件，但前提是你有流程。' }
+      { title: '你需要观察什么', items: [
+        { title: '大家会一起兴奋', body: '当所有人都觉得只会涨，风险可能比你感觉到的更高。' },
+        { title: '大家也会一起害怕', body: '当所有人都害怕时，价格里可能已经包含很多坏消息。' },
+        { title: '把它当提醒，不当信号', body: '钟摆不是买卖信号，只是提醒你做决定前先慢下来。' }
       ] }
     ]
   }
@@ -330,150 +330,150 @@ const supportPages: RiskPage[] = [
     lang: 'en',
     slug: 'about',
     title: 'About - RiskMeter',
-    description: 'About RiskMeter, its purpose, boundaries, and educational disclaimer.',
+    description: 'What RiskMeter does, what it does not do, and how beginners should use it.',
     eyebrow: 'About',
-    headline: 'A risk-first investing education site.',
-    summary: 'RiskMeter helps investors think about risk before return through simple frameworks and local-first tools.',
+    headline: 'A simple risk checklist before you invest.',
+    summary: 'RiskMeter helps beginners ask: how much could I lose, how hard is recovery, and what should I avoid doing in a panic?',
     kind: 'generic',
-    primaryCta: { label: 'Read ethics', href: '/en/ethics/' },
+    primaryCta: { label: 'Read the rules we follow', href: '/en/ethics/' },
     sections: [
-      { title: 'What RiskMeter is', body: 'An educational site for understanding drawdowns, market cycles, risk asymmetry, and portfolio discipline.' },
-      { title: 'What RiskMeter is not', body: 'It is not investment advice, financial advice, a trading system, or a recommendation to buy or sell any security.' },
-      { title: 'Important disclaimer', body: 'All outputs are simplified educational estimates. You are responsible for your own investment decisions.' }
+      { title: 'What RiskMeter is', body: 'A set of simple calculators and plain explanations for thinking about investment losses before they happen.' },
+      { title: 'What RiskMeter is not', body: 'It is not investment advice, a trading system, or a list of things to buy or sell.' },
+      { title: 'Important note', body: 'The numbers are simplified examples. Always make your own decision and consider your own situation.' }
     ]
   },
   {
     lang: 'zh',
     slug: 'about',
     title: '关于 - RiskMeter',
-    description: '关于 RiskMeter 的定位、边界与教育用途免责声明。',
+    description: '了解 RiskMeter 能做什么、不能做什么，以及理财小白该怎么用。',
     eyebrow: '关于',
-    headline: '一个风险优先的投资教育站。',
-    summary: 'RiskMeter 通过简单框架和本地优先工具，帮助投资者先思考风险，再讨论收益。',
+    headline: '投资前，先做一遍简单风险检查。',
+    summary: 'RiskMeter 帮理财小白先问清楚：可能亏多少、回本难不难、亏了以后最不该做什么。',
     kind: 'generic',
-    primaryCta: { label: '阅读伦理守则', href: '/zh/ethics/' },
+    primaryCta: { label: '看看工具边界', href: '/zh/ethics/' },
     sections: [
-      { title: 'RiskMeter 是什么', body: '一个用于理解回撤、市场周期、风险不对称与组合纪律的教育网站。' },
-      { title: 'RiskMeter 不是什么', body: '它不是投资建议、财务建议、交易系统，也不推荐买卖任何证券。' },
-      { title: '重要免责声明', body: '所有输出都是简化的教育估算。你需要为自己的投资决策负责。' }
+      { title: 'RiskMeter 是什么', body: '一组简单计算器和大白话说明，帮你在投资前先想清楚亏损风险。' },
+      { title: 'RiskMeter 不是什么', body: '它不是投资建议、交易系统，也不会告诉你买什么、卖什么。' },
+      { title: '重要提醒', body: '页面里的数字只是简化估算。真正做决定时，还要结合你自己的收入、支出和资金安排。' }
     ]
   },
   {
     lang: 'en',
     slug: 'ethics',
-    title: 'Ethics & Guardrails - RiskMeter',
-    description: 'RiskMeter public guardrails, sustainability approach, and supporter model.',
-    eyebrow: 'Guardrails',
-    headline: 'Clear boundaries are part of the product.',
-    summary: 'RiskMeter is built to educate, not to nudge users into trades or predictions.',
+    title: 'Rules We Follow - RiskMeter',
+    description: 'The simple rules RiskMeter follows: no predictions, no stock tips, and local-only inputs.',
+    eyebrow: 'Our rules',
+    headline: 'We keep the tool clear: no tips, no predictions.',
+    summary: 'RiskMeter is built to help you think, not to push you into a trade.',
     kind: 'generic',
-    primaryCta: { label: 'Contact support', href: '/en/support/' },
+    primaryCta: { label: 'Get help', href: '/en/support/' },
     sections: [
-      { title: 'What we do', body: 'We explain risk concepts, provide calculators, and make assumptions visible.' },
-      { title: 'What we will not do', body: 'We will not publish price targets, trading signals, or guaranteed return claims.' },
-      { title: 'Data & privacy', body: 'Tool inputs are stored locally in your browser unless you intentionally copy and share them.' },
-      { title: 'Feedback & accountability', body: 'Corrections, translation improvements, and clarity suggestions are welcome.' }
+      { title: 'What we do', body: 'We show simple risk numbers and explain what they mean in plain language.' },
+      { title: 'What we do not do', body: 'We do not give price targets, trading signals, or promises about future returns.' },
+      { title: 'Data & privacy', body: 'Your tool inputs stay in your browser unless you choose to copy and share them.' },
+      { title: 'Feedback', body: 'If something is unclear or too technical, it should be improved.' }
     ]
   },
   {
     lang: 'zh',
     slug: 'ethics',
-    title: '伦理与守则 - RiskMeter',
-    description: 'RiskMeter 的公开守则、可持续策略与支持者方案。',
-    eyebrow: '守则',
-    headline: '清晰边界也是产品的一部分。',
-    summary: 'RiskMeter 的目标是教育，而不是把用户推向交易或预测。',
+    title: '我们遵守的规则 - RiskMeter',
+    description: 'RiskMeter 的工具边界：不预测、不荐股，输入只保存在本地。',
+    eyebrow: '工具边界',
+    headline: '这个工具只帮你看风险，不给买卖建议。',
+    summary: 'RiskMeter 是帮你想清楚，不是催你交易。',
     kind: 'generic',
-    primaryCta: { label: '联系支持', href: '/zh/support/' },
+    primaryCta: { label: '查看怎么用', href: '/zh/support/' },
     sections: [
-      { title: '我们做什么', body: '解释风险概念、提供计算工具，并让假设可见。' },
-      { title: '我们不会做什么', body: '不发布价格目标、交易信号或收益保证。' },
-      { title: '数据与隐私', body: '工具输入默认只保存在浏览器本地，除非你主动复制分享。' },
-      { title: '反馈与责任', body: '欢迎提出修正、翻译和表达清晰度建议。' }
+      { title: '这个工具做什么', body: '用简单数字和大白话，帮你先看清可能亏多少。' },
+      { title: '这个工具不做什么', body: '不预测价格，不给交易信号，也不承诺收益。' },
+      { title: '数据与隐私', body: '你的输入默认只保存在浏览器本地，除非你主动复制分享。' },
+      { title: '反馈', body: '如果哪里看不懂、太专业，就应该继续改得更清楚。' }
     ]
   },
   {
     lang: 'en',
     slug: 'support',
-    title: 'Support & Education - RiskMeter',
-    description: 'How RiskMeter works, what to expect, local data notes, and feedback channels.',
-    eyebrow: 'Support',
-    headline: 'Use the tools with the right expectations.',
-    summary: 'RiskMeter keeps calculations simple and local so the educational boundaries stay clear.',
+    title: 'Help - RiskMeter',
+    description: 'How to use RiskMeter as a beginner and what the tool numbers mean.',
+    eyebrow: 'Help',
+    headline: 'How to use these tools without overthinking it.',
+    summary: 'Start with the loss test, then check recovery, room for more loss, and whether your holdings need adjustment.',
     kind: 'generic',
-    primaryCta: { label: 'Open glossary', href: '/en/risk-glossary/' },
+    primaryCta: { label: 'Explain the terms', href: '/en/risk-glossary/' },
     sections: [
-      { title: 'What to expect', body: 'Practical calculators, plain-language explanations, and bilingual navigation across the risk learning path.' },
-      { title: 'Local-only data', body: 'Inputs and feedback signals are stored in your browser. Clearing cache or changing devices can erase them.' },
-      { title: 'Limitations', body: 'The tools ignore taxes, fees, liquidity, cash flows, and path dependence. Treat results as a thinking aid.' }
+      { title: 'Where to start', body: 'If you are new, start with “how much loss can I handle?” before thinking about what to buy.' },
+      { title: 'Where your inputs go', body: 'Inputs stay in your browser. Clearing cache or changing devices can erase them.' },
+      { title: 'What the numbers do not include', body: 'The tools do not include taxes, fees, cash needs, or every detail of real investing. Treat them as a rough check.' }
     ]
   },
   {
     lang: 'zh',
     slug: 'support',
-    title: '支持与使用说明 - RiskMeter',
-    description: '了解 RiskMeter 的使用方式、本地数据说明与反馈渠道。',
-    eyebrow: '支持',
-    headline: '用正确预期使用这些工具。',
-    summary: 'RiskMeter 保持计算简单、本地优先，让教育边界更清楚。',
+    title: '使用帮助 - RiskMeter',
+    description: '理财小白如何使用 RiskMeter，以及页面里的数字大概代表什么。',
+    eyebrow: '帮助',
+    headline: '不用想太复杂，按顺序用就可以。',
+    summary: '先看自己能承受多少亏损，再看回本难度、还能跌多少、仓位要不要调。',
     kind: 'generic',
-    primaryCta: { label: '打开术语表', href: '/zh/risk-glossary/' },
+    primaryCta: { label: '看通俗解释', href: '/zh/risk-glossary/' },
     sections: [
-      { title: '你可以期待什么', body: '实用计算器、清晰解释，以及贯穿风险学习路径的双语导航。' },
-      { title: '本地数据说明', body: '输入与反馈信号保存在浏览器本地。清缓存或换设备可能会清空。' },
-      { title: '使用限制', body: '工具不纳入税费、流动性、现金流和路径依赖。请把结果当作思考辅助。' }
+      { title: '从哪里开始', body: '如果你是新手，先问“我能承受亏多少”，再去想买什么。' },
+      { title: '输入保存在哪里', body: '输入保存在浏览器本地。清缓存或换设备后，可能会消失。' },
+      { title: '这些数字不包含什么', body: '工具不包含税费、手续费、现金需求和真实投资里的所有细节。请把结果当作粗略检查。' }
     ]
   }
 ];
 
 const glossaryTerms = {
   en: [
-    ['drawdown', 'Drawdown', 'A decline from a portfolio peak to a later trough.'],
-    ['max-drawdown', 'Maximum drawdown', 'The largest peak-to-trough decline in a period.'],
-    ['recovery-time', 'Recovery time', 'The time needed to return from a drawdown to breakeven.'],
-    ['risk-asymmetry', 'Risk asymmetry', 'The gap between loss size and the gain needed to recover.'],
-    ['risk-budget', 'Risk budget', 'A defined amount of risk a portfolio or position is allowed to take.'],
-    ['position-sizing', 'Position sizing', 'Choosing how much capital to allocate to one exposure.'],
-    ['rebalancing', 'Rebalancing', 'Returning a portfolio toward its target allocation.'],
-    ['drift', 'Drift', 'The difference between current and target allocation.'],
-    ['rebalancing-band', 'Rebalancing band', 'A tolerance range that triggers a rebalance when crossed.'],
-    ['drawdown-capacity', 'Drawdown capacity', 'Remaining room before a portfolio reaches its max drawdown boundary.'],
-    ['sentiment', 'Sentiment', 'The crowd mood around risk, prices, and future expectations.'],
-    ['mean-reversion', 'Mean reversion', 'The tendency for extremes to move back toward a more normal range.']
+    ['drawdown', 'Drop from high', 'How far your account has fallen from its recent high.'],
+    ['max-drawdown', 'Biggest drop', 'The worst fall from high to low in the period you are checking.'],
+    ['recovery-time', 'Time to break even', 'How long it may take for the account to get back to where it started.'],
+    ['risk-asymmetry', 'Loss recovery gap', 'A loss needs a bigger percentage gain to get back to even.'],
+    ['risk-budget', 'Loss limit', 'The amount of loss you decide you can accept before investing.'],
+    ['position-sizing', 'Holding size', 'How much money you put into one fund, stock, or asset.'],
+    ['rebalancing', 'Adjusting holdings', 'Buying or selling a little to bring your holdings back near your plan.'],
+    ['drift', 'Off target', 'How far the current percentage is from the percentage you planned.'],
+    ['rebalancing-band', 'Adjustment trigger', 'The range you allow before you decide to adjust.'],
+    ['drawdown-capacity', 'Loss room', 'How much more loss your account can take before it reaches your limit.'],
+    ['sentiment', 'Market mood', 'Whether people feel scared, calm, or too excited about the market.'],
+    ['mean-reversion', 'Back toward normal', 'After something becomes extreme, it may move closer to a normal level.']
   ],
   zh: [
-    ['drawdown', '回撤', '组合从高点到之后低点的下跌幅度。'],
-    ['max-drawdown', '最大回撤', '某段时间内最大的高点到低点跌幅。'],
-    ['recovery-time', '恢复时间', '从回撤回到回本所需的时间。'],
-    ['risk-asymmetry', '风险不对称', '亏损幅度与回本所需涨幅之间的不对称。'],
-    ['risk-budget', '风险预算', '组合或仓位被允许承担的风险额度。'],
-    ['position-sizing', '仓位规模', '决定把多少资本放到一个风险敞口上。'],
-    ['rebalancing', '再平衡', '把组合重新调整回目标配置。'],
-    ['drift', '偏离', '当前配置与目标配置之间的差距。'],
-    ['rebalancing-band', '再平衡区间', '超过后触发再平衡的容忍范围。'],
-    ['drawdown-capacity', '回撤容量', '组合到达最大回撤边界前剩余的空间。'],
-    ['sentiment', '情绪', '市场群体对风险、价格和未来预期的心理状态。'],
-    ['mean-reversion', '均值回归', '极端状态向更正常范围回落的倾向。']
+    ['drawdown', '从高点跌了多少', '账户从最近高点跌下来多少。比如 10 万跌到 8 万，就是跌了 20%。'],
+    ['max-drawdown', '最大下跌', '你查看的这段时间里，最严重的一次从高点跌到低点。'],
+    ['recovery-time', '多久回本', '账户从亏损状态回到原来金额，大概要多久。'],
+    ['risk-asymmetry', '亏损和回本不对等', '亏 20% 后，需要涨 25% 才能回本，不是涨 20%。'],
+    ['risk-budget', '亏损上限', '投资前先想好：最多亏到什么程度我还能接受。'],
+    ['position-sizing', '持仓金额', '你把多少钱放在某个基金、股票或资产上。'],
+    ['rebalancing', '调整仓位', '某类资产涨太多或跌太多后，买一点或卖一点，让比例回到计划附近。'],
+    ['drift', '偏离目标', '现在的占比和你原计划的占比差了多少。'],
+    ['rebalancing-band', '调整触发线', '偏离超过这个范围，才考虑调整，避免频繁操作。'],
+    ['drawdown-capacity', '还能亏多少', '在到达你设定的亏损上限前，账户还剩多少缓冲。'],
+    ['sentiment', '市场情绪', '大家现在更害怕、更平静，还是更兴奋。'],
+    ['mean-reversion', '回到正常附近', '太热或太冷的状态，之后可能慢慢回到比较正常的位置。']
   ]
 };
 
 export const glossaryPages: RiskPage[] = (['en', 'zh'] as Lang[]).map((lang) => ({
   lang,
   slug: 'risk-glossary',
-  title: lang === 'en' ? 'Risk Glossary - RiskMeter' : '风险术语表 - RiskMeter',
+  title: lang === 'en' ? 'Plain Risk Terms - RiskMeter' : '风险名词解释 - RiskMeter',
   description: lang === 'en'
-    ? 'A concise glossary of core risk terms used across RiskMeter.'
-    : 'RiskMeter 使用的核心风险术语表。',
-  eyebrow: lang === 'en' ? 'Reference' : '参考',
-  headline: lang === 'en' ? 'A shared vocabulary for risk decisions.' : '为风险决策建立共同语言。',
+    ? 'Plain explanations of the risk terms used across RiskMeter.'
+    : '用大白话解释 RiskMeter 里常见的风险名词。',
+  eyebrow: lang === 'en' ? 'Plain terms' : '通俗解释',
+  headline: lang === 'en' ? 'Risk words, explained simply.' : '把风险名词说简单一点。',
   summary: lang === 'en'
-    ? 'Use these terms to connect the tools, guides, and portfolio process without mixing up risk appetite, capacity, and behavior.'
-    : '用这些术语把工具、指南和组合流程连接起来，避免混淆风险偏好、承受能力与行为。',
+    ? 'Use this page when a tool label feels unfamiliar. The goal is quick understanding, not textbook definitions.'
+    : '如果工具里有词看不懂，先来这里查一下。这里不写教材式定义，只讲你需要知道的大概意思。',
   kind: 'glossary',
-  primaryCta: { label: lang === 'en' ? 'Run the drawdown test' : '进行回撤测试', href: `/${lang}/drawdown-test/` },
+  primaryCta: { label: lang === 'en' ? 'Start with loss check' : '先看能亏多少', href: `/${lang}/drawdown-test/` },
   sections: [
     {
-      title: lang === 'en' ? 'Core terms' : '核心术语',
+      title: lang === 'en' ? 'Common words' : '常见说法',
       items: glossaryTerms[lang].map(([id, title, body]) => ({ id, title, body }))
     }
   ]
@@ -497,18 +497,18 @@ export function workflowSteps(lang: Lang) {
   const prefix = `/${lang}`;
   return lang === 'en'
     ? [
-      { slug: 'drawdown-test', label: 'Drawdown test', shortLabel: 'Test', href: `${prefix}/drawdown-test/`, body: 'Set the loss band you can live with.' },
-      { slug: 'drawdown-recovery', label: 'Recovery math', shortLabel: 'Recover', href: `${prefix}/drawdown-recovery/`, body: 'See the return needed to get back.' },
-      { slug: 'drawdown-capacity', label: 'Capacity check', shortLabel: 'Capacity', href: `${prefix}/drawdown-capacity/`, body: 'Translate account limits to positions.' },
-      { slug: 'rebalancing-planner', label: 'Rebalancing plan', shortLabel: 'Rebalance', href: `${prefix}/rebalancing-planner/`, body: 'Turn drift into a controlled action.' },
-      { slug: 'pendulum', label: 'Market pendulum', shortLabel: 'Pendulum', href: `${prefix}/pendulum/`, body: 'Adjust posture for market mood.' }
+      { slug: 'drawdown-test', label: 'Loss check', shortLabel: 'Loss', href: `${prefix}/drawdown-test/`, body: 'Check how much loss may feel too much.' },
+      { slug: 'drawdown-recovery', label: 'Break-even check', shortLabel: 'Recover', href: `${prefix}/drawdown-recovery/`, body: 'See how much it needs to rise to recover.' },
+      { slug: 'drawdown-capacity', label: 'More-loss room', shortLabel: 'Room', href: `${prefix}/drawdown-capacity/`, body: 'Check how much buffer is left.' },
+      { slug: 'rebalancing-planner', label: 'Adjustment check', shortLabel: 'Adjust', href: `${prefix}/rebalancing-planner/`, body: 'Decide whether to buy, sell, or wait.' },
+      { slug: 'pendulum', label: 'Market mood', shortLabel: 'Mood', href: `${prefix}/pendulum/`, body: 'Notice fear, calm, or excitement.' }
     ]
     : [
-      { slug: 'drawdown-test', label: '回撤测试', shortLabel: '测试', href: `${prefix}/drawdown-test/`, body: '先确定自己能承受的亏损区间。' },
-      { slug: 'drawdown-recovery', label: '恢复测算', shortLabel: '恢复', href: `${prefix}/drawdown-recovery/`, body: '看清回本需要多少收益。' },
-      { slug: 'drawdown-capacity', label: '容量检查', shortLabel: '容量', href: `${prefix}/drawdown-capacity/`, body: '把账户限制转成仓位余量。' },
-      { slug: 'rebalancing-planner', label: '再平衡计划', shortLabel: '再平衡', href: `${prefix}/rebalancing-planner/`, body: '把偏离变成可执行动作。' },
-      { slug: 'pendulum', label: '市场钟摆', shortLabel: '钟摆', href: `${prefix}/pendulum/`, body: '结合市场情绪调整风险姿态。' }
+      { slug: 'drawdown-test', label: '先看能亏多少', shortLabel: '亏多少', href: `${prefix}/drawdown-test/`, body: '先看下跌到什么程度会难受。' },
+      { slug: 'drawdown-recovery', label: '再看多久回本', shortLabel: '回本', href: `${prefix}/drawdown-recovery/`, body: '看亏了以后要涨多少才回本。' },
+      { slug: 'drawdown-capacity', label: '检查剩余缓冲', shortLabel: '缓冲', href: `${prefix}/drawdown-capacity/`, body: '看看离亏损上限还差多少。' },
+      { slug: 'rebalancing-planner', label: '决定要不要调仓', shortLabel: '调仓', href: `${prefix}/rebalancing-planner/`, body: '判断是买一点、卖一点，还是先不动。' },
+      { slug: 'pendulum', label: '看看市场情绪', shortLabel: '情绪', href: `${prefix}/pendulum/`, body: '提醒自己别太冲动，也别太慌。' }
     ];
 }
 
@@ -532,9 +532,9 @@ export function pageLabel(page: Pick<RiskPage, 'lang' | 'slug' | 'headline'>) {
     'drawdown-explained': { en: 'Drawdown guide', zh: '回撤指南' },
     'what-is-market-pendulum': { en: 'Pendulum theory', zh: '钟摆理论' },
     'market-pendulum-theory': { en: 'Pendulum theory', zh: '钟摆理论' },
-    'risk-glossary': { en: 'Risk glossary', zh: '风险术语表' },
+    'risk-glossary': { en: 'Plain risk terms', zh: '风险名词解释' },
     about: { en: 'About', zh: '关于' },
-    ethics: { en: 'Ethics', zh: '伦理守则' },
+    ethics: { en: 'Rules', zh: '工具边界' },
     support: { en: 'Support', zh: '支持' },
     sitemap: { en: 'Sitemap', zh: '站点地图' }
   };
@@ -547,7 +547,7 @@ export function breadcrumbs(page: RiskPage): NavLink[] {
   if (currentWorkflowIndex(page) >= 0) {
     return [
       ...base,
-      { label: page.lang === 'en' ? 'Risk workflow' : '风险流程', href: `/${page.lang}/drawdown-test/` },
+      { label: page.lang === 'en' ? 'Risk checks' : '风险检查', href: `/${page.lang}/drawdown-test/` },
       { label: pageLabel(page), href: pagePath(page) }
     ];
   }
@@ -563,14 +563,14 @@ export function contextualLinks(page: RiskPage): NavLink[] {
   if (currentWorkflowIndex(page) >= 0) {
     const next = nextWorkflowStep(page);
     const support = page.lang === 'en'
-      ? [{ label: 'Risk glossary', href: '/en/risk-glossary/' }, { label: 'Drawdown guide', href: '/en/drawdown-risk/' }]
-      : [{ label: '风险术语表', href: '/zh/risk-glossary/' }, { label: '回撤指南', href: '/zh/drawdown-explained/' }];
+      ? [{ label: 'Plain risk terms', href: '/en/risk-glossary/' }, { label: 'Why losses hurt', href: '/en/drawdown-risk/' }]
+      : [{ label: '风险名词解释', href: '/zh/risk-glossary/' }, { label: '为什么亏损难受', href: '/zh/drawdown-explained/' }];
     return dedupe([{ label: page.lang === 'en' ? `Next: ${next.label}` : `下一步：${next.label}`, href: next.href }, ...support]);
   }
   return dedupe([
     page.primaryCta,
     ...(page.secondaryCtas ?? []),
-    { label: page.lang === 'en' ? 'Start risk workflow' : '开始风险流程', href: `/${page.lang}/drawdown-test/` }
+    { label: page.lang === 'en' ? 'Start risk checks' : '开始风险检查', href: `/${page.lang}/drawdown-test/` }
   ].filter(Boolean) as NavLink[]);
 }
 
@@ -602,9 +602,9 @@ export function localizedText(lang: Lang) {
     home: lang === 'en' ? 'Home' : '首页',
     switchLanguage: lang === 'en' ? '中文' : 'EN',
     localOnly: lang === 'en'
-      ? 'Educational only. Tool inputs stay in your browser.'
-      : '仅作教育用途。工具输入保存在浏览器本地。',
-    related: lang === 'en' ? 'Continue the workflow' : '继续这个流程',
+      ? 'For risk checking only. Tool inputs stay in your browser.'
+      : '仅作风险检查参考。工具输入保存在浏览器本地。',
+    related: lang === 'en' ? 'Next checks' : '下一步检查',
     allPages: lang === 'en' ? 'All pages' : '所有页面',
     useful: lang === 'en' ? 'Was this useful?' : '这页有帮助吗？',
     yes: lang === 'en' ? 'Helpful' : '有帮助',

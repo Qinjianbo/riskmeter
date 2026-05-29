@@ -9,15 +9,15 @@ const zh = page.lang === 'zh';
   <div class="grid gap-6 lg:grid-cols-[420px_1fr]">
     <div class="risk-surface rounded-3xl p-6" data-recovery-tool>
       <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '测算' : 'Calculator'}</p>
-      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '恢复路径' : 'Recovery path'}</h2>
+      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '多久能回本' : 'Getting back to even'}</h2>
       <div class="mt-6 grid gap-5">
         <label class="grid gap-2">
-          <span class="tool-label"><span>{zh ? '回撤幅度' : 'Drawdown'}</span><strong data-rec-dd-label>35%</strong></span>
+          <span class="tool-label"><span>{zh ? '如果亏损' : 'If the loss is'}</span><strong data-rec-dd-label>35%</strong></span>
           <input class="w-full" data-rec-dd type="range" min="1" max="80" value="35" />
           <input class="tool-input" data-rec-dd-input type="number" min="1" max="99" value="35" />
         </label>
         <label class="grid gap-2">
-          <span class="tool-label"><span>{zh ? '组合规模' : 'Portfolio value'}</span></span>
+          <span class="tool-label"><span>{zh ? '账户金额' : 'Account value'}</span></span>
           <input class="tool-input" data-rec-portfolio type="number" min="0" step="1000" value="100000" />
         </label>
       </div>
@@ -49,7 +49,7 @@ const zh = page.lang === 'zh';
         return `<article class="rounded-3xl border border-black/10 bg-white p-6 shadow-soft">
           <div class="text-xs font-black uppercase tracking-[0.18em] text-muted">${years} ${zh ? '年' : years === 1 ? 'year' : 'years'}</div>
           <div class="mt-4 text-4xl font-black text-aqua">${annual.toFixed(1)}%</div>
-          <p class="mt-3 text-sm leading-7 text-muted">${zh ? `年化恢复需求；账面亏损约 ${fmtCurrency(loss)}。` : `Annualized recovery needed; paper loss about ${fmtCurrency(loss)}.`}</p>
+          <p class="mt-3 text-sm leading-7 text-muted">${zh ? `如果想在 ${years} 年回本，每年大概要涨这么多；可能亏掉约 ${fmtCurrency(loss)}。` : `To break even in ${years} ${years === 1 ? 'year' : 'years'}, it needs about this much per year. Possible loss: ${fmtCurrency(loss)}.`}</p>
         </article>`;
       }).join('');
     };

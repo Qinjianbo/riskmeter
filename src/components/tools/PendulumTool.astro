@@ -8,15 +8,15 @@ const zh = page.lang === 'zh';
 <section class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
   <div class="grid gap-6 lg:grid-cols-[.9fr_1.1fr]" data-pendulum-tool>
     <div class="risk-surface rounded-3xl p-6">
-      <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '情绪位置' : 'Sentiment position'}</p>
-      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '放置钟摆' : 'Place the pendulum'}</h2>
+      <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '市场情绪' : 'Market mood'}</p>
+      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '现在偏冷还是偏热' : 'Cold, calm, or hot?'}</h2>
       <div class="mt-6 grid gap-5">
         <label class="grid gap-2">
-          <span class="tool-label"><span>{zh ? '恐惧 ← → 亢奋' : 'Fear ← → Euphoria'}</span><strong data-pendulum-label>0</strong></span>
+          <span class="tool-label"><span>{zh ? '害怕 ← → 过热' : 'Fear ← → Too excited'}</span><strong data-pendulum-label>0</strong></span>
           <input class="w-full" data-pendulum-pos type="range" min="-100" max="100" value="0" />
         </label>
         <label class="grid gap-2">
-          <span class="tool-label"><span>{zh ? '纪律强度' : 'Process discipline'}</span><strong data-pendulum-spring-label>120</strong></span>
+          <span class="tool-label"><span>{zh ? '按计划执行的程度' : 'Plan discipline'}</span><strong data-pendulum-spring-label>120</strong></span>
           <input class="w-full" data-pendulum-spring type="range" min="40" max="200" value="120" />
         </label>
       </div>
@@ -28,8 +28,8 @@ const zh = page.lang === 'zh';
       </div>
       <div class="mt-6 grid gap-4 sm:grid-cols-3">
         <div><div class="text-sm text-white/60">{zh ? '状态' : 'State'}</div><div class="mt-1 text-2xl font-black" data-pendulum-state></div></div>
-        <div><div class="text-sm text-white/60">{zh ? '风险姿态' : 'Risk posture'}</div><div class="mt-1 text-2xl font-black text-aqua" data-pendulum-posture></div></div>
-        <div><div class="text-sm text-white/60">{zh ? '动作' : 'Action'}</div><div class="mt-1 text-2xl font-black text-amber" data-pendulum-action></div></div>
+        <div><div class="text-sm text-white/60">{zh ? '我该小心什么' : 'What to watch'}</div><div class="mt-1 text-2xl font-black text-aqua" data-pendulum-posture></div></div>
+        <div><div class="text-sm text-white/60">{zh ? '下一步' : 'Next step'}</div><div class="mt-1 text-2xl font-black text-amber" data-pendulum-action></div></div>
       </div>
     </div>
   </div>
@@ -50,9 +50,9 @@ const zh = page.lang === 'zh';
       root.querySelector('[data-pendulum-orb]').style.left = `${50 + value * 0.38}%`;
       const euphoric = value > 35;
       const fearful = value < -35;
-      root.querySelector('[data-pendulum-state]').textContent = euphoric ? (zh ? '偏亢奋' : 'Euphoric') : fearful ? (zh ? '偏恐惧' : 'Fearful') : (zh ? '接近平衡' : 'Balanced');
-      root.querySelector('[data-pendulum-posture]').textContent = euphoric ? (zh ? '降低脆弱性' : 'Reduce fragility') : fearful ? (zh ? '寻找安全边际' : 'Seek margin') : (zh ? '维持流程' : 'Stay process-led');
-      root.querySelector('[data-pendulum-action]').textContent = discipline > 130 ? (zh ? '按区间执行' : 'Use bands') : (zh ? '先写计划' : 'Write the plan');
+      root.querySelector('[data-pendulum-state]').textContent = euphoric ? (zh ? '偏热' : 'Hot') : fearful ? (zh ? '偏冷' : 'Cold') : (zh ? '比较平静' : 'Calm');
+      root.querySelector('[data-pendulum-posture]').textContent = euphoric ? (zh ? '别追太急' : 'Do not chase') : fearful ? (zh ? '别慌着卖' : 'Do not panic sell') : (zh ? '按计划来' : 'Follow the plan');
+      root.querySelector('[data-pendulum-action]').textContent = discipline > 130 ? (zh ? '按范围执行' : 'Use your range') : (zh ? '先写下来' : 'Write it down');
       localStorage.setItem(key, JSON.stringify({ pos: value, spring: discipline }));
     };
     try {

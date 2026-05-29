@@ -15,24 +15,24 @@ const zh = page.lang === 'zh';
       <div class="flex flex-col items-start justify-between gap-4 sm:flex-row">
         <div>
           <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '输入' : 'Inputs'}</p>
-          <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '回撤承受度' : 'Drawdown tolerance'}</h2>
+          <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '先看能亏多少' : 'Check possible loss'}</h2>
         </div>
         <button type="button" class="rounded-2xl border border-black/10 px-4 py-2 text-sm font-black" data-dd-clear>{zh ? '清空' : 'Clear'}</button>
       </div>
 
       <div class="mt-6 grid gap-5">
         <label class="grid gap-2">
-          <span class="tool-label"><span>{zh ? '当前/假设回撤' : 'Current or assumed drawdown'}</span><strong data-dd-label>25%</strong></span>
+          <span class="tool-label"><span>{zh ? '如果下跌' : 'If it drops by'}</span><strong data-dd-label>25%</strong></span>
           <input class="w-full" data-dd-range type="range" min="0" max="80" step="1" value="25" />
           <input class="tool-input" data-dd-input type="number" min="0" max="99" step="1" value="25" />
         </label>
         <label class="grid gap-2">
-          <span class="tool-label"><span>{zh ? '组合规模' : 'Portfolio value'}</span></span>
+          <span class="tool-label"><span>{zh ? '账户金额' : 'Account value'}</span></span>
           <input class="tool-input" data-portfolio type="number" min="0" step="1000" value="100000" />
         </label>
         <label class="grid gap-2">
-          <span class="tool-label"><span>{zh ? '情景笔记' : 'Scenario note'}</span><span>{zh ? '最多 40 字' : '40 chars max'}</span></span>
-          <input class="tool-input" data-note maxlength="40" placeholder={zh ? '例如：如果科技仓位下跌' : 'Example: if tech sleeve falls'} />
+          <span class="tool-label"><span>{zh ? '简单备注' : 'Quick note'}</span><span>{zh ? '最多 40 字' : '40 chars max'}</span></span>
+          <input class="tool-input" data-note maxlength="40" placeholder={zh ? '例如：基金继续跌' : 'Example: fund keeps falling'} />
         </label>
         <button type="button" class="focus-ring rounded-2xl bg-ink px-5 py-3 text-sm font-black text-white" data-save-scenario>{zh ? '保存情景' : 'Save scenario'}</button>
       </div>
@@ -43,22 +43,22 @@ const zh = page.lang === 'zh';
         <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '结果' : 'Result'}</p>
         <div class="mt-5 grid gap-4 sm:grid-cols-3">
           <div>
-            <div class="text-sm text-white/60">{zh ? '风险档位' : 'Band'}</div>
+            <div class="text-sm text-white/60">{zh ? '风险等级' : 'Risk level'}</div>
             <div class="mt-1 text-2xl font-black" data-dd-band>Moderate</div>
           </div>
           <div>
-            <div class="text-sm text-white/60">{zh ? '账面亏损' : 'Loss'}</div>
+            <div class="text-sm text-white/60">{zh ? '可能亏掉' : 'Possible loss'}</div>
             <div class="mt-1 text-2xl font-black text-ember" data-dd-loss>-$25,000</div>
           </div>
           <div>
-            <div class="text-sm text-white/60">{zh ? '回本所需涨幅' : 'Recovery gain'}</div>
+            <div class="text-sm text-white/60">{zh ? '回本要涨' : 'Rise to break even'}</div>
             <div class="mt-1 text-2xl font-black text-aqua" data-dd-recovery>33.3%</div>
           </div>
         </div>
         <p class="mt-5 text-sm leading-7 text-white/70" data-dd-summary></p>
       </div>
       <div class="rounded-3xl border border-black/10 bg-white p-6 shadow-soft">
-        <h2 class="text-xl font-black text-ink">{zh ? '保存的情景' : 'Saved scenarios'}</h2>
+        <h2 class="text-xl font-black text-ink">{zh ? '保存的假设' : 'Saved what-ifs'}</h2>
         <div class="mt-4 grid gap-3" data-scenarios></div>
       </div>
     </div>
@@ -73,8 +73,8 @@ const zh = page.lang === 'zh';
     const scenariosKey = 'rm_drawdown_scenarios';
     const fmtCurrency = (value) => new Intl.NumberFormat(zh ? 'zh-CN' : 'en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(value || 0);
     const bands = zh
-      ? [[10, '极低'], [15, '低'], [25, '中等'], [35, '高'], [100, '极高']]
-      : [[10, 'Very low'], [15, 'Low'], [25, 'Moderate'], [35, 'High'], [100, 'Very high']];
+      ? [[10, '很低'], [15, '偏低'], [25, '中等'], [35, '偏高'], [100, '很高']]
+      : [[10, 'Very low'], [15, 'Low'], [25, 'Medium'], [35, 'High'], [100, 'Very high']];
     const el = {
       range: document.querySelector('[data-dd-range]'),
       input: document.querySelector('[data-dd-input]'),
@@ -119,8 +119,8 @@ const zh = page.lang === 'zh';
       el.loss.textContent = state.portfolio > 0 ? `-${fmtCurrency(state.portfolio * state.drawdown / 100)}` : '—';
       el.recovery.textContent = `${recovery(state.drawdown).toFixed(1)}%`;
       el.summary.textContent = zh
-        ? `${state.drawdown}% 回撤属于「${bandFor(state.drawdown)}」档，回本需要约 ${recovery(state.drawdown).toFixed(1)}% 的涨幅。`
-        : `${state.drawdown}% drawdown is in the ${bandFor(state.drawdown)} band and needs about ${recovery(state.drawdown).toFixed(1)}% to recover.`;
+        ? `如果下跌 ${state.drawdown}%，风险等级是「${bandFor(state.drawdown)}」，之后大约要涨 ${recovery(state.drawdown).toFixed(1)}% 才能回本。`
+        : `If it drops ${state.drawdown}%, the risk level is ${bandFor(state.drawdown)} and it needs about ${recovery(state.drawdown).toFixed(1)}% to break even.`;
       save();
     };
     try {

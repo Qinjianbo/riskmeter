@@ -8,22 +8,22 @@ const zh = page.lang === 'zh';
 <section class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
   <div class="grid gap-6 lg:grid-cols-[1fr_1fr]" data-rebalance-tool>
     <div class="risk-surface rounded-3xl p-6">
-      <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '计划输入' : 'Planner inputs'}</p>
-      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '目标与偏离' : 'Target and drift'}</h2>
+      <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '输入' : 'Inputs'}</p>
+      <h2 class="mt-2 text-2xl font-black text-ink">{zh ? '要不要调仓' : 'Should you adjust?'}</h2>
       <div class="mt-6 grid gap-4 sm:grid-cols-2">
-        <label class="grid gap-2"><span class="tool-label">{zh ? '组合规模' : 'Portfolio value'}</span><input class="tool-input" data-rb-portfolio type="number" value="100000" /></label>
-        <label class="grid gap-2"><span class="tool-label">{zh ? '目标权重 %' : 'Target weight %'}</span><input class="tool-input" data-rb-target type="number" value="40" /></label>
-        <label class="grid gap-2"><span class="tool-label">{zh ? '当前权重 %' : 'Current weight %'}</span><input class="tool-input" data-rb-current type="number" value="48" /></label>
-        <label class="grid gap-2"><span class="tool-label">{zh ? '再平衡区间 %' : 'Rebalance band %'}</span><input class="tool-input" data-rb-band type="number" value="5" /></label>
+        <label class="grid gap-2"><span class="tool-label">{zh ? '账户金额' : 'Account value'}</span><input class="tool-input" data-rb-portfolio type="number" value="100000" /></label>
+        <label class="grid gap-2"><span class="tool-label">{zh ? '目标占比 %' : 'Target share %'}</span><input class="tool-input" data-rb-target type="number" value="40" /></label>
+        <label class="grid gap-2"><span class="tool-label">{zh ? '现在占比 %' : 'Current share %'}</span><input class="tool-input" data-rb-current type="number" value="48" /></label>
+        <label class="grid gap-2"><span class="tool-label">{zh ? '超过多少才调整 %' : 'Adjust after %'}</span><input class="tool-input" data-rb-band type="number" value="5" /></label>
       </div>
-      <button type="button" class="mt-5 rounded-2xl border border-black/10 px-4 py-2 text-sm font-black" data-rb-clear>{zh ? '清空本地保存' : 'Clear saved plan'}</button>
+      <button type="button" class="mt-5 rounded-2xl border border-black/10 px-4 py-2 text-sm font-black" data-rb-clear>{zh ? '清空保存' : 'Clear saved values'}</button>
     </div>
     <div class="rounded-3xl bg-ink p-6 text-white shadow-soft">
       <p class="text-xs font-black uppercase tracking-[0.2em] text-aqua">{zh ? '建议' : 'Guidance'}</p>
       <div class="mt-6">
-        <div class="text-sm text-white/60">{zh ? '偏离' : 'Drift'}</div>
+        <div class="text-sm text-white/60">{zh ? '差了多少' : 'Difference'}</div>
         <div class="mt-1 text-4xl font-black" data-rb-drift></div>
-        <div class="mt-6 text-sm text-white/60">{zh ? '建议交易' : 'Suggested trade'}</div>
+        <div class="mt-6 text-sm text-white/60">{zh ? '建议动作' : 'Suggested action'}</div>
         <div class="mt-1 text-3xl font-black text-aqua" data-rb-trade></div>
         <p class="mt-5 text-sm leading-7 text-white/70" data-rb-note></p>
       </div>
@@ -49,8 +49,8 @@ const zh = page.lang === 'zh';
       q('[data-rb-drift]').textContent = `${drift > 0 ? '+' : ''}${drift.toFixed(1)}%`;
       q('[data-rb-trade]').textContent = Math.abs(drift) >= band ? `${drift > 0 ? (zh ? '卖出 ' : 'Sell ') : (zh ? '买入 ' : 'Buy ')}${fmt(trade)}` : (zh ? '无需交易' : 'No trade');
       q('[data-rb-note]').textContent = Math.abs(drift) >= band
-        ? (zh ? '偏离已超过区间。先确认税费、流动性与交易成本，再执行。' : 'Drift crossed the band. Check taxes, liquidity, and transaction costs before acting.')
-        : (zh ? '偏离仍在区间内。记录观察，避免为了微小偏离频繁交易。' : 'Drift remains inside the band. Monitor instead of trading small noise.');
+        ? (zh ? '差距已经超过你设定的范围。真正操作前，先看清手续费、税费和能不能顺利卖出。' : 'The difference is outside your range. Before acting, check fees, taxes, and whether you can trade smoothly.')
+        : (zh ? '差距还在你设定的范围内。先记录观察，避免因为一点点变化频繁操作。' : 'The difference is still inside your range. Keep watching instead of trading every small move.');
       localStorage.setItem(key, JSON.stringify({ portfolio, target, current, band }));
     };
     try {
