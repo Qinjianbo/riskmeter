@@ -6,6 +6,7 @@ auto-run.log
 .DS_Store
 config.yaml
 Thumbs.db
+tools/codex-scripts/
 
 # Editor settings
 .idea/
