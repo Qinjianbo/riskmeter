@@ -1,5 +1,6 @@
 ---
 import type { RiskPage } from '../data/site';
+import { currentWorkflowIndex } from '../data/site';
 import Breadcrumbs from './Breadcrumbs.astro';
 import Feedback from './Feedback.astro';
 import SectionRenderer from './SectionRenderer.astro';
@@ -19,6 +20,7 @@ const { page } = Astro.props;
 ---
 
 <Breadcrumbs page={page} />
+{currentWorkflowIndex(page) >= 0 && <Workflow page={page} />}
 {page.kind === 'drawdown-test' && <DrawdownTest page={page} />}
 {page.kind === 'drawdown-recovery' && <DrawdownRecovery page={page} />}
 {page.kind === 'drawdown-capacity' && <DrawdownCapacity page={page} />}
@@ -26,5 +28,5 @@ const { page } = Astro.props;
 {page.kind === 'pendulum' && <PendulumTool page={page} />}
 {page.kind === 'sitemap' && <SitemapList page={page} />}
 {page.kind !== 'sitemap' && <SectionRenderer page={page} />}
-<Workflow page={page} />
+{currentWorkflowIndex(page) < 0 && <Workflow page={page} />}
 {page.kind !== 'home' && <Feedback page={page} />}
