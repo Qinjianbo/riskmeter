@@ -1,11 +1,16 @@
 ---
 import type { RiskPage } from '../data/site';
+import { contextualLinks, pagePath } from '../data/site';
 
 interface Props {
   page: RiskPage;
 }
 
 const { page } = Astro.props;
+const currentPath = pagePath(page);
+const secondary = page.kind === 'home'
+  ? (page.secondaryCtas ?? []).filter((cta) => cta.href !== currentPath).slice(0, 2)
+  : contextualLinks(page).filter((cta) => cta.href !== page.primaryCta?.href).slice(0, 1);
 ---
 
 <section class="relative overflow-hidden border-b border-black/10 bg-ink text-white">
@@ -24,7 +29,7 @@ const { page } = Astro.props;
         {page.primaryCta && (
           <a class="focus-ring w-full rounded-2xl bg-aqua px-5 py-3 text-center text-sm font-black text-ink shadow-lg shadow-aqua/20 hover:bg-white sm:w-auto" href={page.primaryCta.href}>{page.primaryCta.label}</a>
         )}
-        {page.secondaryCtas?.slice(0, 2).map((cta) => (
+        {secondary.map((cta) => (
           <a class="focus-ring w-full rounded-2xl border border-white/15 bg-white/10 px-5 py-3 text-center text-sm font-black text-white hover:bg-white/18 sm:w-auto" href={cta.href}>{cta.label}</a>
         ))}
       </div>

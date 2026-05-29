@@ -1,5 +1,6 @@
 ---
 import type { RiskPage } from '../data/site';
+import Breadcrumbs from './Breadcrumbs.astro';
 import Feedback from './Feedback.astro';
 import SectionRenderer from './SectionRenderer.astro';
 import SitemapList from './SitemapList.astro';
@@ -17,6 +18,7 @@ interface Props {
 const { page } = Astro.props;
 ---
 
+<Breadcrumbs page={page} />
 {page.kind === 'drawdown-test' && <DrawdownTest page={page} />}
 {page.kind === 'drawdown-recovery' && <DrawdownRecovery page={page} />}
 {page.kind === 'drawdown-capacity' && <DrawdownCapacity page={page} />}

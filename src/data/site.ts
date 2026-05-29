@@ -33,6 +33,7 @@ export type RiskPage = {
 };
 
 const host = 'https://riskmeter.app';
+type NavLink = { label: string; href: string };
 
 export const languages: Record<Lang, { label: string; switchLabel: string }> = {
   en: { label: 'English', switchLabel: '中文' },
@@ -41,12 +42,14 @@ export const languages: Record<Lang, { label: string; switchLabel: string }> = {
 
 export const nav: Record<Lang, { label: string; href: string }[]> = {
   en: [
+    { label: 'Home', href: '/en/' },
     { label: 'Tools', href: '/en/drawdown-test/' },
     { label: 'Pendulum', href: '/en/pendulum/' },
     { label: 'Glossary', href: '/en/risk-glossary/' },
     { label: 'Support', href: '/en/support/' }
   ],
   zh: [
+    { label: '首页', href: '/zh/' },
     { label: '工具', href: '/zh/drawdown-test/' },
     { label: '钟摆', href: '/zh/pendulum/' },
     { label: '术语表', href: '/zh/risk-glossary/' },
@@ -72,18 +75,10 @@ export const pairedSlugs: Record<string, string> = {
   'market-pendulum-theory': 'what-is-market-pendulum'
 };
 
-const toolCtas = {
-  en: [
-    { label: 'Drawdown Test', href: '/en/drawdown-test/' },
-    { label: 'Recovery Scenarios', href: '/en/drawdown-recovery/' },
-    { label: 'Rebalancing Planner', href: '/en/rebalancing-planner/' }
-  ],
-  zh: [
-    { label: '回撤测试', href: '/zh/drawdown-test/' },
-    { label: '恢复情景', href: '/zh/drawdown-recovery/' },
-    { label: '再平衡计划器', href: '/zh/rebalancing-planner/' }
-  ]
-};
+const toolCtas = (lang: Lang, currentSlug = '') => workflowSteps(lang)
+  .filter((item) => item.slug !== currentSlug)
+  .slice(0, 3)
+  .map(({ label, href }) => ({ label, href }));
 
 export const pages: RiskPage[] = [
   {
@@ -136,7 +131,7 @@ export const pages: RiskPage[] = [
     summary: 'Move from abstract risk appetite to visible loss, recovery percentage, notes, and saved local scenarios.',
     kind: 'drawdown-test',
     primaryCta: { label: 'Open recovery scenarios', href: '/en/drawdown-recovery/' },
-    secondaryCtas: toolCtas.en,
+    secondaryCtas: toolCtas('en', 'drawdown-test'),
     metrics: [
       { label: 'Bands', value: '5', tone: 'aqua' },
       { label: 'Saved scenarios', value: '3', tone: 'leaf' },
@@ -153,7 +148,7 @@ export const pages: RiskPage[] = [
     summary: '把抽象的风险偏好转换成可见亏损、恢复涨幅、本地笔记和可复用情景。',
     kind: 'drawdown-test',
     primaryCta: { label: '打开恢复情景', href: '/zh/drawdown-recovery/' },
-    secondaryCtas: toolCtas.zh,
+    secondaryCtas: toolCtas('zh', 'drawdown-test'),
     metrics: [
       { label: '风险档位', value: '5', tone: 'aqua' },
       { label: '保存情景', value: '3', tone: 'leaf' },
@@ -170,7 +165,7 @@ export const pages: RiskPage[] = [
     summary: 'Drawdowns are nonlinear. This tool turns a loss percentage into breakeven return and annualized recovery paths.',
     kind: 'drawdown-recovery',
     primaryCta: { label: 'Check drawdown capacity', href: '/en/drawdown-capacity/' },
-    secondaryCtas: toolCtas.en
+    secondaryCtas: toolCtas('en', 'drawdown-recovery')
   },
   {
     lang: 'zh',
@@ -182,7 +177,7 @@ export const pages: RiskPage[] = [
     summary: '回撤不是线性的。这个工具会把亏损比例转换成回本涨幅和不同年限下的年化恢复路径。',
     kind: 'drawdown-recovery',
     primaryCta: { label: '检查回撤容量', href: '/zh/drawdown-capacity/' },
-    secondaryCtas: toolCtas.zh
+    secondaryCtas: toolCtas('zh', 'drawdown-recovery')
   },
   {
     lang: 'en',
@@ -194,7 +189,7 @@ export const pages: RiskPage[] = [
     summary: 'Combine account size, position size, current drawdown, and max drawdown to estimate remaining capacity.',
     kind: 'drawdown-capacity',
     primaryCta: { label: 'Plan rebalancing', href: '/en/rebalancing-planner/' },
-    secondaryCtas: toolCtas.en
+    secondaryCtas: toolCtas('en', 'drawdown-capacity')
   },
   {
     lang: 'zh',
@@ -206,7 +201,7 @@ export const pages: RiskPage[] = [
     summary: '结合账户规模、仓位规模、当前回撤与最大回撤，估算剩余承受空间。',
     kind: 'drawdown-capacity',
     primaryCta: { label: '规划再平衡', href: '/zh/rebalancing-planner/' },
-    secondaryCtas: toolCtas.zh
+    secondaryCtas: toolCtas('zh', 'drawdown-capacity')
   },
   {
     lang: 'en',
@@ -218,7 +213,7 @@ export const pages: RiskPage[] = [
     summary: 'Enter target weight, current weight, portfolio value, and band width to get a suggested trade and process note.',
     kind: 'rebalancing-planner',
     primaryCta: { label: 'Sense cycle risk', href: '/en/pendulum/' },
-    secondaryCtas: toolCtas.en
+    secondaryCtas: toolCtas('en', 'rebalancing-planner')
   },
   {
     lang: 'zh',
@@ -230,7 +225,7 @@ export const pages: RiskPage[] = [
     summary: '输入目标权重、当前权重、组合规模和区间宽度，得到建议交易金额与流程提示。',
     kind: 'rebalancing-planner',
     primaryCta: { label: '感知周期风险', href: '/zh/pendulum/' },
-    secondaryCtas: toolCtas.zh
+    secondaryCtas: toolCtas('zh', 'rebalancing-planner')
   },
   {
     lang: 'en',
@@ -242,7 +237,7 @@ export const pages: RiskPage[] = [
     summary: 'Place the pendulum between fear and euphoria, then translate that reading into risk posture and rebalancing discipline.',
     kind: 'pendulum',
     primaryCta: { label: 'Read the theory', href: '/en/what-is-market-pendulum/' },
-    secondaryCtas: toolCtas.en
+    secondaryCtas: toolCtas('en', 'pendulum')
   },
   {
     lang: 'zh',
@@ -254,7 +249,7 @@ export const pages: RiskPage[] = [
     summary: '把钟摆放在恐惧与亢奋之间，再把读数转换成风险姿态与再平衡纪律。',
     kind: 'pendulum',
     primaryCta: { label: '阅读理论说明', href: '/zh/market-pendulum-theory/' },
-    secondaryCtas: toolCtas.zh
+    secondaryCtas: toolCtas('zh', 'pendulum')
   }
 ];
 
@@ -518,6 +513,87 @@ export const sitemapPages: RiskPage[] = (['en', 'zh'] as Lang[]).map((lang) => (
 }));
 
 export const allPages = [...pages, ...guidePages, ...supportPages, ...glossaryPages, ...sitemapPages];
+
+export function workflowSteps(lang: Lang) {
+  const prefix = `/${lang}`;
+  return lang === 'en'
+    ? [
+      { slug: 'drawdown-test', label: 'Drawdown test', shortLabel: 'Test', href: `${prefix}/drawdown-test/`, body: 'Set the loss band you can live with.' },
+      { slug: 'drawdown-recovery', label: 'Recovery math', shortLabel: 'Recover', href: `${prefix}/drawdown-recovery/`, body: 'See the return needed to get back.' },
+      { slug: 'drawdown-capacity', label: 'Capacity check', shortLabel: 'Capacity', href: `${prefix}/drawdown-capacity/`, body: 'Translate account limits to positions.' },
+      { slug: 'rebalancing-planner', label: 'Rebalancing plan', shortLabel: 'Rebalance', href: `${prefix}/rebalancing-planner/`, body: 'Turn drift into a controlled action.' },
+      { slug: 'pendulum', label: 'Market pendulum', shortLabel: 'Pendulum', href: `${prefix}/pendulum/`, body: 'Adjust posture for market mood.' }
+    ]
+    : [
+      { slug: 'drawdown-test', label: '回撤测试', shortLabel: '测试', href: `${prefix}/drawdown-test/`, body: '先确定自己能承受的亏损区间。' },
+      { slug: 'drawdown-recovery', label: '恢复测算', shortLabel: '恢复', href: `${prefix}/drawdown-recovery/`, body: '看清回本需要多少收益。' },
+      { slug: 'drawdown-capacity', label: '容量检查', shortLabel: '容量', href: `${prefix}/drawdown-capacity/`, body: '把账户限制转成仓位余量。' },
+      { slug: 'rebalancing-planner', label: '再平衡计划', shortLabel: '再平衡', href: `${prefix}/rebalancing-planner/`, body: '把偏离变成可执行动作。' },
+      { slug: 'pendulum', label: '市场钟摆', shortLabel: '钟摆', href: `${prefix}/pendulum/`, body: '结合市场情绪调整风险姿态。' }
+    ];
+}
+
+export function currentWorkflowIndex(page: RiskPage) {
+  return workflowSteps(page.lang).findIndex((step) => step.slug === page.slug);
+}
+
+export function nextWorkflowStep(page: RiskPage) {
+  const steps = workflowSteps(page.lang);
+  const index = currentWorkflowIndex(page);
+  if (index < 0) return steps[0];
+  return steps[index + 1] ?? steps[0];
+}
+
+export function pageLabel(page: Pick<RiskPage, 'lang' | 'slug' | 'headline'>) {
+  const workflow = workflowSteps(page.lang).find((step) => step.slug === page.slug);
+  if (workflow) return workflow.label;
+  if (!page.slug) return page.lang === 'en' ? 'Home' : '首页';
+  const labels: Record<string, Record<Lang, string>> = {
+    'drawdown-risk': { en: 'Drawdown guide', zh: '回撤指南' },
+    'drawdown-explained': { en: 'Drawdown guide', zh: '回撤指南' },
+    'what-is-market-pendulum': { en: 'Pendulum theory', zh: '钟摆理论' },
+    'market-pendulum-theory': { en: 'Pendulum theory', zh: '钟摆理论' },
+    'risk-glossary': { en: 'Risk glossary', zh: '风险术语表' },
+    about: { en: 'About', zh: '关于' },
+    ethics: { en: 'Ethics', zh: '伦理守则' },
+    support: { en: 'Support', zh: '支持' },
+    sitemap: { en: 'Sitemap', zh: '站点地图' }
+  };
+  return labels[page.slug]?.[page.lang] ?? page.headline;
+}
+
+export function breadcrumbs(page: RiskPage): NavLink[] {
+  if (!page.slug) return [];
+  const base = [{ label: page.lang === 'en' ? 'Home' : '首页', href: `/${page.lang}/` }];
+  if (currentWorkflowIndex(page) >= 0) {
+    return [
+      ...base,
+      { label: page.lang === 'en' ? 'Risk workflow' : '风险流程', href: `/${page.lang}/drawdown-test/` },
+      { label: pageLabel(page), href: pagePath(page) }
+    ];
+  }
+  return [...base, { label: pageLabel(page), href: pagePath(page) }];
+}
+
+export function contextualLinks(page: RiskPage): NavLink[] {
+  const path = pagePath(page);
+  const dedupe = (items: NavLink[]) => {
+    const seen = new Set<string>();
+    return items.filter((item) => item.href !== path && !seen.has(item.href) && seen.add(item.href));
+  };
+  if (currentWorkflowIndex(page) >= 0) {
+    const next = nextWorkflowStep(page);
+    const support = page.lang === 'en'
+      ? [{ label: 'Risk glossary', href: '/en/risk-glossary/' }, { label: 'Drawdown guide', href: '/en/drawdown-risk/' }]
+      : [{ label: '风险术语表', href: '/zh/risk-glossary/' }, { label: '回撤指南', href: '/zh/drawdown-explained/' }];
+    return dedupe([{ label: page.lang === 'en' ? `Next: ${next.label}` : `下一步：${next.label}`, href: next.href }, ...support]);
+  }
+  return dedupe([
+    page.primaryCta,
+    ...(page.secondaryCtas ?? []),
+    { label: page.lang === 'en' ? 'Start risk workflow' : '开始风险流程', href: `/${page.lang}/drawdown-test/` }
+  ].filter(Boolean) as NavLink[]);
+}
 
 export function pagePath(page: Pick<RiskPage, 'lang' | 'slug'>) {
   return `/${page.lang}/${page.slug ? `${page.slug}/` : ''}`;

@@ -1,5 +1,5 @@
 ---
-import { localizedText, type RiskPage } from '../data/site';
+import { contextualLinks, currentWorkflowIndex, localizedText, workflowSteps, type RiskPage } from '../data/site';
 
 interface Props {
   page: RiskPage;
@@ -7,16 +7,23 @@ interface Props {
 
 const { page } = Astro.props;
 const t = localizedText(page.lang);
-const items = page.secondaryCtas ?? [];
+const steps = workflowSteps(page.lang);
+const currentIndex = currentWorkflowIndex(page);
+const items = contextualLinks(page);
+const isWorkflow = currentIndex >= 0;
 ---
 
-{items.length ? (
-  <section class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
-    <div class="rounded-3xl bg-ink p-6 text-white sm:p-8">
+<section id="workflow" class="mx-auto mt-12 max-w-7xl px-4 sm:px-6">
+  <div class="rounded-3xl bg-ink p-6 text-white sm:p-8">
+    <div class="flex flex-col gap-8">
       <div class="flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
         <div>
           <p class="text-xs font-black uppercase tracking-[0.22em] text-aqua">{t.related}</p>
-          <h2 class="mt-2 text-2xl font-black">{page.lang === 'en' ? 'Next steps that keep the same risk language.' : '继续使用同一套风险语言。'}</h2>
+          <h2 class="mt-2 text-2xl font-black">
+            {isWorkflow
+              ? page.lang === 'en' ? `Step ${currentIndex + 1} of ${steps.length}: keep moving in order.` : `第 ${currentIndex + 1} / ${steps.length} 步：按顺序继续。`
+              : page.lang === 'en' ? 'Start with the workflow, then branch out.' : '先走主流程，再按需展开。'}
+          </h2>
         </div>
         <div class="flex flex-wrap gap-3">
           {items.map((item) => (
@@ -24,6 +31,33 @@ const items = page.secondaryCtas ?? [];
           ))}
         </div>
       </div>
+      <ol class="grid gap-3 md:grid-cols-5">
+        {steps.map((step, index) => {
+          const state = index < currentIndex ? 'done' : index === currentIndex ? 'current' : 'next';
+          return (
+            <li>
+              <a
+                class:list={[
+                  'focus-ring block h-full rounded-2xl border p-4 transition',
+                  state === 'current' ? 'border-aqua bg-aqua text-ink' : 'border-white/15 bg-white/10 hover:bg-white/15'
+                ]}
+                href={step.href}
+                aria-current={state === 'current' ? 'step' : undefined}
+              >
+                <span class:list={[
+                  'grid h-8 w-8 place-items-center rounded-full text-xs font-black',
+                  state === 'current' ? 'bg-ink text-white' : 'bg-white/12 text-aqua'
+                ]}>{index + 1}</span>
+                <strong class="mt-3 block text-sm">{step.label}</strong>
+                <span class:list={[
+                  'mt-2 block text-xs leading-5',
+                  state === 'current' ? 'text-ink/70' : 'text-white/62'
+                ]}>{step.body}</span>
+              </a>
+            </li>
+          );
+        })}
+      </ol>
     </div>
-  </section>
-) : null}
+  </div>
+</section>
