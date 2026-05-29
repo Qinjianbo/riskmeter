@@ -24,7 +24,6 @@ export type RiskPage = {
   pairedSlug?: string;
   primaryCta?: { label: string; href: string };
   secondaryCtas?: { label: string; href: string }[];
-  metrics?: { label: string; value: string; tone?: 'aqua' | 'leaf' | 'amber' | 'ember' }[];
   sections?: {
     title: string;
     body?: string;
@@ -94,11 +93,6 @@ export const pages: RiskPage[] = [
     secondaryCtas: [
       { label: 'Explore Market Pendulum', href: '/en/pendulum/' },
       { label: 'Open Risk Glossary', href: '/en/risk-glossary/' }
-    ],
-    metrics: [
-      { label: 'Tool categories', value: '4', tone: 'aqua' },
-      { label: 'Languages', value: 'EN / 中文', tone: 'leaf' },
-      { label: 'Data model', value: 'Local only', tone: 'amber' }
     ]
   },
   {
@@ -114,11 +108,6 @@ export const pages: RiskPage[] = [
     secondaryCtas: [
       { label: '探索市场钟摆', href: '/zh/pendulum/' },
       { label: '查看风险术语表', href: '/zh/risk-glossary/' }
-    ],
-    metrics: [
-      { label: '工具类型', value: '4', tone: 'aqua' },
-      { label: '语言', value: 'EN / 中文', tone: 'leaf' },
-      { label: '数据方式', value: '仅本地', tone: 'amber' }
     ]
   },
   {
@@ -131,12 +120,7 @@ export const pages: RiskPage[] = [
     summary: 'Move from abstract risk appetite to visible loss, recovery percentage, notes, and saved local scenarios.',
     kind: 'drawdown-test',
     primaryCta: { label: 'Open recovery scenarios', href: '/en/drawdown-recovery/' },
-    secondaryCtas: toolCtas('en', 'drawdown-test'),
-    metrics: [
-      { label: 'Bands', value: '5', tone: 'aqua' },
-      { label: 'Saved scenarios', value: '3', tone: 'leaf' },
-      { label: 'Saved data', value: 'Browser only', tone: 'amber' }
-    ]
+    secondaryCtas: toolCtas('en', 'drawdown-test')
   },
   {
     lang: 'zh',
@@ -148,12 +132,7 @@ export const pages: RiskPage[] = [
     summary: '把抽象的风险偏好转换成可见亏损、恢复涨幅、本地笔记和可复用情景。',
     kind: 'drawdown-test',
     primaryCta: { label: '打开恢复情景', href: '/zh/drawdown-recovery/' },
-    secondaryCtas: toolCtas('zh', 'drawdown-test'),
-    metrics: [
-      { label: '风险档位', value: '5', tone: 'aqua' },
-      { label: '保存情景', value: '3', tone: 'leaf' },
-      { label: '保存位置', value: '仅浏览器', tone: 'amber' }
-    ]
+    secondaryCtas: toolCtas('zh', 'drawdown-test')
   },
   {
     lang: 'en',
